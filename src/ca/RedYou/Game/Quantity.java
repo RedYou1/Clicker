@@ -7,7 +7,7 @@ public class Quantity extends Number implements Comparable<Quantity> {
 	private static final long serialVersionUID = 1L;
 
 	private List<Integer> q;
-	private boolean positif;
+	public boolean positif;
 
 	public Quantity() {
 		q = new ArrayList<Integer>();
@@ -42,8 +42,39 @@ public class Quantity extends Number implements Comparable<Quantity> {
 		this.positif = q.positif;
 	}
 
-	public boolean isPositif() {
-		return positif;
+	public void mod(Quantity i) {
+		if (i.equals(new Quantity())) {
+			throw new ArithmeticException("You can't divide by 0!");
+		}
+		if (i.compareTo(new Quantity()) < 0) {
+			positif = !positif;
+		}
+		i.positif = true;
+		Quantity rest = new Quantity();
+
+		for (int j = q.size() - 1; j >= 0; j--) {
+			rest.addOrSub(q.get(j));
+
+			int a = 0;
+
+			while (rest.compareTo(i) > -1) {
+				a++;
+				i.positif = false;
+				rest.addOrSub(i);
+				i.positif = true;
+			}
+
+			if (a > 0)
+				q.set(j, a);
+			else
+				q.remove(j);
+
+			if (j > 0)
+				rest.mult(1000);
+		}
+
+		q = rest.q;
+		positif = rest.positif;
 	}
 
 	public void mod(int i) {
@@ -51,6 +82,38 @@ public class Quantity extends Number implements Comparable<Quantity> {
 		q.div(i);
 		q.mult(-i);
 		addOrSub(q);
+	}
+
+	public void div(Quantity i) {
+		if (i.equals(new Quantity())) {
+			throw new ArithmeticException("You can't divide by 0!");
+		}
+		if (i.compareTo(new Quantity()) < 0) {
+			positif = !positif;
+		}
+		i.positif = true;
+		Quantity rest = new Quantity();
+
+		for (int j = q.size() - 1; j >= 0; j--) {
+			rest.addOrSub(q.get(j));
+
+			int a = 0;
+
+			while (rest.compareTo(i) > -1) {
+				a++;
+				i.positif = false;
+				rest.addOrSub(i);
+				i.positif = true;
+			}
+
+			if (a > 0)
+				q.set(j, a);
+			else
+				q.remove(j);
+
+			if (j > 0)
+				rest.mult(1000);
+		}
 	}
 
 	public void div(int i) {
@@ -237,6 +300,19 @@ public class Quantity extends Number implements Comparable<Quantity> {
 				return -1;
 		}
 		return 0;
+	}
+
+	public int compareTo(int o) {
+
+		if (positif && o < 0)
+			return 1;
+		if (!positif && o > 0)
+			return -1;
+
+		if (compareTo(new Quantity(String.valueOf(Integer.MAX_VALUE))) > 0)
+			return 1;
+
+		return compareTo(new Quantity(String.valueOf(o)));
 	}
 
 	@Override
