@@ -44,7 +44,7 @@ public class Main {
 		});
 
 		click.addActionListener(l -> {
-			Player.getInstance().getMoney().edit(1);
+			Player.getInstance().getMoney().addOrSub(1);
 			menu();
 		});
 		menu();
@@ -87,7 +87,7 @@ public class Main {
 				if (Player.getInstance().getMoney()
 						.compareTo(ents[a].price(Player.getInstance().getEntityQuantity(ents[a]))) > -1) {
 					Quantity q = Player.getInstance().getEntityQuantity(ents[a]);
-					q.edit(1);
+					q.addOrSub(1);
 					menu();
 				}
 			});

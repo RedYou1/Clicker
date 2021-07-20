@@ -3,7 +3,8 @@ package ca.RedYou.Game;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Quantity implements Comparable<Quantity> {
+public class Quantity extends Number implements Comparable<Quantity> {
+	private static final long serialVersionUID = 1L;
 
 	private List<Integer> q;
 	private boolean positif;
@@ -24,7 +25,7 @@ public class Quantity implements Comparable<Quantity> {
 
 		int i = s.length() - 1;
 		for (; i >= 3; i -= 3) {
-			q.add(Integer.valueOf(s.substring(i - 2, i)));
+			q.add(Integer.valueOf(s.substring(i - 2, i + 1)));
 		}
 		if (i < 3) {
 			q.add(Integer.valueOf(s.substring(0, i + 1)));
@@ -41,21 +42,59 @@ public class Quantity implements Comparable<Quantity> {
 		this.positif = q.positif;
 	}
 
+	public boolean isPositif() {
+		return positif;
+	}
+
+	public void mod(int i) {
+		Quantity q = new Quantity(this);
+		q.div(i);
+		q.mult(-i);
+		addOrSub(q);
+	}
+
+	public void div(int i) {
+		if (i == 0) {
+			throw new ArithmeticException("You can't divide by 0!");
+		}
+		if (i < 0) {
+			positif = !positif;
+			i *= -1;
+		}
+
+		int rest = 0;
+
+		for (int j = q.size() - 1; j >= 0; j--) {
+
+			int t = (rest * 1000) + q.get(j);
+			int a = t / i;
+
+			if (a > 0)
+				q.set(j, a);
+			else
+				q.remove(j);
+
+			rest = t - (a * i);
+		}
+		update();
+	}
+
 	public void mult(Quantity i) {
 		if (i.equals(new Quantity())) {
 			q = new ArrayList<>();
 			q.add(0);
 			positif = true;
+			return;
 		}
 		if (i.compareTo(new Quantity()) < 0) {
 			positif = !positif;
 			i.positif = true;
 		}
 		Quantity a = new Quantity();
-		a.edit(1);
+		a.addOrSub(1);
 		Quantity t = new Quantity(this);
-		for (; i.compareTo(a) > 0; i.edit(-1)) {
-			edit(t);
+		for (; i.compareTo(a) > 0; i.addOrSub(-1)) {
+			addOrSub(t);
 		}
 	}
 
@@ -64,6 +103,7 @@ public class Quantity implements Comparable<Quantity> {
 			q = new ArrayList<>();
 			q.add(0);
 			positif = true;
+			return;
 		}
 		if (i < 0) {
 			positif = !positif;
@@ -71,31 +111,40 @@ public class Quantity implements Comparable<Quantity> {
 		}
 		Quantity t = new Quantity(this);
 		for (; i > 1; i--) {
-			edit(t);
+			addOrSub(t);
 		}
 	}
 
-	public void edit(Quantity o) {
+	public void addOrSub(Quantity o) {
 		if (positif == o.positif)
 			for (int i = 0; i < o.q.size(); i++) {
-				int a = q.get(i) + o.q.get(i);
 				if (i >= q.size())
-					q.add(a);
+					q.add(o.q.get(i));
 				else
-					q.set(i, a);
+					q.set(i, q.get(i) + o.q.get(i));
 			}
 		else
 			for (int i = 0; i < o.q.size(); i++) {
-				int a = q.get(i) - o.q.get(i);
-				if (i >= q.size())
-					q.add(a);
-				else
-					q.set(i, a);
+				if (i >= q.size()) {
+					positif = o.positif;
+					q.add(o.q.get(i));
+				} else {
+					q.set(i, q.get(i) - o.q.get(i));
+					if (q.get(i) < 0) {
+						if (i + 1 == q.size()) {
+							positif = o.positif;
+							q.set(i, q.get(i) * -1);
+						} else {
+							q.set(i, q.get(i) + 1000);
+							q.set(i + 1, q.get(i + 1) - 1);
+						}
+					}
+				}
 			}
 		update();
 	}
 
-	public void edit(int i) {
+	public void addOrSub(int i) {
 		if (i == 0) {
 			return;
 		}
@@ -145,20 +194,26 @@ public class Quantity implements Comparable<Quantity> {
 				if (q.size() >= i + 1) {
 					q.set(i, -1 * q.get(i));
 					positif = !positif;
-					return;
+					break;
 				}
 
-				q.set(i, q.get(i) + 1000);
-				q.set(i + 1, q.get(i + 1) - 1);
+				int qt = ((-1 * q.get(i)) / 1000) + 1;
+				q.set(i, q.get(i) + (qt * 1000));
+				q.set(i + 1, q.get(i + 1) - qt);
 			}
 
-			while (q.get(i) >= 1000) {
-				q.set(i, q.get(i) - 1000);
+			if (q.get(i) >= 1000) {
+				int qt = q.get(i) / 1000;
+				q.set(i, q.get(i) - (qt * 1000));
 				if (q.size() == i + 1)
-					q.add(1);
+					q.add(qt);
 				else
-					q.set(i + 1, q.get(i + 1) + 1);
+					q.set(i + 1, q.get(i + 1) + qt);
 			}
+		}
+
+		while (q.size() > 0 && q.get(q.size() - 1) == 0) {
+			q.remove(q.size() - 1);
 		}
 	}
 
@@ -197,13 +252,21 @@ public class Quantity implements Comparable<Quantity> {
 		if (!positif)
 			s += "-";
 		for (int i = q.size() - 1; i >= 0; i--) {
-			s += q.get(i);
+			String t = String.valueOf(q.get(i));
+			if (i != q.size() - 1)
+				while (t.length() < 3) {
+					t = "0" + t;
+				}
+			s += t;
 		}
 		return s;
 	}
 
 	@Override
 	public String toString() {
+		if (q.size() == 0)
+			return "0";
+
 		if (q.size() == 1)
 			return (positif ? "" : "-") + q.get(0);
 
@@ -228,6 +291,32 @@ public class Quantity implements Comparable<Quantity> {
 		for (int i = 0; i < s.size(); i++) {
 			h = s.get(i) + h;
 		}
-		return (positif ? "" : "-") + q.get(q.size() - 1) + "," + q.get(q.size() - 2) + h;
+
+		String t = String.valueOf(q.get(q.size() - 2));
+		if (t != "0")
+			while (t.length() < 3) {
+				t = "0" + t;
+			}
+		return (positif ? "" : "-") + q.get(q.size() - 1) + "," + t + h;
+	}
+
+	@Override
+	public int intValue() {
+		return Integer.valueOf(fullString());
+	}
+
+	@Override
+	public long longValue() {
+		return Long.valueOf(fullString());
+	}
+
+	@Override
+	public float floatValue() {
+		return Float.valueOf(fullString());
+	}
+
+	@Override
+	public double doubleValue() {
+		return Double.valueOf(fullString());
 	}
 }
