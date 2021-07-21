@@ -26,10 +26,11 @@ public class Main {
 
 	public static void main(String[] args) {
 		Quantity q = Quantity.valueOf(0);
-		for (int i = 0; i < 11; i++) {
-			System.out.println(q.extract() + ":" + q);
-			q.add(Quantity.valueOf(100));
-		}
+//		for (int i = 0; i < 2000; i++) {
+		System.out.println(q.extract() + ":" + q);
+		q.add(Quantity.valueOf(-2000));
+//		}
+		System.out.println(q.extract() + ":" + q);
 //		ModController modCon = ModController.getInstance();
 //		File f = new File("Mods");
 //		if (f.exists() && f.isDirectory())

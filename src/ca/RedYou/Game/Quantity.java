@@ -20,7 +20,57 @@ public class Quantity implements Comparable<Quantity> {
 		positif = q.positif;
 	}
 
+	public void sub(Quantity i) {
+		if (positif != i.positif) {
+			i.positif = positif;
+			add(i);
+			return;
+		}
+		i.positif = !i.positif;
+		if (s.equalsIgnoreCase("0"))
+			positif = i.positif;
+
+		int t = 0;
+		int last = 0;
+		for (; t < s.length() && t < i.s.length(); t++) {
+			long a = convert(s.charAt(s.length() - 1 - t), 0);
+			long b = convert(i.s.charAt(i.s.length() - 1 - t), 0);
+
+			long temp = a - b - last;
+
+			last = 0;
+			if (t + 1 == s.length()) {
+				temp *= -1;
+				positif = !positif;
+			} else
+				while (temp < 0) {
+					temp += poss.length();
+					last++;
+				}
+
+			String d = valueOf(temp).extract();
+
+			s = s.substring(0, s.length() - t - 1) + d.charAt(d.length() - 1) + s.substring(s.length() - t, s.length());
+		}
+
+		if (last > 0) {
+			s = poss.charAt(poss.length() - last) + s;
+			positif = !positif;
+		}
+		if (t < i.s.length()) {
+			s = i.s.substring(0, i.s.length() - t) + s;
+			positif = !positif;
+		}
+	}
+
 	public void add(Quantity i) {
+		if (s == "0")
+			positif = i.positif;
+		if (positif != i.positif) {
+			i.positif = positif;
+			sub(i);
+			return;
+		}
 		int t = 0;
 		long last = 0;
 		for (; t < s.length() && t < i.s.length(); t++) {
@@ -31,6 +81,16 @@ public class Quantity implements Comparable<Quantity> {
 
 			s = s.substring(0, s.length() - t - 1) + d.charAt(d.length() - 1) + s.substring(s.length() - t, s.length());
 			last = valueOf(d.substring(0, d.length() - 1)).toLong();
+		}
+
+		while (last > 0 && t < s.length()) {
+			long a = convert(s.charAt(s.length() - 1 - t), 0);
+
+			String d = valueOf(a + last).extract();
+
+			s = s.substring(0, s.length() - t - 1) + d.charAt(d.length() - 1) + s.substring(s.length() - t, s.length());
+			last = valueOf(d.substring(0, d.length() - 1)).toLong();
+			t++;
 		}
 
 		if (last > 0) {
