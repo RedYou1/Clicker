@@ -47,22 +47,46 @@ public class Quantity implements Comparable<Quantity> {
 			return;
 		}
 		i.positif = !i.positif;
+
+		if (i.s.length() > s.length()) {
+//			positif = !positif;
+			i.add(this);
+
+			s = i.s;
+			positif = i.positif;
+			return;
+		}
+
 		if (s.equalsIgnoreCase("0"))
 			positif = i.positif;
 
 		int t = 0;
 		int last = 0;
-		for (; t < s.length() && t < i.s.length(); t++) {
-			long a = convert(s.charAt(s.length() - 1 - t), 0);
-			long b = convert(i.s.charAt(i.s.length() - 1 - t), 0);
+		for (; t < i.s.length(); t++) {
+			long a = poss.indexOf(s.charAt(s.length() - 1 - t));
+			long b = poss.indexOf(i.s.charAt(i.s.length() - 1 - t));
 
 			long temp = a - b - last;
 
 			last = 0;
-			if (t + 1 == s.length()) {
-				temp *= -1;
-				positif = !positif;
-			} else
+			if (t + 1 != s.length())
+				while (temp < 0) {
+					temp += poss.length();
+					last++;
+				}
+
+			String d = valueOf(temp).extract();
+
+			s = s.substring(0, s.length() - t - 1) + d.charAt(d.length() - 1) + s.substring(s.length() - t, s.length());
+		}
+
+		for (; t < s.length() && last > 0; t++) {
+			long a = poss.indexOf(s.charAt(s.length() - 1 - t));
+
+			long temp = a - last;
+
+			last = 0;
+			if (t + 1 != s.length())
 				while (temp < 0) {
 					temp += poss.length();
 					last++;
@@ -75,10 +99,6 @@ public class Quantity implements Comparable<Quantity> {
 
 		if (last > 0) {
 			s = poss.charAt(poss.length() - last) + s;
-			positif = !positif;
-		}
-		if (t < i.s.length()) {
-			s = i.s.substring(0, i.s.length() - t) + s;
 			positif = !positif;
 		}
 	}
@@ -94,8 +114,8 @@ public class Quantity implements Comparable<Quantity> {
 		int t = 0;
 		long last = 0;
 		for (; t < s.length() && t < i.s.length(); t++) {
-			long a = convert(s.charAt(s.length() - 1 - t), 0);
-			long b = convert(i.s.charAt(i.s.length() - 1 - t), 0);
+			long a = poss.indexOf(s.charAt(s.length() - 1 - t));
+			long b = poss.indexOf(i.s.charAt(i.s.length() - 1 - t));
 
 			String d = valueOf(a + b + last).extract();
 
@@ -104,7 +124,7 @@ public class Quantity implements Comparable<Quantity> {
 		}
 
 		while (last > 0 && t < s.length()) {
-			long a = convert(s.charAt(s.length() - 1 - t), 0);
+			long a = poss.indexOf(s.charAt(s.length() - 1 - t));
 
 			String d = valueOf(a + last).extract();
 
@@ -207,11 +227,15 @@ public class Quantity implements Comparable<Quantity> {
 	}
 
 	public String extract() {
+		if (s.equals("0"))
+			positif = true;
 		return (positif ? "" : "-") + s;
 	}
 
 	@Override
 	public String toString() {
+		if (s.equals("0"))
+			positif = true;
 		String t = "";
 
 		for (int i = 0; i < s.length() && t.length() < 4; i++) {
