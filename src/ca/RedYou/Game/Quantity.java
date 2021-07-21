@@ -49,8 +49,8 @@ public class Quantity implements Comparable<Quantity> {
 		i.positif = !i.positif;
 
 		if (i.s.length() > s.length()) {
-//			positif = !positif;
-			i.add(this);
+			positif = !positif;
+			i.sub(this);
 
 			s = i.s;
 			positif = i.positif;
