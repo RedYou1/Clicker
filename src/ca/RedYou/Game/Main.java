@@ -25,11 +25,11 @@ public class Main {
 	private static boolean running = true;
 
 	public static void main(String[] args) {
-		Quantity q = Quantity.valueOf(0);
-//		for (int i = 0; i < 2000; i++) {
-		System.out.println(q.extract() + ":" + q);
-		q.add(Quantity.valueOf(-2000));
-//		}
+		Quantity q = Quantity.valueOf(1);
+		for (int i = 0; i < 100; i++) {
+			System.out.println(q.extract() + ":" + q);
+			q.mult(Quantity.valueOf(2));
+		}
 		System.out.println(q.extract() + ":" + q);
 //		ModController modCon = ModController.getInstance();
 //		File f = new File("Mods");

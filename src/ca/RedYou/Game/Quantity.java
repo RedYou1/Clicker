@@ -20,6 +20,26 @@ public class Quantity implements Comparable<Quantity> {
 		positif = q.positif;
 	}
 
+	public void mult(Quantity i) {
+		positif = positif == i.positif;
+
+		Quantity t = new Quantity();
+
+		for (int l = 0; l < i.s.length(); l++) {
+			int time = poss.indexOf(i.s.charAt(l));
+			if (time > 0) {
+				Quantity y1 = valueOf(s);
+				Quantity y2 = valueOf(s);
+				for (; time > 1; time--) {
+					y1.add(y2);
+				}
+				t.add(y1);
+			}
+		}
+
+		s = t.s;
+	}
+
 	public void sub(Quantity i) {
 		if (positif != i.positif) {
 			i.positif = positif;
