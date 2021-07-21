@@ -25,9 +25,11 @@ public class Main {
 	private static boolean running = true;
 
 	public static void main(String[] args) {
-		Quantity q = Quantity.valueOf("9999", true);
-		System.out.println(q);
-		System.out.println(q.extract());
+		Quantity q = Quantity.valueOf(0);
+		for (int i = 0; i < 11; i++) {
+			System.out.println(q.extract() + ":" + q);
+			q.add(Quantity.valueOf(100));
+		}
 //		ModController modCon = ModController.getInstance();
 //		File f = new File("Mods");
 //		if (f.exists() && f.isDirectory())

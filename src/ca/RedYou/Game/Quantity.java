@@ -8,7 +8,7 @@ public class Quantity implements Comparable<Quantity> {
 
 	private String s;
 	public boolean positif;
-	public final static String poss = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,<.>/?;:\'\"[{]}\\|~!@#$%^&*()`+-=_§©®µ¶¤";
+	public final static String poss = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,<.>/?;:\'\"[{]}\\|~!@#$%^&*()`+±=_§©®µ¶¤";
 
 	public Quantity() {
 		s = String.valueOf(poss.charAt(0));
@@ -20,9 +20,30 @@ public class Quantity implements Comparable<Quantity> {
 		positif = q.positif;
 	}
 
-	public static Quantity valueOf(String s, boolean base10) {
-		if (base10)
-			return valueOf(Long.valueOf(s));
+	public void add(Quantity i) {
+		int t = 0;
+		long last = 0;
+		for (; t < s.length() && t < i.s.length(); t++) {
+			long a = convert(s.charAt(s.length() - 1 - t), 0);
+			long b = convert(i.s.charAt(i.s.length() - 1 - t), 0);
+
+			String d = valueOf(a + b + last).extract();
+
+			s = s.substring(0, s.length() - t - 1) + d.charAt(d.length() - 1) + s.substring(s.length() - t, s.length());
+			last = valueOf(d.substring(0, d.length() - 1)).toLong();
+		}
+
+		if (last > 0) {
+			s = valueOf(last).extract() + s;
+		}
+		if (t < i.s.length()) {
+			s = i.s.substring(0, i.s.length() - t) + s;
+		}
+	}
+
+	public static Quantity valueOf(String s) {
+		if (s.length() == 0)
+			return new Quantity();
 
 		Quantity q = new Quantity();
 
@@ -44,6 +65,10 @@ public class Quantity implements Comparable<Quantity> {
 	public static Quantity valueOf(long i) {
 		Quantity q = new Quantity();
 		q.s = "";
+		if (i == 0) {
+			q.s = String.valueOf(poss.charAt(0));
+		}
+
 		if (i < 0) {
 			i *= -1;
 			q.positif = false;
@@ -107,23 +132,30 @@ public class Quantity implements Comparable<Quantity> {
 
 	@Override
 	public String toString() {
-
 		String t = "";
-		Quantity max = valueOf(999);
 
-		for (int i = 0; i < s.length() && valueOf(t, false).compareTo(max) == -1; i++) {
+		for (int i = 0; i < s.length() && t.length() < 4; i++) {
 			t += s.charAt(i);
 		}
 
-		while (t.length() > 0 && valueOf(t, false).compareTo(max) == 1) {
-			t = t.substring(0, t.length() - 1);
-		}
+		int size = s.length() * 2;
+
+		if (!Character.isDigit(t.charAt(0)))
+			size++;
+
+		size++;
+		int temp = size % 3 + 1;
+		size /= 3;
+		size--;
+
+		long lt = valueOf(t).toLong();
+
+		String a = String.valueOf(lt);
+
+		if (size > 0)
+			a = a.substring(0, temp) + "," + a.substring(temp, temp + 3);
 
 		List<Character> chars = new ArrayList<Character>();
-
-		long v = valueOf(t, false).toLong();
-
-		long size = (long) (Math.log10(toLong()) / 3);
 		if (size > 0) {
 			chars.add((char) 96);
 			do {
@@ -141,10 +173,11 @@ public class Quantity implements Comparable<Quantity> {
 				size--;
 			} while (size > 0);
 		}
+
 		String h = "";
 		for (int i = 0; i < chars.size(); i++) {
 			h = chars.get(i) + h;
 		}
-		return (positif ? "" : "-") + v + h;
+		return (positif ? "" : "-") + a + h;
 	}
 }
