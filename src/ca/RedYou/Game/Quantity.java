@@ -20,6 +20,72 @@ public class Quantity implements Comparable<Quantity> {
 		positif = q.positif;
 	}
 
+	/**
+	 * 
+	 * @param i
+	 * @return the mod
+	 */
+	public Quantity div(Quantity i) {
+		Quantity comp = new Quantity();
+		if (i.equals(comp))
+			throw new ArithmeticException("can't divide by zero");
+
+		int compToi = compareTo(i);
+		if (compToi < 0) {
+			Quantity t = valueOf(s);
+			s = "0";
+			positif = true;
+			return t;
+		}
+		if (compToi == 0) {
+			s = "1";
+			positif = true;
+			return valueOf(0);
+		}
+
+		positif = positif == i.positif;
+
+		String h = "";
+		for (int var = 0; compareTo(i) > -1 && i.s.length() + var <= s.length();) {
+			Quantity a = valueOf(s.substring(0, i.s.length() + var));
+			int time = 0;
+			while (a.compareTo(i) > -1) {
+				a.sub(i);
+				time++;
+			}
+			if (time > 0) {
+				h += valueOf(time).s;
+
+				int restant = s.length() - (i.s.length() + var);
+
+				if (a.s.equalsIgnoreCase("0")) {
+					s = s.substring(i.s.length() + var, s.length());
+				} else {
+					s = a.s + s.substring(i.s.length() + var, s.length());
+				}
+
+				if (restant > 0 && compareTo(i) == -1) {
+					while (restant > 0) {
+						h += "0";
+						restant--;
+					}
+					break;
+				}
+				var = 0;
+			} else {
+				h += "0";
+				var++;
+			}
+		}
+
+		while (h.startsWith("0") && h.length() > 1) {
+			h = h.substring(1, h.length());
+		}
+		Quantity t = valueOf(s);
+		s = h;
+		return t;
+	}
+
 	public void mult(Quantity i) {
 		positif = positif == i.positif;
 
@@ -38,9 +104,14 @@ public class Quantity implements Comparable<Quantity> {
 		}
 
 		s = t.s;
+
+		while (s.startsWith("0") && s.length() > 1) {
+			s = s.substring(1, s.length());
+		}
 	}
 
 	public void sub(Quantity i) {
+		i = new Quantity(i);
 		if (positif != i.positif) {
 			i.positif = positif;
 			add(i);
@@ -101,6 +172,10 @@ public class Quantity implements Comparable<Quantity> {
 			s = poss.charAt(poss.length() - last) + s;
 			positif = !positif;
 		}
+
+		while (s.startsWith("0") && s.length() > 1) {
+			s = s.substring(1, s.length());
+		}
 	}
 
 	public void add(Quantity i) {
@@ -138,6 +213,10 @@ public class Quantity implements Comparable<Quantity> {
 		}
 		if (t < i.s.length()) {
 			s = i.s.substring(0, i.s.length() - t) + s;
+		}
+
+		while (s.startsWith("0") && s.length() > 1) {
+			s = s.substring(1, s.length());
 		}
 	}
 
@@ -192,6 +271,11 @@ public class Quantity implements Comparable<Quantity> {
 
 	@Override
 	public int compareTo(Quantity o) {
+		if (s.equalsIgnoreCase("0"))
+			positif = true;
+		if (o.s.equalsIgnoreCase("0"))
+			o.positif = true;
+
 		if (positif && !o.positif)
 			return 1;
 		if (!positif && o.positif)
