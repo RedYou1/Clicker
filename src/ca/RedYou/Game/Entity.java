@@ -8,7 +8,7 @@ public interface Entity {
 
 	public ImageIcon icon();
 
-	public void action(Quantity quantity);
+	public Quantity production(Quantity quantity);
 
 	public Quantity price(Quantity quantity);
 }

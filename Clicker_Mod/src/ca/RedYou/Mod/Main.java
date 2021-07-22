@@ -9,7 +9,6 @@ import javax.swing.ImageIcon;
 import ca.RedYou.Game.Entity;
 import ca.RedYou.Game.Mod;
 import ca.RedYou.Game.Quantity;
-import ca.RedYou.Game.Controller.Player;
 
 public class Main extends Mod {
 
@@ -29,8 +28,6 @@ public class Main extends Mod {
 
 			setEntity(new Entity() {
 
-				int restant = 0;
-
 				@Override
 				public String name() {
 					return "cursor";
@@ -42,14 +39,10 @@ public class Main extends Mod {
 				}
 
 				@Override
-				public void action(Quantity quantity) {
+				public Quantity production(Quantity quantity) {
 					Quantity q = new Quantity(quantity);
-					restant += q.div(Quantity.valueOf(10)).toLong();
-					if (restant >= 10) {
-						q.add(Quantity.valueOf(restant / 10));
-						restant = restant % 10;
-					}
-					Player.getInstance().getMoney().add(q);
+					q.div(Quantity.valueOf(10));
+					return q;
 				}
 
 				@Override
@@ -70,8 +63,8 @@ public class Main extends Mod {
 				}
 
 				@Override
-				public void action(Quantity quantity) {
-					Player.getInstance().getMoney().add(quantity);
+				public Quantity production(Quantity quantity) {
+					return quantity;
 				}
 
 				@Override
@@ -92,10 +85,10 @@ public class Main extends Mod {
 				}
 
 				@Override
-				public void action(Quantity quantity) {
+				public Quantity production(Quantity quantity) {
 					Quantity q = new Quantity(quantity);
 					q.mult(Quantity.valueOf(8));
-					Player.getInstance().getMoney().add(q);
+					return q;
 				}
 
 				@Override

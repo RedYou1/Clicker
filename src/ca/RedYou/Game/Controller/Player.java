@@ -11,6 +11,7 @@ public class Player {
 
 	private Map<Entity, Quantity> entities = new HashMap<>();
 	private Quantity money = new Quantity();
+	private Quantity clickMult = Quantity.valueOf(1);
 
 	public static Player getInstance() {
 		return instance;
@@ -24,5 +25,9 @@ public class Player {
 
 	public Quantity getMoney() {
 		return money;
+	}
+
+	public Quantity getClickMult() {
+		return clickMult;
 	}
 }

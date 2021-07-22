@@ -1,7 +1,6 @@
 package ca.RedYou.Game.Controller;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,20 +43,28 @@ public class EntityController {
 	private static final EntityController instance = new EntityController();
 	private Map<Key, Entity> entities = new HashMap<>();
 
+	// order
+	private List<Entity> ents = new ArrayList<>();
+
 	public static EntityController getInstance() {
 		return instance;
 	}
 
-	public Collection<Entity> getEntities() {
-		return entities.values();
+	public Entity[] getEntities() {
+		return ents.toArray(new Entity[ents.size()]);
 	}
 
 	public void setEntity(Mod mod, String name, Entity ent) {
 		Key key = new Key(mod, name);
-		if (entities.containsKey(key))
+		if (entities.containsKey(key)) {
+			int index = ents.indexOf(entities.get(key));
+			ents.remove(index);
+			ents.add(index, ent);
 			entities.replace(key, ent);
-		else
+		} else {
+			ents.add(ent);
 			entities.put(key, ent);
+		}
 	}
 
 	public Entity getEntity(Mod mod, String name) {
