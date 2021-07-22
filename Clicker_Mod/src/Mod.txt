@@ -1,1 +1,0 @@
-Main:ca.RedYou.Mod.Main
