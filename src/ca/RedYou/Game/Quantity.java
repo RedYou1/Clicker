@@ -92,14 +92,13 @@ public class Quantity implements Comparable<Quantity> {
 			return;
 		}
 
-		while (compareTo(i) == -1) {
-			s += "0";
-			tdiv++;
-		}
-
 		String h = "";
-		for (int var = 0; compareTo(i) > -1 && i.s.length() + var <= s.length();) {
-			Quantity a = valueOf(s.substring(0, i.s.length() + var));
+		for (int var = 0; !equals(comp);) {
+			Quantity a = valueOf(s.substring(0, Math.min(s.length(), i.s.length() + var)));
+			while (a.compareTo(i) == -1) {
+				a.s += "0";
+				tdiv++;
+			}
 			int time = 0;
 			while (a.compareTo(i) > -1) {
 				a.sub(i);
@@ -108,21 +107,12 @@ public class Quantity implements Comparable<Quantity> {
 			if (time > 0) {
 				h += valueOf(time).s;
 
-				int restant = s.length() - (i.s.length() + var);
-
 				if (a.s.equalsIgnoreCase("0")) {
 					s = s.substring(i.s.length() + var, s.length());
 				} else {
 					s = a.s + s.substring(i.s.length() + var, s.length());
 				}
 
-				if (restant > 0 && compareTo(i) == -1) {
-					while (restant > 0) {
-						h += "0";
-						restant--;
-					}
-					break;
-				}
 				var = 0;
 			} else {
 				h += "0";
