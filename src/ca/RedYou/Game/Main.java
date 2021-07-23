@@ -74,7 +74,7 @@ public class Main {
 
 						last = new Quantity(Player.getInstance().getMoney());
 
-						sleep(1);
+						sleep(1000);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
