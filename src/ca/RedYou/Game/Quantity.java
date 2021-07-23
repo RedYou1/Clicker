@@ -570,7 +570,7 @@ public class Quantity implements Comparable<Quantity> {
 		String a = String.valueOf(lt / (Math.pow(100, div)));
 
 		if (size > 0)
-			a = a.substring(0, temp) + "," + a.substring(temp, temp + 3);
+			a = a.substring(0, temp) + "," + a.substring(temp, Math.min(a.length(), temp + 3));
 
 		List<Character> chars = new ArrayList<Character>();
 		if (size > 0) {

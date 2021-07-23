@@ -74,7 +74,7 @@ public class Main {
 
 						last = new Quantity(Player.getInstance().getMoney());
 
-						sleep(1000);
+						sleep(1);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -98,7 +98,7 @@ public class Main {
 
 		s.p.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-		Dimension d = new Dimension(317, (int) (frame.p.getSize().getHeight() * .8));
+		Dimension d = new Dimension(350, (int) (frame.p.getSize().getHeight() * .8));
 
 		if (d.getHeight() < 1) {
 			menu();
@@ -113,7 +113,7 @@ public class Main {
 		entites = s.p;
 
 		Entity[] ents = EntityController.getInstance().getEntities();
-		d = new Dimension(300, 64);
+		d = new Dimension(320, 100);
 		for (int i = 0; i < ents.length; i++) {
 			final JButton b = new JButton();
 			b.setIcon(ents[i].icon());
