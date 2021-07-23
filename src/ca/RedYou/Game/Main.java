@@ -21,10 +21,11 @@ public class Main {
 	private static JLabel cps = new JLabel();
 	private static JLabel clickcps = new JLabel();
 	private static AbstractFrame entites;
+	private static AbstractFrame upgrades;
 
 	private static boolean running = true;
 
-	private static Quantity last = new Quantity();
+	public static Quantity last = new Quantity();
 
 	public static void main(String[] args) {
 		ModController modCon = ModController.getInstance();
@@ -60,12 +61,13 @@ public class Main {
 						Player p = Player.getInstance();
 						Quantity a = new Quantity(Player.getInstance().getMoney());
 						a.sub(last);
-						a.div(Player.getInstance().getClickMult());
 						Main.clickcps.setText(a.toString() + " clickcps");
 						a = new Quantity(Player.getInstance().getMoney());
 
 						for (Entity ent : EntityController.getInstance().getEntities()) {
-							p.getMoney().add(ent.production(p.getEntityQuantity(ent)));
+							Quantity i = new Quantity(ent.production(p.getEntityQuantity(ent)));
+							i.mult(new Quantity(ent.multiplier));
+							Player.getInstance().getMoney().add(i);
 						}
 						money.setText(Player.getInstance().getMoney().toString());
 						Quantity b = new Quantity(Player.getInstance().getMoney());
@@ -84,7 +86,31 @@ public class Main {
 		t.start();
 	}
 
-	private static void menu() {
+	public static void updateUpgrades() {
+		upgrades.removeAll();
+		Upgrade[] ups = UpgradeController.getInstance().getUpgrades();
+		Dimension d = new Dimension(320, 200);
+		for (int i = 0; i < ups.length; i++) {
+			final JButton b = new JButton();
+			b.setIcon(ups[i].icon());
+			final int a = i;
+			b.addActionListener(k -> {
+				UpgradeController.getInstance().buy(ups[a]);
+			});
+			upgrades.setBouton(
+					"<html>" + ups[i].name() + "<br>" + ups[i].desc() + "<br>" + ups[i].price() + " cookies" + "<html>",
+					0, i, b);
+
+			b.setSize(d);
+			b.setPreferredSize(d);
+			b.setMaximumSize(d);
+			b.setMinimumSize(d);
+		}
+		upgrades.revalidate();
+		upgrades.repaint();
+	}
+
+	public static void menu() {
 		frame.p.removeAll();
 
 		AbstractFrame g = frame.p.setGroup(1, 0);
@@ -129,16 +155,24 @@ public class Main {
 
 					money.setText(Player.getInstance().getMoney().toString());
 
+					Quantity prod = new Quantity(
+							ents[a].production(new Quantity(Player.getInstance().getEntityQuantity(ents[a]))));
+
+					prod.mult(ents[a].multiplier);
+
 					Quantity q = Player.getInstance().getEntityQuantity(ents[a]);
-					b.setText("<html>" + q + " " + ents[a].name() + "<br>"
-							+ ents[a].production(new Quantity(Player.getInstance().getEntityQuantity(ents[a])))
-							+ " cps<br>" + ents[a].price(q) + " cookies" + "<html>");
+					b.setText("<html>" + q + " " + ents[a].name() + "<br>" + prod + " cps<br>" + ents[a].price(q)
+							+ " cookies" + "<html>");
+					updateUpgrades();
 				}
 			});
+			Quantity prod = new Quantity(
+					ents[i].production(new Quantity(Player.getInstance().getEntityQuantity(ents[i]))));
+
+			prod.mult(ents[i].multiplier);
 			Quantity q = Player.getInstance().getEntityQuantity(ents[i]);
-			entites.setBouton("<html>" + q + " " + ents[i].name() + "<br>"
-					+ ents[i].production(new Quantity(Player.getInstance().getEntityQuantity(ents[i]))) + " cps<br>"
-					+ ents[i].price(q) + " cookies" + "<html>", 0, i, b);
+			entites.setBouton("<html>" + q + " " + ents[i].name() + "<br>" + prod + " cps<br>" + ents[i].price(q)
+					+ " cookies" + "<html>", 0, i, b);
 
 			b.setSize(d);
 			b.setPreferredSize(d);
@@ -146,6 +180,26 @@ public class Main {
 			b.setMinimumSize(d);
 
 		}
+
+		Slider upslider = frame.p.setSlider(3, 0, .25, .8, new Slider());
+
+		upslider.p.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
+		d = new Dimension(350, (int) (frame.p.getSize().getHeight() * .8));
+
+		if (d.getHeight() < 1) {
+			menu();
+			return;
+		}
+
+		upslider.setSize(d);
+		upslider.setPreferredSize(d);
+		upslider.setMaximumSize(d);
+		upslider.setMinimumSize(d);
+
+		upgrades = upslider.p;
+
+		updateUpgrades();
 
 		frame.repaint();
 	}

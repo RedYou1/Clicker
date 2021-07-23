@@ -9,6 +9,10 @@ import javax.swing.ImageIcon;
 import ca.RedYou.Game.Entity;
 import ca.RedYou.Game.Mod;
 import ca.RedYou.Game.Quantity;
+import ca.RedYou.Game.Upgrade;
+import ca.RedYou.Game.Controller.EntityController.Key;
+import ca.RedYou.Game.Controller.Player;
+import ca.RedYou.Game.Controller.UpgradeController;
 
 public class Main extends Mod {
 
@@ -41,7 +45,8 @@ public class Main extends Mod {
 			ImageIcon wizardPNG = new ImageIcon(ImageIO.read(getSource("wizard.png")));
 			ImageIcon idleversePNG = new ImageIcon(ImageIO.read(getSource("idleverse.png")));
 
-			setEntity(new Entity() {
+			Key cursor = setEntity(new Entity() {
+				Quantity a = Quantity.valueOf(10);
 
 				@Override
 				public String name() {
@@ -56,7 +61,7 @@ public class Main extends Mod {
 				@Override
 				public Quantity production(Quantity quantity) {
 					Quantity q = new Quantity(quantity);
-					q.div(Quantity.valueOf(10));
+					q.div(new Quantity(a));
 					return q;
 				}
 
@@ -65,7 +70,7 @@ public class Main extends Mod {
 					return getPrice(0, quantity);
 				}
 			});
-			setEntity(new Entity() {
+			Key grandma = setEntity(new Entity() {
 
 				@Override
 				public String name() {
@@ -87,7 +92,8 @@ public class Main extends Mod {
 					return getPrice(1, quantity);
 				}
 			});
-			setEntity(new Entity() {
+			Key farm = setEntity(new Entity() {
+				Quantity a = Quantity.valueOf(8);
 
 				@Override
 				public String name() {
@@ -102,7 +108,7 @@ public class Main extends Mod {
 				@Override
 				public Quantity production(Quantity quantity) {
 					Quantity q = new Quantity(quantity);
-					q.mult(Quantity.valueOf(8));
+					q.mult(new Quantity(a));
 					return q;
 				}
 
@@ -111,7 +117,8 @@ public class Main extends Mod {
 					return getPrice(2, quantity);
 				}
 			});
-			setEntity(new Entity() {
+			Key mine = setEntity(new Entity() {
+				Quantity a = Quantity.valueOf(47);
 
 				@Override
 				public String name() {
@@ -126,7 +133,7 @@ public class Main extends Mod {
 				@Override
 				public Quantity production(Quantity quantity) {
 					Quantity q = new Quantity(quantity);
-					q.mult(Quantity.valueOf(47));
+					q.mult(new Quantity(a));
 					return q;
 				}
 
@@ -135,7 +142,8 @@ public class Main extends Mod {
 					return getPrice(3, quantity);
 				}
 			});
-			setEntity(new Entity() {
+			Key factory = setEntity(new Entity() {
+				Quantity a = Quantity.valueOf(260);
 
 				@Override
 				public String name() {
@@ -150,7 +158,7 @@ public class Main extends Mod {
 				@Override
 				public Quantity production(Quantity quantity) {
 					Quantity q = new Quantity(quantity);
-					q.mult(Quantity.valueOf(260));
+					q.mult(new Quantity(a));
 					return q;
 				}
 
@@ -159,7 +167,8 @@ public class Main extends Mod {
 					return getPrice(4, quantity);
 				}
 			});
-			setEntity(new Entity() {
+			Key bank = setEntity(new Entity() {
+				Quantity a = Quantity.valueOf(1400);
 
 				@Override
 				public String name() {
@@ -174,7 +183,7 @@ public class Main extends Mod {
 				@Override
 				public Quantity production(Quantity quantity) {
 					Quantity q = new Quantity(quantity);
-					q.mult(Quantity.valueOf(1400));
+					q.mult(new Quantity(a));
 					return q;
 				}
 
@@ -183,7 +192,8 @@ public class Main extends Mod {
 					return getPrice(5, quantity);
 				}
 			});
-			setEntity(new Entity() {
+			Key temple = setEntity(new Entity() {
+				Quantity a = Quantity.valueOf(7800);
 
 				@Override
 				public String name() {
@@ -198,7 +208,7 @@ public class Main extends Mod {
 				@Override
 				public Quantity production(Quantity quantity) {
 					Quantity q = new Quantity(quantity);
-					q.mult(Quantity.valueOf(7800));
+					q.mult(new Quantity(a));
 					return q;
 				}
 
@@ -207,7 +217,8 @@ public class Main extends Mod {
 					return getPrice(6, quantity);
 				}
 			});
-			setEntity(new Entity() {
+			Key wizard = setEntity(new Entity() {
+				Quantity a = Quantity.valueOf(44000);
 
 				@Override
 				public String name() {
@@ -222,7 +233,7 @@ public class Main extends Mod {
 				@Override
 				public Quantity production(Quantity quantity) {
 					Quantity q = new Quantity(quantity);
-					q.mult(Quantity.valueOf(44000));
+					q.mult(new Quantity(a));
 					return q;
 				}
 
@@ -231,7 +242,8 @@ public class Main extends Mod {
 					return getPrice(7, quantity);
 				}
 			});
-			setEntity(new Entity() {
+			Key shipement = setEntity(new Entity() {
+				Quantity a = Quantity.valueOf(260000);
 
 				@Override
 				public String name() {
@@ -246,7 +258,7 @@ public class Main extends Mod {
 				@Override
 				public Quantity production(Quantity quantity) {
 					Quantity q = new Quantity(quantity);
-					q.mult(Quantity.valueOf(260000));
+					q.mult(new Quantity(a));
 					return q;
 				}
 
@@ -255,7 +267,8 @@ public class Main extends Mod {
 					return getPrice(8, quantity);
 				}
 			});
-			setEntity(new Entity() {
+			Key alchemy = setEntity(new Entity() {
+				Quantity a = Quantity.valueOf(1600000);
 
 				@Override
 				public String name() {
@@ -270,7 +283,7 @@ public class Main extends Mod {
 				@Override
 				public Quantity production(Quantity quantity) {
 					Quantity q = new Quantity(quantity);
-					q.mult(Quantity.valueOf(1600000));
+					q.mult(new Quantity(a));
 					return q;
 				}
 
@@ -279,7 +292,8 @@ public class Main extends Mod {
 					return getPrice(9, quantity);
 				}
 			});
-			setEntity(new Entity() {
+			Key portal = setEntity(new Entity() {
+				Quantity a = Quantity.valueOf(10000000);
 
 				@Override
 				public String name() {
@@ -294,7 +308,7 @@ public class Main extends Mod {
 				@Override
 				public Quantity production(Quantity quantity) {
 					Quantity q = new Quantity(quantity);
-					q.mult(Quantity.valueOf(10000000));
+					q.mult(new Quantity(a));
 					return q;
 				}
 
@@ -303,7 +317,8 @@ public class Main extends Mod {
 					return getPrice(10, quantity);
 				}
 			});
-			setEntity(new Entity() {
+			Key time = setEntity(new Entity() {
+				Quantity a = Quantity.valueOf(65000000);
 
 				@Override
 				public String name() {
@@ -318,7 +333,7 @@ public class Main extends Mod {
 				@Override
 				public Quantity production(Quantity quantity) {
 					Quantity q = new Quantity(quantity);
-					q.mult(Quantity.valueOf(65000000));
+					q.mult(new Quantity(a));
 					return q;
 				}
 
@@ -327,7 +342,8 @@ public class Main extends Mod {
 					return getPrice(11, quantity);
 				}
 			});
-			setEntity(new Entity() {
+			Key antimatter = setEntity(new Entity() {
+				Quantity a = Quantity.valueOf(430000000);
 
 				@Override
 				public String name() {
@@ -342,7 +358,7 @@ public class Main extends Mod {
 				@Override
 				public Quantity production(Quantity quantity) {
 					Quantity q = new Quantity(quantity);
-					q.mult(Quantity.valueOf(430000000));
+					q.mult(new Quantity(a));
 					return q;
 				}
 
@@ -351,7 +367,8 @@ public class Main extends Mod {
 					return getPrice(12, quantity);
 				}
 			});
-			setEntity(new Entity() {
+			Key prism = setEntity(new Entity() {
+				Quantity a = Quantity.valueOf(2900000000l);
 
 				@Override
 				public String name() {
@@ -366,7 +383,7 @@ public class Main extends Mod {
 				@Override
 				public Quantity production(Quantity quantity) {
 					Quantity q = new Quantity(quantity);
-					q.mult(Quantity.valueOf(2900000000l));
+					q.mult(new Quantity(a));
 					return q;
 				}
 
@@ -375,7 +392,8 @@ public class Main extends Mod {
 					return getPrice(13, quantity);
 				}
 			});
-			setEntity(new Entity() {
+			Key chancemaker = setEntity(new Entity() {
+				Quantity a = Quantity.valueOf(21000000000l);
 
 				@Override
 				public String name() {
@@ -390,7 +408,7 @@ public class Main extends Mod {
 				@Override
 				public Quantity production(Quantity quantity) {
 					Quantity q = new Quantity(quantity);
-					q.mult(Quantity.valueOf(21000000000l));
+					q.mult(new Quantity(a));
 					return q;
 				}
 
@@ -399,7 +417,8 @@ public class Main extends Mod {
 					return getPrice(14, quantity);
 				}
 			});
-			setEntity(new Entity() {
+			Key fractal = setEntity(new Entity() {
+				Quantity a = Quantity.valueOf(150000000000l);
 
 				@Override
 				public String name() {
@@ -414,7 +433,7 @@ public class Main extends Mod {
 				@Override
 				public Quantity production(Quantity quantity) {
 					Quantity q = new Quantity(quantity);
-					q.mult(Quantity.valueOf(150000000000l));
+					q.mult(new Quantity(a));
 					return q;
 				}
 
@@ -423,7 +442,8 @@ public class Main extends Mod {
 					return getPrice(15, quantity);
 				}
 			});
-			setEntity(new Entity() {
+			Key javascript = setEntity(new Entity() {
+				Quantity a = Quantity.valueOf(1100000000000l);
 
 				@Override
 				public String name() {
@@ -438,7 +458,7 @@ public class Main extends Mod {
 				@Override
 				public Quantity production(Quantity quantity) {
 					Quantity q = new Quantity(quantity);
-					q.mult(Quantity.valueOf(1100000000000l));
+					q.mult(new Quantity(a));
 					return q;
 				}
 
@@ -447,7 +467,9 @@ public class Main extends Mod {
 					return getPrice(16, quantity);
 				}
 			});
-			setEntity(new Entity() {
+			Key idleverse = setEntity(new Entity() {
+
+				Quantity a = Quantity.valueOf(8300000000000l);
 
 				@Override
 				public String name() {
@@ -462,7 +484,7 @@ public class Main extends Mod {
 				@Override
 				public Quantity production(Quantity quantity) {
 					Quantity q = new Quantity(quantity);
-					q.mult(Quantity.valueOf(8300000000000l));
+					q.mult(new Quantity(a));
 					return q;
 				}
 
@@ -471,6 +493,137 @@ public class Main extends Mod {
 					return getPrice(17, quantity);
 				}
 			});
+
+			ImageIcon mouse0PNG = new ImageIcon(ImageIO.read(getSource("mouseUP0.png")));
+			ImageIcon mouse1PNG = new ImageIcon(ImageIO.read(getSource("mouseUP1.png")));
+			ImageIcon mouse2PNG = new ImageIcon(ImageIO.read(getSource("mouseUP2.png")));
+			ImageIcon mouse3PNG = new ImageIcon(ImageIO.read(getSource("mouseUP3.png")));
+			ImageIcon mouse4PNG = new ImageIcon(ImageIO.read(getSource("mouseUP4.png")));
+			ImageIcon mouse5PNG = new ImageIcon(ImageIO.read(getSource("mouseUP5.png")));
+			ImageIcon mouse6PNG = new ImageIcon(ImageIO.read(getSource("mouseUP6.png")));
+
+			UpgradeController ups = UpgradeController.getInstance();
+
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(1)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(100);
+				}
+
+				@Override
+				public String name() {
+					return "Reinforced index finger";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return mouse0PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "The mouse and cursors are twice as efficient.<br>\"prod prod\"";
+				}
+
+				@Override
+				public void action() {
+					Player.getInstance().getClickMult().mult(Quantity.valueOf(2));
+					getEntity(cursor).multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(1)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(500);
+				}
+
+				@Override
+				public String name() {
+					return "Carpal tunnel prevention cream";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return mouse1PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "The mouse and cursors are twice as efficient.<br>\"it... it hurts to click...\"";
+				}
+
+				@Override
+				public void action() {
+					Player.getInstance().getClickMult().mult(Quantity.valueOf(2));
+					getEntity(cursor).multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(10)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(10000);
+				}
+
+				@Override
+				public String name() {
+					return "Ambidextrous";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return mouse2PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "The mouse and cursors are twice as efficient.<br>\"Look ma, both hands!\"";
+				}
+
+				@Override
+				public void action() {
+					Player.getInstance().getClickMult().mult(Quantity.valueOf(2));
+					getEntity(cursor).multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+//			ups.addUpgrade(l -> {
+//				return Player.getInstance().getEntityQuantity(getEntity("cursor")).compareTo(Quantity.valueOf(25)) > -1;
+//			}, new Upgrade() {
+//
+//				@Override
+//				public Quantity price() {
+//					return Quantity.valueOf(100000);
+//				}
+//
+//				@Override
+//				public String name() {
+//					return "Thousand fingers";
+//				}
+//
+//				@Override
+//				public ImageIcon icon() {
+//					return mouse3PNG;
+//				}
+//
+//				@Override
+//				public String desc() {
+//					return "The mouse and cursors gain +0.1 cookies for each non-cursor object owned.<br>\"clickity\"";
+//				}
+//
+//				@Override
+//				public void action() {
+//					Player.getInstance().getClickMult().mult(Quantity.valueOf(2));
+//					getEntity("cursor").multiplier.mult(Quantity.valueOf(2));
+//				}
+//			});
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

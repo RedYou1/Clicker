@@ -2,13 +2,15 @@ package ca.RedYou.Game;
 
 import javax.swing.ImageIcon;
 
-public interface Entity {
+public abstract class Entity {
 
-	public String name();
+	public Quantity multiplier = Quantity.valueOf(1);
 
-	public ImageIcon icon();
+	public abstract String name();
 
-	public Quantity production(Quantity quantity);
+	public abstract ImageIcon icon();
 
-	public Quantity price(Quantity quantity);
+	public abstract Quantity production(Quantity quantity);
+
+	public abstract Quantity price(Quantity quantity);
 }

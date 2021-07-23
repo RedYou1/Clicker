@@ -11,7 +11,7 @@ import ca.RedYou.Game.Mod;
 
 public class EntityController {
 
-	private class Key {
+	public class Key implements Comparable<Key> {
 		private Mod mod;
 		private String name;
 
@@ -31,10 +31,19 @@ public class EntityController {
 		}
 
 		@Override
+		public int compareTo(Key o) {
+			int a = mod.name().compareTo(o.mod.name());
+			if (a == 0) {
+				a = name.compareTo(o.name);
+			}
+			return a;
+		}
+
+		@Override
 		public boolean equals(Object o) {
 			if (o instanceof Key) {
 				Key k = (Key) o;
-				return mod.equals(k.mod) && name.equals(k.name);
+				return mod.equals(k.mod) && name.equalsIgnoreCase(k.name);
 			}
 			return false;
 		}
@@ -54,7 +63,7 @@ public class EntityController {
 		return ents.toArray(new Entity[ents.size()]);
 	}
 
-	public void setEntity(Mod mod, String name, Entity ent) {
+	public Key setEntity(Mod mod, String name, Entity ent) {
 		Key key = new Key(mod, name);
 		if (entities.containsKey(key)) {
 			int index = ents.indexOf(entities.get(key));
@@ -65,10 +74,11 @@ public class EntityController {
 			ents.add(ent);
 			entities.put(key, ent);
 		}
+		return key;
 	}
 
-	public Entity getEntity(Mod mod, String name) {
-		return entities.get(new Key(mod, name));
+	public Entity getEntity(Key key) {
+		return entities.get(key);
 	}
 
 	public List<Entity> getEntities(Mod mod) {

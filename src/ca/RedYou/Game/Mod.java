@@ -25,12 +25,12 @@ public abstract class Mod {
 		return new File("source/" + name);
 	}
 
-	public void setEntity(Entity ent) {
-		EntityController.getInstance().setEntity(this, ent.name(), ent);
+	public EntityController.Key setEntity(Entity ent) {
+		return EntityController.getInstance().setEntity(this, ent.name(), ent);
 	}
 
-	public Entity getEntity(String name) {
-		return EntityController.getInstance().getEntity(this, name);
+	public Entity getEntity(EntityController.Key key) {
+		return EntityController.getInstance().getEntity(key);
 	}
 
 	public static Mod load(File f) throws Exception {
@@ -46,5 +46,14 @@ public abstract class Mod {
 		Object m = main.getConstructor(File.class).newInstance(f.getParentFile().getParentFile());
 
 		return (Mod) m;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Mod) {
+			Mod m = (Mod) o;
+			return name().equalsIgnoreCase(m.name()) && version() == m.version();
+		}
+		return false;
 	}
 }
