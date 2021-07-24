@@ -5,401 +5,207 @@ import java.util.List;
 
 public class Quantity implements Comparable<Quantity> {
 
-	private String s;
-	public int div;
+	private List<Integer> q;
+	private int div;
 	public boolean positif;
-	public final static String poss = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,<>/?;:\'\"[{]}\\|¦~!@#$%^&*()`+±=_§©®µ¶¤";
 
 	public Quantity() {
-		s = String.valueOf(poss.charAt(0));
+		q = new ArrayList<Integer>();
+		q.add(0);
 		div = 0;
 		positif = true;
 	}
 
 	public Quantity(Quantity q) {
-		s = q.s;
-		div = q.div;
-		positif = q.positif;
+		this.q = new ArrayList<>(q.q);
+		this.positif = q.positif;
+		this.div = q.div;
 	}
 
 	public void mod(Quantity i) {
-		i = new Quantity(i);
-		Quantity comp = new Quantity();
-		if (i.equals(comp))
-			throw new ArithmeticException("can't divide by zero");
-
-		int compToi = compareTo(i);
-		positif = positif == i.positif;
-		if (compToi < 0) {
-			return;
+		if (i.equals(new Quantity())) {
+			throw new ArithmeticException("You can't divide by 0!");
 		}
-		if (compToi == 0) {
-			s = "0";
-			div = 0;
-			return;
+		if (i.compareTo(new Quantity()) < 0) {
+			positif = !positif;
 		}
+		i.positif = true;
+		Quantity rest = new Quantity();
 
-		for (int var = 0; compareTo(i) > -1 && i.s.length() + var <= s.length();) {
-			Quantity a = valueOf(s.substring(0, i.s.length() + var));
-			int time = 0;
-			while (a.compareTo(i) > -1) {
-				a.sub(i);
-				time++;
+		for (int j = q.size() - 1; j >= 0; j--) {
+			rest.add(valueOf(q.get(j)));
+
+			int a = 0;
+
+			while (rest.compareTo(i) > -1) {
+				a++;
+				i.positif = false;
+				rest.add(i);
+				i.positif = true;
 			}
-			if (time > 0) {
-				int restant = s.length() - (i.s.length() + var);
 
-				if (a.s.equalsIgnoreCase("0")) {
-					s = s.substring(i.s.length() + var, s.length());
-				} else {
-					s = a.s + s.substring(i.s.length() + var, s.length());
-				}
+			if (a > 0)
+				q.set(j, a);
+			else
+				q.remove(j);
 
-				if (restant > 0 && compareTo(i) == -1) {
-					while (restant > 0)
-						restant--;
-					break;
-				}
-				var = 0;
-			} else {
-				var++;
-			}
+			if (j > 0)
+				rest.q.add(0, 0);
 		}
 
-		update();
+		q = rest.q;
+		positif = rest.positif;
 	}
 
 	public void div(Quantity i) {
 		i = new Quantity(i);
-		Quantity comp = new Quantity();
-		if (i.equals(comp))
-			throw new ArithmeticException("can't divide by zero");
+		if (i.equals(new Quantity())) {
+			throw new ArithmeticException("You can't divide by 0!");
+		}
+		if (i.compareTo(new Quantity()) < 0) {
+			positif = !positif;
+		}
+		i.positif = true;
+		Quantity rest = new Quantity();
 
-		if (equals(comp))
-			return;
+		for (int j = q.size() - 1; j >= 0; j--) {
+			rest.add(valueOf(q.get(j)));
 
-		if (i.equals(valueOf(1)))
-			return;
+			int a = 0;
 
-		boolean positif = this.positif == i.positif;
-		int tdiv = div - i.div;
-		div = 0;
-		i.div = 0;
-		positif = i.positif;
-		if (compareTo(i) == 0) {
-			s = "1";
-			div = 0;
-			return;
+			while (rest.compareTo(i) > -1) {
+				a++;
+				rest.sub(i);
+			}
+
+			if (a > 0)
+				q.set(j, a);
+			else
+				q.remove(j);
+
+			if (j > 0)
+				rest.q.add(0, 0);
 		}
 
-		String h = "";
-		for (int var = 0; !equals(comp);) {
-			Quantity a = valueOf(s.substring(0, Math.min(s.length(), i.s.length() + var)));
-			while (a.compareTo(i) == -1) {
-				a.s += "0";
-				tdiv++;
-			}
-			int time = 0;
-			while (a.compareTo(i) > -1) {
-				a.sub(i);
-				time++;
-			}
-			if (time > 0) {
-				h += valueOf(time).s;
-
-				if (a.s.equalsIgnoreCase("0")) {
-					s = s.substring(i.s.length() + var, s.length());
-				} else {
-					s = a.s + s.substring(i.s.length() + var, s.length());
-				}
-
-				var = 0;
-			} else {
-				h += "0";
-				var++;
-			}
+		if (i.q.size() < 5) {
+			double d = rest.toDouble();
+			d /= i.toDouble();
+			add(valueOf(d));
 		}
-
-		s = h;
-		div = tdiv;
-		this.positif = positif;
-		update();
 	}
 
 	public void mult(Quantity i) {
-		i = new Quantity(i);
-		positif = positif == i.positif;
-
-		Quantity t = new Quantity();
-
-		for (int l = 0; l < i.s.length(); l++) {
-			int time = poss.indexOf(i.s.charAt(l));
-			if (time > 0) {
-				Quantity y1 = valueOf(s);
-				Quantity y2 = valueOf(s);
-				for (; time > 1; time--) {
-					y1.add(y2);
-				}
-				t.add(y1);
-			}
-			t.s += "0";
+		if (i.equals(new Quantity())) {
+			q = new ArrayList<>();
+			q.add(0);
+			positif = true;
+			div = 0;
+			return;
+		}
+		if (i.compareTo(new Quantity()) < 0) {
+			positif = !positif;
+			i.positif = true;
 		}
 
-		s = t.s.substring(0, t.s.length() - 1);
+		Quantity t = new Quantity(this);
+		for (int l = 0; l < i.q.size(); l++) {
+			Quantity mult = new Quantity();
+			int a = i.q.get(l);
+			if (a != 0) {
+				for (int k = 0; k < a; k++) {
+					mult.add(t);
+				}
+				for (int j = 0; j < l; j++) {
+					mult.q.add(0, 0);
+				}
+				add(mult);
+			}
+		}
 
 		div += i.div;
 
 		update();
+
 	}
 
-	public void sub(Quantity i) {
-		i = new Quantity(i);
-		if (positif != i.positif) {
-			i.positif = positif;
-			add(i);
-			return;
-		}
-		i.positif = !i.positif;
+	public void sub(Quantity o) {
+		Quantity q = new Quantity(o);
+		q.positif = !q.positif;
+		add(q);
+	}
 
-		if (i.s.length() > s.length()) {
-			positif = !positif;
-			i.sub(this);
-
-			s = i.s;
-			positif = i.positif;
-			return;
-		}
-
-		if (s.equalsIgnoreCase("0"))
-			positif = i.positif;
-
-		while (div > i.div) {
-			i.s += "0";
-			i.div++;
-		}
-
-		while (div < i.div) {
-			s += "0";
+	public void add(Quantity o) {
+		o = new Quantity(o);
+		while (div < o.div) {
+			q.add(0, 0);
 			div++;
 		}
 
-		int t = 0;
-		int last = 0;
-		for (; t < i.s.length(); t++) {
-			long a = poss.indexOf(s.charAt(s.length() - 1 - t));
-			long b = poss.indexOf(i.s.charAt(i.s.length() - 1 - t));
-
-			long temp = a - b - last;
-
-			last = 0;
-			if (t + 1 != s.length())
-				while (temp < 0) {
-					temp += poss.length();
-					last++;
-				}
-
-			String d = valueOf(temp).extract();
-
-			s = s.substring(0, s.length() - t - 1) + d.charAt(d.length() - 1) + s.substring(s.length() - t, s.length());
+		while (div > o.div) {
+			o.q.add(0, 0);
+			o.div++;
 		}
 
-		for (; t < s.length() && last > 0; t++) {
-			long a = poss.indexOf(s.charAt(s.length() - 1 - t));
-
-			long temp = a - last;
-
-			last = 0;
-			if (t + 1 != s.length())
-				while (temp < 0) {
-					temp += poss.length();
-					last++;
-				}
-
-			String d = valueOf(temp).extract();
-
-			s = s.substring(0, s.length() - t - 1) + d.charAt(d.length() - 1) + s.substring(s.length() - t, s.length());
-		}
-
-		if (last > 0) {
-			s = poss.charAt(poss.length() - last) + s;
-			positif = !positif;
-		}
-
-		update();
-	}
-
-	public void add(Quantity i) {
-		i = new Quantity(i);
-		if (positif != i.positif) {
-			i.positif = positif;
-			sub(i);
-			return;
-		}
-
-		while (div > i.div) {
-			i.s += "0";
-			i.div++;
-		}
-
-		while (div < i.div) {
-			s += "0";
-			div++;
-		}
-
-		int t = 0;
-		long last = 0;
-		for (; t < s.length() && t < i.s.length(); t++) {
-			long a = poss.indexOf(s.charAt(s.length() - 1 - t));
-			long b = poss.indexOf(i.s.charAt(i.s.length() - 1 - t));
-
-			String d = valueOf(a + b + last).extract();
-
-			s = s.substring(0, s.length() - t - 1) + d.charAt(d.length() - 1) + s.substring(s.length() - t, s.length());
-			last = valueOf(d.substring(0, d.length() - 1)).toLong();
-		}
-
-		while (last > 0 && t < s.length()) {
-			long a = poss.indexOf(s.charAt(s.length() - 1 - t));
-
-			String d = valueOf(a + last).extract();
-
-			s = s.substring(0, s.length() - t - 1) + d.charAt(d.length() - 1) + s.substring(s.length() - t, s.length());
-			last = valueOf(d.substring(0, d.length() - 1)).toLong();
-			t++;
-		}
-
-		if (last > 0) {
-			s = valueOf(last).extract() + s;
-		}
-		if (t < i.s.length()) {
-			s = i.s.substring(0, i.s.length() - t) + s;
-		}
-
-		update();
-	}
-
-	/**
-	 * 
-	 * @param space <br>
-	 *              0 = unite <br>
-	 *              >0 = left of the unite <br>
-	 *                   (ex:1=10<br>
-	 *                        2=100<br>
-	 *                        3=1000) <br>
-	 *              <0 = right of the unite <br>
-	 *                   (ex:-1=0.1<br>
-	 *                        -2=0.01<br>
-	 *                        -3=0.001)
-	 */
-	public void round(int space) {
-		if (div < space && space < 0)
-			return;
-
-		floor(space - 1);
-		int i = s.length() - 1;
-
-		if (s.charAt(i) != '0' && i > 0) {
-			if (space % 2 == 0) {
-				int a = poss.indexOf(s.charAt(i));
-				if (a >= 50) {
-					while (true) {
-						int l = poss.indexOf(s.charAt(i - 1));
-						l++;
-						if (l < poss.length()) {
-							s = s.substring(0, i - 1) + poss.charAt(l) + s.substring(i, s.length());
-							break;
+		if (positif == o.positif)
+			for (int i = 0; i < o.q.size(); i++) {
+				if (i >= q.size())
+					q.add(o.q.get(i));
+				else
+					q.set(i, q.get(i) + o.q.get(i));
+			}
+		else
+			for (int i = 0; i < o.q.size(); i++) {
+				if (i >= q.size()) {
+					positif = o.positif;
+					q.add(o.q.get(i));
+				} else {
+					q.set(i, q.get(i) - o.q.get(i));
+					if (q.get(i) < 0) {
+						if (i + 1 == q.size()) {
+							positif = o.positif;
+							q.set(i, q.get(i) * -1);
+						} else {
+							q.set(i, q.get(i) + 1000);
+							q.set(i + 1, q.get(i + 1) - 1);
 						}
-						s = s.substring(0, i - 1) + "0" + s.substring(i, s.length());
-						i--;
-					}
-				}
-
-				s = s.substring(0, i) + "0" + s.substring(i + 1, s.length());
-			} else {
-				int a = poss.indexOf(s.charAt(i));
-				if (a % 10 >= 5) {
-					if (a > 90) {
-						round(space + 1);
-						return;
-					} else {
-						s = s.substring(0, i) + poss.charAt(((a / 10) + 1) * 10) + s.substring(i + 1, s.length());
 					}
 				}
 			}
-		}
-		floor(space);
+		update();
 	}
 
-	/**
-	 * 
-	 * @param space <br>
-	 *              0 = unite <br>
-	 *              >0 = left of the unite <br>
-	 *                   (ex:1=10<br>
-	 *                        2=100<br>
-	 *                        3=1000) <br>
-	 *              <0 = right of the unite <br>
-	 *                   (ex:-1=0.1<br>
-	 *                        -2=0.01<br>
-	 *                        -3=0.001)
-	 */
-	public void floor(int space) {
-		if (div < space && space < 0)
-			return;
-
-		if (space == 0) {
-			s = s.substring(0, s.length() - div);
-			div = 0;
-			return;
-		}
-		if (space % 2 == 0) {
-			space /= 2;
-			if (space > 0) {
-				s = s.substring(0, s.length() - space);
-				while (space > 0) {
-					s += "0";
-					space--;
+	private void update() {
+		for (int i = 0; i < q.size(); i++) {
+			if (q.get(i) < 0) {
+				if (q.size() <= i + 1) {
+					q.set(i, -1 * q.get(i));
+					positif = !positif;
+					break;
 				}
-				return;
-			} else if (div > 0) {
-				s = s.substring(0, s.length() - space - div);
-				div = -space;
-				return;
+
+				int qt = ((-1 * q.get(i)) / 1000) + 1;
+				q.set(i, q.get(i) + (qt * 1000));
+				q.set(i + 1, q.get(i + 1) - qt);
 			}
-		} else {
-			floor(space - 1);
-			update();
-			int i = poss.indexOf(s.charAt(s.length() - 1));
-			i = (i / 10) * 10;
-			s = s.substring(0, s.length() - 1) + poss.charAt(i);
-		}
-	}
 
-	public static Quantity valueOf(String s) {
-		if (s.length() == 0)
-			return new Quantity();
-
-		Quantity q = new Quantity();
-
-		q.positif = true;
-		if (s.startsWith("-")) {
-			s = s.replace("-", "");
-			q.positif = false;
-		}
-
-		if (s.contains(".")) {
-			int a = s.indexOf('.');
-			s = s.replace(".", "");
-			q.div = s.length() - a;
-
-			while (s.startsWith("0")) {
-				s = s.substring(1, s.length());
+			if (q.get(i) >= 1000) {
+				int qt = q.get(i) / 1000;
+				q.set(i, q.get(i) - (qt * 1000));
+				if (q.size() == i + 1)
+					q.add(qt);
+				else
+					q.set(i + 1, q.get(i + 1) + qt);
 			}
 		}
 
-		q.s = s;
-		q.update();
-		return q;
+		while (q.size() > 0 && q.get(q.size() - 1) == 0) {
+			q.remove(q.size() - 1);
+		}
+
+		while (div > 0 && q.size() > 0 && q.get(0) == 0) {
+			q.remove(0);
+			div--;
+		}
 	}
 
 	public static Quantity valueOf(int i) {
@@ -408,21 +214,19 @@ public class Quantity implements Comparable<Quantity> {
 
 	public static Quantity valueOf(long i) {
 		Quantity q = new Quantity();
-		q.s = "";
-		if (i == 0) {
-			q.s = String.valueOf(poss.charAt(0));
-		}
 
+		if (i == 0)
+			return q;
 		if (i < 0) {
 			i *= -1;
 			q.positif = false;
 		}
 
+		q.q = new ArrayList<>();
 		while (i > 0) {
-			q.s = poss.charAt((int) (i % poss.length())) + q.s;
-			i /= poss.length();
+			q.q.add((int) (i % 1000));
+			i /= 1000;
 		}
-		q.update();
 		return q;
 	}
 
@@ -432,59 +236,65 @@ public class Quantity implements Comparable<Quantity> {
 
 	public static Quantity valueOf(double i) {
 		Quantity q = new Quantity();
-		q.s = "";
-		if (i == 0) {
-			q.s = String.valueOf(poss.charAt(0));
-		}
 
+		if (i == 0)
+			return q;
 		if (i < 0) {
 			i *= -1;
 			q.positif = false;
 		}
 
-		String a = String.valueOf(i - Math.floor(i));
-		long l = (long) i;
-		if (!a.equalsIgnoreCase("0")) {
-			q.div = (int) Math.min(3, Math.ceil(Math.pow(10, a.length() - 2) / 2));
-			l = Math.round(i * Math.pow(10, q.div * 2));
+		while (i - ((long) i) > 0) {
+			i *= 1000;
+			q.div++;
 		}
-		while (l > 0) {
-			q.s = poss.charAt((int) (l % poss.length())) + q.s;
-			l /= poss.length();
+
+		long a = (long) i;
+
+		q.q = new ArrayList<>();
+		while (a > 0) {
+			q.q.add((int) (a % 1000));
+			a /= 1000;
 		}
-		q.update();
+		return q;
+	}
+
+	public static Quantity valueOf(String s) {
+		Quantity q = new Quantity();
+		q.positif = true;
+		if (s.startsWith("-")) {
+			s = s.replace("-", "");
+			q.positif = false;
+		}
+		q.q = new ArrayList<Integer>();
+
+		int i = s.length() - 1;
+		for (; i >= 3; i -= 3) {
+			q.q.add(Integer.valueOf(s.substring(i - 2, i + 1)));
+		}
+		if (i < 3) {
+			q.q.add(Integer.valueOf(s.substring(0, i + 1)));
+		}
 		return q;
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (o instanceof Quantity) {
-			return compareTo((Quantity) o) == 0;
-		}
-		return false;
-	}
-
-	@Override
 	public int compareTo(Quantity o) {
-		update();
-		o.update();
 
 		if (positif && !o.positif)
 			return 1;
 		if (!positif && o.positif)
 			return -1;
 
-		if (s.length() - div > o.s.length() - o.div)
+		if (q.size() - div > o.q.size() - o.div)
 			return 1;
-		if (s.length() - div < o.s.length() - o.div)
+		if (q.size() - div < o.q.size() - o.div)
 			return -1;
 
-		for (int i = 0; i < s.length() && i < o.s.length(); i++) {
-			int a = poss.indexOf(s.charAt(i));
-			int b = poss.indexOf(o.s.charAt(i));
-			if (a > b)
+		for (int i = 1; i <= q.size() && i <= o.q.size(); i++) {
+			if (q.get(q.size() - i) > o.q.get(o.q.size() - i))
 				return 1;
-			if (a < b)
+			if (q.get(q.size() - i) < o.q.get(o.q.size() - i))
 				return -1;
 		}
 
@@ -496,105 +306,98 @@ public class Quantity implements Comparable<Quantity> {
 		return 0;
 	}
 
-	public long toLong() {
-		update();
-		long l = 0;
-		for (int i = 0; i < s.length() - div; i++) {
-			l += convert(s.charAt(i), s.length() - i - 1 - div);
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Quantity) {
+			return compareTo((Quantity) o) == 0;
 		}
-		return l;
+		return false;
+	}
+
+	public String fullString() {
+		String s = "";
+		if (!positif)
+			s += "-";
+		for (int i = q.size() - 1; i >= 0; i--) {
+			if (i - 1 == div)
+				s += ".";
+
+			String t = String.valueOf(q.get(i));
+			if (i != q.size() - 1)
+				while (t.length() < 3) {
+					t = "0" + t;
+				}
+			s += t;
+		}
+		return s;
+	}
+
+	public long toLong() {
+		long l = 0;
+		for (int i = 0; i < q.size(); i++) {
+			long a = q.get(i);
+			a *= Math.pow(1000, i);
+			l += a;
+		}
+		return (long) (l / Math.pow(1000, div));
 	}
 
 	public double toDouble() {
-		update();
-		double l = 0;
-		for (int i = 0; i < s.length(); i++) {
-			l += convert(s.charAt(i), s.length() - i - 1 - div);
+		long l = 0;
+		for (int i = 0; i < q.size(); i++) {
+			long a = q.get(i);
+			a *= Math.pow(1000, i);
+			l += a;
 		}
-		return l;
-	}
-
-	private static double convert(char c, int index) {
-		return poss.indexOf(c) * Math.pow(poss.length(), index);
-	}
-
-	private void update() {
-		if (s.length() == 0)
-			s = "0";
-		if (s.equals("0"))
-			positif = true;
-		while (s.startsWith("0") && s.length() - div > 1) {
-			s = s.substring(1, s.length());
-		}
-		while (!s.equalsIgnoreCase("0") && s.endsWith("0") && div > 0) {
-			s = s.substring(0, s.length() - 1);
-			div--;
-		}
-	}
-
-	public String extract() {
-		update();
-		if (div == 0)
-			return (positif ? "" : "-") + s;
-		else {
-			String s = this.s;
-			while (div + 1 > s.length()) {
-				s = "0" + s;
-			}
-			return (positif ? "" : "-") + s.substring(0, s.length() - div) + "."
-					+ s.substring(s.length() - div, s.length());
-		}
+		return ((double) l) / Math.pow(1000, div);
 	}
 
 	@Override
 	public String toString() {
-		update();
-		String t = "";
+		if (q.size() == 0)
+			return "0";
 
-		for (int i = 0; i < s.length() && t.length() < 4; i++) {
-			t += s.charAt(i);
-		}
+		if (q.size() == 1)
+			return (positif ? "" : "-") + (q.get(0) / Math.pow(1000, div));
 
-		int size = (s.length() - div) * 2;
+		String h = "";
 
-		if (!Character.isDigit(t.charAt(0)))
-			size++;
-
-		size++;
-		int temp = size % 3 + 1;
-		size /= 3;
-		size--;
-
-		long lt = valueOf(t).toLong();
-
-		String a = String.valueOf(lt / (Math.pow(100, div)));
-
-		if (size > 0)
-			a = a.substring(0, temp) + "," + a.substring(temp, Math.min(a.length(), temp + 3));
-
-		List<Character> chars = new ArrayList<Character>();
-		if (size > 0) {
-			chars.add((char) 96);
-			do {
+		int size = q.size() - div;
+		boolean tsize = size < 0;
+		if (tsize)
+			size *= -1;
+		List<Character> s = new ArrayList<Character>();
+		s.add((char) 96);
+		if (size > 1) {
+			while (size > 1) {
 				int i = 0;
 				while (true) {
-					chars.set(i, (char) (chars.get(i) + 1));
-					if (chars.get(i) > 122) {
-						chars.set(i, (char) 97);
-						chars.add((char) 96);
+					s.set(i, (char) (s.get(i) + 1));
+					if (s.get(i) > 122) {
+						s.set(i, (char) 97);
+						s.add((char) 97);
 						i++;
 					} else {
 						break;
 					}
 				}
 				size--;
-			} while (size > 0);
+			}
+			for (int i = 0; i < s.size(); i++) {
+				h = s.get(i) + h;
+			}
+			if (tsize)
+				h = " -" + h;
 		}
 
-		String h = "";
-		for (int i = 0; i < chars.size(); i++) {
-			h = chars.get(i) + h;
+		String t = String.valueOf(q.get(q.size() - 2));
+		if (t != "0")
+			while (t.length() < 3) {
+				t = "0" + t;
+			}
+		while (t.endsWith("0")) {
+			t = t.substring(0, t.length() - 1);
 		}
-		return (positif ? "" : "-") + a + h;
+		return (positif ? "" : "-") + q.get(q.size() - 1) + "." + t + h;
 	}
 }

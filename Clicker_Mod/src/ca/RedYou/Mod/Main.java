@@ -47,7 +47,7 @@ public class Main extends Mod {
 			ImageIcon wizardPNG = new ImageIcon(ImageIO.read(getSource("wizard.png")));
 			ImageIcon idleversePNG = new ImageIcon(ImageIO.read(getSource("idleverse.png")));
 
-			final Quantity cursorUP = Quantity.valueOf(1);
+			final Quantity cursorUP = Quantity.valueOf(0.1);
 
 			Key cursor = setEntity(new Entity() {
 				Quantity a = Quantity.valueOf(10);
@@ -606,7 +606,7 @@ public class Main extends Mod {
 					getEntity(cursor).multiplier.mult(Quantity.valueOf(2));
 				}
 			});
-			final Quantity cursorBoost = Quantity.valueOf(0.1);
+			final Quantity cursorBoost = Quantity.valueOf(1);
 			ups.addUpgrade(l -> {
 				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(25)) > -1;
 			}, new Upgrade() {
@@ -924,6 +924,7 @@ public class Main extends Mod {
 					cursorBoost.mult(Quantity.valueOf(20));
 				}
 			});
+//			Player.getInstance().getMoney().add(Quantity.valueOf(1000000000000l));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

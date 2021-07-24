@@ -128,6 +128,12 @@ public class Main {
 		g.setLabel(0, 1, clickcps.getText(), clickcps);
 		g.setLabel(0, 2, cps.getText(), cps);
 
+		JButton refresh = new JButton();
+		refresh.addActionListener(l -> {
+			menu();
+		});
+		frame.p.setBouton("refresh screen", 2, 1, refresh);
+
 		frame.p.setBouton("Cookie", 1, 1, click);
 
 		Slider s = frame.p.setSlider(2, 0, .25, .8, new Slider());
@@ -147,16 +153,17 @@ public class Main {
 		s.setMinimumSize(d);
 
 		entites = s.p;
-
 		Entity[] ents = EntityController.getInstance().getEntities();
 		d = new Dimension(320, 100);
 		for (int i = 0; i < ents.length; i++) {
 			final JButton b = new JButton();
+
 			b.setIcon(ents[i].icon());
 			final int a = i;
 			b.addActionListener(k -> {
 				ents[a].buy(b);
 			});
+
 			Quantity prod = new Quantity(
 					ents[i].production(new Quantity(Player.getInstance().getEntityQuantity(ents[i]))));
 
