@@ -2,6 +2,7 @@ package ca.RedYou.Mod;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -10,6 +11,7 @@ import ca.RedYou.Game.Entity;
 import ca.RedYou.Game.Mod;
 import ca.RedYou.Game.Quantity;
 import ca.RedYou.Game.Upgrade;
+import ca.RedYou.Game.Controller.EntityController;
 import ca.RedYou.Game.Controller.EntityController.Key;
 import ca.RedYou.Game.Controller.Player;
 import ca.RedYou.Game.Controller.UpgradeController;
@@ -24,7 +26,7 @@ public class Main extends Mod {
 
 	public Main(File gameFolder) {
 		super(gameFolder);
-
+		Main inst = this;
 		try {
 			ImageIcon alchemyPNG = new ImageIcon(ImageIO.read(getSource("alchemy.png")));
 			ImageIcon antimatterPNG = new ImageIcon(ImageIO.read(getSource("antimatter.png")));
@@ -45,6 +47,8 @@ public class Main extends Mod {
 			ImageIcon wizardPNG = new ImageIcon(ImageIO.read(getSource("wizard.png")));
 			ImageIcon idleversePNG = new ImageIcon(ImageIO.read(getSource("idleverse.png")));
 
+			final Quantity cursorUP = Quantity.valueOf(1);
+
 			Key cursor = setEntity(new Entity() {
 				Quantity a = Quantity.valueOf(10);
 
@@ -62,6 +66,8 @@ public class Main extends Mod {
 				public Quantity production(Quantity quantity) {
 					Quantity q = new Quantity(quantity);
 					q.div(new Quantity(a));
+					if (cursorUP.compareTo(new Quantity()) > 0)
+						q.mult(new Quantity(cursorUP));
 					return q;
 				}
 
@@ -501,6 +507,12 @@ public class Main extends Mod {
 			ImageIcon mouse4PNG = new ImageIcon(ImageIO.read(getSource("mouseUP4.png")));
 			ImageIcon mouse5PNG = new ImageIcon(ImageIO.read(getSource("mouseUP5.png")));
 			ImageIcon mouse6PNG = new ImageIcon(ImageIO.read(getSource("mouseUP6.png")));
+			ImageIcon mouse7PNG = new ImageIcon(ImageIO.read(getSource("mouseUP7.png")));
+			ImageIcon mouse8PNG = new ImageIcon(ImageIO.read(getSource("mouseUP8.png")));
+			ImageIcon mouse9PNG = new ImageIcon(ImageIO.read(getSource("mouseUP9.png")));
+			ImageIcon mouse10PNG = new ImageIcon(ImageIO.read(getSource("mouseUP10.png")));
+			ImageIcon mouse11PNG = new ImageIcon(ImageIO.read(getSource("mouseUP11.png")));
+			ImageIcon mouse12PNG = new ImageIcon(ImageIO.read(getSource("mouseUP12.png")));
 
 			UpgradeController ups = UpgradeController.getInstance();
 
@@ -594,36 +606,324 @@ public class Main extends Mod {
 					getEntity(cursor).multiplier.mult(Quantity.valueOf(2));
 				}
 			});
-//			ups.addUpgrade(l -> {
-//				return Player.getInstance().getEntityQuantity(getEntity("cursor")).compareTo(Quantity.valueOf(25)) > -1;
-//			}, new Upgrade() {
-//
-//				@Override
-//				public Quantity price() {
-//					return Quantity.valueOf(100000);
-//				}
-//
-//				@Override
-//				public String name() {
-//					return "Thousand fingers";
-//				}
-//
-//				@Override
-//				public ImageIcon icon() {
-//					return mouse3PNG;
-//				}
-//
-//				@Override
-//				public String desc() {
-//					return "The mouse and cursors gain +0.1 cookies for each non-cursor object owned.<br>\"clickity\"";
-//				}
-//
-//				@Override
-//				public void action() {
-//					Player.getInstance().getClickMult().mult(Quantity.valueOf(2));
-//					getEntity("cursor").multiplier.mult(Quantity.valueOf(2));
-//				}
-//			});
+			final Quantity cursorBoost = Quantity.valueOf(0.1);
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(25)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(100000);
+				}
+
+				@Override
+				public String name() {
+					return "Thousand fingers";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return mouse3PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "The mouse and cursors gain +0.1 cookies for each non-cursor object owned.<br>\"clickity\"";
+				}
+
+				@Override
+				public void action() {
+					Entity cursorEnt = getEntity(cursor);
+
+					Quantity v = new Quantity();
+
+					for (Entity ent : EntityController.getInstance().getEntities(inst)) {
+						if (!ent.equals(cursorEnt)) {
+							v.add(new Quantity(Player.getInstance().getEntityQuantity(ent)));
+							ent.getBuyEvents().add(l -> {
+								Quantity q = Player.getInstance().getClickMult();
+								q.div(new Quantity(cursorUP));
+								cursorUP.add(new Quantity(cursorBoost));
+								q.mult(new Quantity(cursorUP));
+								ca.RedYou.Game.Main.menu();
+								return null;
+							});
+						}
+					}
+					if (v.compareTo(Quantity.valueOf(0)) > 0) {
+						v.mult(new Quantity(cursorBoost));
+						cursorUP.add(v);
+						Player.getInstance().getClickMult().mult(new Quantity(cursorUP));
+					}
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(50)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(10000000);
+				}
+
+				@Override
+				public String name() {
+					return "Million fingers";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return mouse4PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Multiplies the gain from Thousand fingers by 5.<br>\"clickityclickity\"";
+				}
+
+				@Override
+				public void action() {
+					cursorBoost.mult(Quantity.valueOf(5));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(100)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(100000000);
+				}
+
+				@Override
+				public String name() {
+					return "Billion fingers";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return mouse5PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Multiplies the gain from Thousand fingers by 10.<br>\"clickityclickityclickity\"";
+				}
+
+				@Override
+				public void action() {
+					cursorBoost.mult(Quantity.valueOf(10));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(150)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(1000000000);
+				}
+
+				@Override
+				public String name() {
+					return "Trillion fingers";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return mouse6PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Multiplies the gain from Thousand fingers by 20.<br>\"clickityclickityclickityclickity\"";
+				}
+
+				@Override
+				public void action() {
+					cursorBoost.mult(Quantity.valueOf(20));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(200)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(10000000000l);
+				}
+
+				@Override
+				public String name() {
+					return "Quadrillion fingers";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return mouse7PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Multiplies the gain from Thousand fingers by 20.<br>\"clickityclickityclickityclickityclickity\"";
+				}
+
+				@Override
+				public void action() {
+					cursorBoost.mult(Quantity.valueOf(20));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(250)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(10000000000000l);
+				}
+
+				@Override
+				public String name() {
+					return "Quintillion fingers";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return mouse8PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Multiplies the gain from Thousand fingers by 20.<br>\"man, just go click click click click click, it’s real easy, man.\"";
+				}
+
+				@Override
+				public void action() {
+					cursorBoost.mult(Quantity.valueOf(20));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(300)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(10000000000000000l);
+				}
+
+				@Override
+				public String name() {
+					return "Sextillion fingers";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return mouse9PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Multiplies the gain from Thousand fingers by 20.<br>\"sometimes things just click\"";
+				}
+
+				@Override
+				public void action() {
+					cursorBoost.mult(Quantity.valueOf(20));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(350)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					Quantity q = Quantity.valueOf(10000000000000000l);
+					q.mult(Quantity.valueOf(1000));
+					return q;
+				}
+
+				@Override
+				public String name() {
+					return "Septillion fingers";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return mouse10PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Multiplies the gain from Thousand fingers by 20.<br>\"[cursory flavor text]\"";
+				}
+
+				@Override
+				public void action() {
+					cursorBoost.mult(Quantity.valueOf(20));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(400)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					Quantity q = Quantity.valueOf(10000000000000000l);
+					q.mult(Quantity.valueOf(1000000));
+					return q;
+				}
+
+				@Override
+				public String name() {
+					return "Octillion fingers";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return mouse11PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Multiplies the gain from Thousand fingers by 20.<br>\"Turns out you can quite put your finger on it.\"";
+				}
+
+				@Override
+				public void action() {
+					cursorBoost.mult(Quantity.valueOf(20));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(450)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					Quantity q = Quantity.valueOf(10000000000000000l);
+					q.mult(Quantity.valueOf(1000000000));
+					return q;
+				}
+
+				@Override
+				public String name() {
+					return "Nonillion fingers";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return mouse12PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Multiplies the gain from Thousand fingers by 20.<br>\"Only for the freakiest handshakes.\"";
+				}
+
+				@Override
+				public void action() {
+					cursorBoost.mult(Quantity.valueOf(20));
+				}
+			});
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

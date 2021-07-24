@@ -3,6 +3,8 @@ package ca.RedYou.Game;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.io.File;
+import java.util.Arrays;
+import java.util.Comparator;
 
 import javax.swing.*;
 
@@ -13,17 +15,17 @@ import ca.RedYou.Game.Controller.*;
 
 public class Main {
 
-	private static Frame frame;
+	public static Frame frame;
 
-	private static JButton click = new JButton();
-	private static JButton quit = new JButton();
-	private static JLabel money = new JLabel();
-	private static JLabel cps = new JLabel();
-	private static JLabel clickcps = new JLabel();
-	private static AbstractFrame entites;
-	private static AbstractFrame upgrades;
+	public static JButton click = new JButton();
+	public static JButton quit = new JButton();
+	public static JLabel money = new JLabel();
+	public static JLabel cps = new JLabel();
+	public static JLabel clickcps = new JLabel();
+	public static AbstractFrame entites;
+	public static AbstractFrame upgrades;
 
-	private static boolean running = true;
+	public static boolean running = true;
 
 	public static Quantity last = new Quantity();
 
@@ -89,6 +91,14 @@ public class Main {
 	public static void updateUpgrades() {
 		upgrades.removeAll();
 		Upgrade[] ups = UpgradeController.getInstance().getUpgrades();
+
+		Arrays.sort(ups, new Comparator<Upgrade>() {
+			@Override
+			public int compare(Upgrade o1, Upgrade o2) {
+				return o1.price().compareTo(o2.price());
+			}
+		});
+
 		Dimension d = new Dimension(320, 200);
 		for (int i = 0; i < ups.length; i++) {
 			final JButton b = new JButton();
@@ -145,26 +155,7 @@ public class Main {
 			b.setIcon(ents[i].icon());
 			final int a = i;
 			b.addActionListener(k -> {
-				if (Player.getInstance().getMoney()
-						.compareTo(ents[a].price(Player.getInstance().getEntityQuantity(ents[a]))) > -1) {
-					Player.getInstance().getMoney()
-							.sub(new Quantity(ents[a].price(Player.getInstance().getEntityQuantity(ents[a]))));
-					last.sub(new Quantity(ents[a].price(Player.getInstance().getEntityQuantity(ents[a]))));
-
-					Player.getInstance().getEntityQuantity(ents[a]).add(Quantity.valueOf(1));
-
-					money.setText(Player.getInstance().getMoney().toString());
-
-					Quantity prod = new Quantity(
-							ents[a].production(new Quantity(Player.getInstance().getEntityQuantity(ents[a]))));
-
-					prod.mult(ents[a].multiplier);
-
-					Quantity q = Player.getInstance().getEntityQuantity(ents[a]);
-					b.setText("<html>" + q + " " + ents[a].name() + "<br>" + prod + " cps<br>" + ents[a].price(q)
-							+ " cookies" + "<html>");
-					updateUpgrades();
-				}
+				ents[a].buy(b);
 			});
 			Quantity prod = new Quantity(
 					ents[i].production(new Quantity(Player.getInstance().getEntityQuantity(ents[i]))));
