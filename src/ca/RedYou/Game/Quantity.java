@@ -22,6 +22,51 @@ public class Quantity implements Comparable<Quantity> {
 		this.div = q.div;
 	}
 
+	// https://afteracademy.com/blog/calculate-power-function
+	// (3. Optimized divide and conquer approach)
+	public void pow(Quantity expo) {
+		Quantity o = new Quantity(expo);
+		o.floor(0);
+		o.update();
+
+		if (o.equals(new Quantity())) {
+			q = new ArrayList<Integer>();
+			q.add(1);
+			div = 0;
+			positif = true;
+			return;
+		}
+
+		Quantity t = new Quantity(o);
+		t.div(Quantity.valueOf(2));
+		t.floor(0);
+		Quantity temp = new Quantity(this);
+		temp.pow(t);
+
+		Quantity nexpo = new Quantity(o);
+		nexpo.mod(Quantity.valueOf(2));
+
+		temp.mult(new Quantity(temp));
+
+		int a = nexpo.compareTo(new Quantity());
+		if (a > 0)
+			mult(new Quantity(temp));
+		else if (a == 0) {
+			q = temp.q;
+			positif = true;
+			this.div = temp.div;
+		} else {
+			temp.div(new Quantity(this));
+			q = temp.q;
+			positif = temp.positif;
+			this.div = temp.div;
+		}
+		System.out.println(this + "/" + expo);
+
+		update();
+
+	}
+
 	public void mod(Quantity i) {
 		if (i.equals(new Quantity())) {
 			throw new ArithmeticException("You can't divide by 0!");
@@ -93,22 +138,26 @@ public class Quantity implements Comparable<Quantity> {
 	}
 
 	public void mult(Quantity i) {
-		if (i.equals(new Quantity())) {
+		int ticomp = i.compareTo(new Quantity());
+		if (ticomp == 0) {
 			q = new ArrayList<>();
 			q.add(0);
 			positif = true;
 			div = 0;
 			return;
 		}
-		if (i.compareTo(new Quantity()) < 0) {
-			positif = !positif;
-			i.positif = true;
+		if (positif == i.positif) {
+			positif = true;
+		} else {
+			positif = false;
 		}
 
+		Quantity rep = new Quantity();
 		Quantity t = new Quantity(this);
+		t.div = 0;
 		for (int l = 0; l < i.q.size(); l++) {
 			Quantity mult = new Quantity();
-			int a = i.q.get(l) - 1;
+			int a = i.q.get(l);
 			if (a > 0) {
 				for (int k = 0; k < a; k++) {
 					mult.add(t);
@@ -116,14 +165,13 @@ public class Quantity implements Comparable<Quantity> {
 				for (int j = 0; j < l; j++) {
 					mult.q.add(0, 0);
 				}
-				add(mult);
+				rep.add(mult);
 			}
 		}
 
+		q = rep.q;
 		div += i.div;
-
 		update();
-
 	}
 
 	public void sub(Quantity o) {
@@ -173,6 +221,12 @@ public class Quantity implements Comparable<Quantity> {
 	}
 
 	private void update() {
+		if (q.size() == 0) {
+			q.add(0);
+			div = 0;
+			positif = true;
+			return;
+		}
 		for (int i = 0; i < q.size(); i++) {
 			if (q.get(i) < 0) {
 				if (q.size() <= i + 1) {
@@ -203,6 +257,107 @@ public class Quantity implements Comparable<Quantity> {
 		while (div > 0 && q.size() > 0 && q.get(0) == 0) {
 			q.remove(0);
 			div--;
+		}
+	}
+
+	/**
+	 * 
+	 * @param space <br>
+	 *              <ul>
+	 *              <li>...</li>
+	 *              <li>3=1000</li>
+	 *              <li>2=100</li>
+	 *              <li>1=10</li>
+	 *              <li>0=1</li>
+	 *              <li>-1=0.1</li>
+	 *              <li>-2=0.01</li>
+	 *              <li>-3=0.001</li>
+	 *              <li>...</li>
+	 *              </ul>
+	 */
+	public void round(int space) {
+		if (div < (-space) / 3 && space < 0)
+			return;
+
+		floor(space - 1);
+
+		if (space < 0) {
+			int s = (-space) - 1;
+			int a = s / 3;
+			int b = (s - 1) / 3;
+			if (a == b) {
+				double i = q.get(0);
+				i /= Math.pow(10, (2 - s) % 3);
+				i = Math.round(i) * Math.pow(10, (2 - s) % 3);
+				q.set(0, (int) i);
+			} else if (q.get(0) >= 500)
+				q.set(1, q.get(1) + 1);
+
+		} else if (space == 0 && div >= 1 && q.get(div - 1) >= 500)
+			q.set(div, q.get(div) + 1);
+
+		else if (space > 0) {
+			int a = space / 3;
+			int b = (space - 1) / 3;
+			if (a == b) {
+				double i = q.get(a);
+				i /= Math.pow(10, space % 3);
+				i = Math.round(i) * Math.pow(10, space % 3);
+				q.set(a, (int) i);
+			} else if (q.get(b) >= 500)
+				q.set(a, q.get(a) + 1);
+		}
+		update();
+
+		floor(space);
+	}
+
+	/**
+	 * 
+	 * @param space <br>
+	 *              <ul>
+	 *              <li>...</li>
+	 *              <li>3=1000</li>
+	 *              <li>2=100</li>
+	 *              <li>1=10</li>
+	 *              <li>0=1</li>
+	 *              <li>-1=0.1</li>
+	 *              <li>-2=0.01</li>
+	 *              <li>-3=0.001</li>
+	 *              <li>...</li>
+	 *              </ul>
+	 */
+	public void floor(int space) {
+		if (div < (-space) / 3 && space < 0)
+			return;
+
+		if (space >= 0) {
+			int a = space / 3;
+			int b = space % 3;
+
+			while (div > 0) {
+				q.remove(0);
+				div--;
+			}
+
+			for (int i = 0; i < a; i++) {
+				q.set(i, 0);
+			}
+
+			if (b > 0)
+				q.set(0, (int) (Math.floor(q.get(0) / Math.pow(10, b)) * Math.pow(10, b)));
+		} else {
+			space *= -1;
+			int a = (space + 2) / 3;
+			int b = 2 - ((space - 1) % 3);
+
+			while (div > a) {
+				q.remove(0);
+				div--;
+			}
+
+			if (b > 0)
+				q.set(0, (int) (Math.floor(q.get(0) / Math.pow(10, b)) * Math.pow(10, b)));
 		}
 	}
 
@@ -288,6 +443,9 @@ public class Quantity implements Comparable<Quantity> {
 	@Override
 	public int compareTo(Quantity o) {
 
+		update();
+		o.update();
+
 		if (positif && !o.positif)
 			return 1;
 		if (!positif && o.positif)
@@ -322,11 +480,12 @@ public class Quantity implements Comparable<Quantity> {
 	}
 
 	public String fullString() {
+		update();
 		String s = "";
 		if (!positif)
 			s += "-";
 		for (int i = q.size() - 1; i >= 0; i--) {
-			if (i - 1 == div)
+			if (i + 1 == div)
 				s += ".";
 
 			String t = String.valueOf(q.get(i));
