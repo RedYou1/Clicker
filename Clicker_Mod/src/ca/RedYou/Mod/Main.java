@@ -2,7 +2,6 @@ package ca.RedYou.Mod;
 
 import java.io.File;
 import java.io.IOException;
-import java.math.BigInteger;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -12,7 +11,6 @@ import ca.RedYou.Game.Mod;
 import ca.RedYou.Game.Quantity;
 import ca.RedYou.Game.Upgrade;
 import ca.RedYou.Game.Controller.EntityController;
-import ca.RedYou.Game.Controller.EntityController.Key;
 import ca.RedYou.Game.Controller.Player;
 import ca.RedYou.Game.Controller.UpgradeController;
 
@@ -26,7 +24,6 @@ public class Main extends Mod {
 
 	public Main(File gameFolder) {
 		super(gameFolder);
-		Main inst = this;
 		try {
 			ImageIcon alchemyPNG = new ImageIcon(ImageIO.read(getSource("alchemy.png")));
 			ImageIcon antimatterPNG = new ImageIcon(ImageIO.read(getSource("antimatter.png")));
@@ -47,9 +44,9 @@ public class Main extends Mod {
 			ImageIcon wizardPNG = new ImageIcon(ImageIO.read(getSource("wizard.png")));
 			ImageIcon idleversePNG = new ImageIcon(ImageIO.read(getSource("idleverse.png")));
 
-			final Quantity cursorUP = Quantity.valueOf(0.1);
+			final Quantity cursorUP = new Quantity();
 
-			Key cursor = setEntity(new Entity() {
+			Entity cursor = setEntity(new Entity() {
 				Quantity a = Quantity.valueOf(10);
 
 				@Override
@@ -76,7 +73,7 @@ public class Main extends Mod {
 					return getPrice(0, quantity);
 				}
 			});
-			Key grandma = setEntity(new Entity() {
+			Entity grandma = setEntity(new Entity() {
 
 				@Override
 				public String name() {
@@ -98,7 +95,7 @@ public class Main extends Mod {
 					return getPrice(1, quantity);
 				}
 			});
-			Key farm = setEntity(new Entity() {
+			Entity farm = setEntity(new Entity() {
 				Quantity a = Quantity.valueOf(8);
 
 				@Override
@@ -123,7 +120,7 @@ public class Main extends Mod {
 					return getPrice(2, quantity);
 				}
 			});
-			Key mine = setEntity(new Entity() {
+			Entity mine = setEntity(new Entity() {
 				Quantity a = Quantity.valueOf(47);
 
 				@Override
@@ -148,7 +145,7 @@ public class Main extends Mod {
 					return getPrice(3, quantity);
 				}
 			});
-			Key factory = setEntity(new Entity() {
+			Entity factory = setEntity(new Entity() {
 				Quantity a = Quantity.valueOf(260);
 
 				@Override
@@ -173,7 +170,7 @@ public class Main extends Mod {
 					return getPrice(4, quantity);
 				}
 			});
-			Key bank = setEntity(new Entity() {
+			Entity bank = setEntity(new Entity() {
 				Quantity a = Quantity.valueOf(1400);
 
 				@Override
@@ -198,7 +195,7 @@ public class Main extends Mod {
 					return getPrice(5, quantity);
 				}
 			});
-			Key temple = setEntity(new Entity() {
+			Entity temple = setEntity(new Entity() {
 				Quantity a = Quantity.valueOf(7800);
 
 				@Override
@@ -223,7 +220,7 @@ public class Main extends Mod {
 					return getPrice(6, quantity);
 				}
 			});
-			Key wizard = setEntity(new Entity() {
+			Entity wizard = setEntity(new Entity() {
 				Quantity a = Quantity.valueOf(44000);
 
 				@Override
@@ -248,7 +245,7 @@ public class Main extends Mod {
 					return getPrice(7, quantity);
 				}
 			});
-			Key shipement = setEntity(new Entity() {
+			Entity shipement = setEntity(new Entity() {
 				Quantity a = Quantity.valueOf(260000);
 
 				@Override
@@ -273,7 +270,7 @@ public class Main extends Mod {
 					return getPrice(8, quantity);
 				}
 			});
-			Key alchemy = setEntity(new Entity() {
+			Entity alchemy = setEntity(new Entity() {
 				Quantity a = Quantity.valueOf(1600000);
 
 				@Override
@@ -298,7 +295,7 @@ public class Main extends Mod {
 					return getPrice(9, quantity);
 				}
 			});
-			Key portal = setEntity(new Entity() {
+			Entity portal = setEntity(new Entity() {
 				Quantity a = Quantity.valueOf(10000000);
 
 				@Override
@@ -323,7 +320,7 @@ public class Main extends Mod {
 					return getPrice(10, quantity);
 				}
 			});
-			Key time = setEntity(new Entity() {
+			Entity time = setEntity(new Entity() {
 				Quantity a = Quantity.valueOf(65000000);
 
 				@Override
@@ -348,7 +345,7 @@ public class Main extends Mod {
 					return getPrice(11, quantity);
 				}
 			});
-			Key antimatter = setEntity(new Entity() {
+			Entity antimatter = setEntity(new Entity() {
 				Quantity a = Quantity.valueOf(430000000);
 
 				@Override
@@ -373,7 +370,7 @@ public class Main extends Mod {
 					return getPrice(12, quantity);
 				}
 			});
-			Key prism = setEntity(new Entity() {
+			Entity prism = setEntity(new Entity() {
 				Quantity a = Quantity.valueOf(2900000000l);
 
 				@Override
@@ -398,7 +395,7 @@ public class Main extends Mod {
 					return getPrice(13, quantity);
 				}
 			});
-			Key chancemaker = setEntity(new Entity() {
+			Entity chancemaker = setEntity(new Entity() {
 				Quantity a = Quantity.valueOf(21000000000l);
 
 				@Override
@@ -423,7 +420,7 @@ public class Main extends Mod {
 					return getPrice(14, quantity);
 				}
 			});
-			Key fractal = setEntity(new Entity() {
+			Entity fractal = setEntity(new Entity() {
 				Quantity a = Quantity.valueOf(150000000000l);
 
 				@Override
@@ -448,7 +445,7 @@ public class Main extends Mod {
 					return getPrice(15, quantity);
 				}
 			});
-			Key javascript = setEntity(new Entity() {
+			Entity javascript = setEntity(new Entity() {
 				Quantity a = Quantity.valueOf(1100000000000l);
 
 				@Override
@@ -473,7 +470,7 @@ public class Main extends Mod {
 					return getPrice(16, quantity);
 				}
 			});
-			Key idleverse = setEntity(new Entity() {
+			Entity idleverse = setEntity(new Entity() {
 
 				Quantity a = Quantity.valueOf(8300000000000l);
 
@@ -517,7 +514,7 @@ public class Main extends Mod {
 			UpgradeController ups = UpgradeController.getInstance();
 
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(1)) > -1;
+				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(1)) > -1;
 			}, new Upgrade() {
 
 				@Override
@@ -543,11 +540,11 @@ public class Main extends Mod {
 				@Override
 				public void action() {
 					Player.getInstance().getClickMult().mult(Quantity.valueOf(2));
-					getEntity(cursor).multiplier.mult(Quantity.valueOf(2));
+					cursor.multiplier.mult(Quantity.valueOf(2));
 				}
 			});
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(1)) > -1;
+				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(1)) > -1;
 			}, new Upgrade() {
 
 				@Override
@@ -573,11 +570,11 @@ public class Main extends Mod {
 				@Override
 				public void action() {
 					Player.getInstance().getClickMult().mult(Quantity.valueOf(2));
-					getEntity(cursor).multiplier.mult(Quantity.valueOf(2));
+					cursor.multiplier.mult(Quantity.valueOf(2));
 				}
 			});
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(10)) > -1;
+				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(10)) > -1;
 			}, new Upgrade() {
 
 				@Override
@@ -603,12 +600,12 @@ public class Main extends Mod {
 				@Override
 				public void action() {
 					Player.getInstance().getClickMult().mult(Quantity.valueOf(2));
-					getEntity(cursor).multiplier.mult(Quantity.valueOf(2));
+					cursor.multiplier.mult(Quantity.valueOf(2));
 				}
 			});
 			final Quantity cursorBoost = Quantity.valueOf(1);
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(25)) > -1;
+				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(25)) > -1;
 			}, new Upgrade() {
 
 				@Override
@@ -633,11 +630,11 @@ public class Main extends Mod {
 
 				@Override
 				public void action() {
-					Entity cursorEnt = getEntity(cursor);
+					Entity cursorEnt = cursor;
 
 					Quantity v = new Quantity();
 
-					for (Entity ent : EntityController.getInstance().getEntities(inst)) {
+					for (Entity ent : EntityController.getInstance().getEntities()) {
 						if (!ent.equals(cursorEnt)) {
 							v.add(new Quantity(Player.getInstance().getEntityQuantity(ent)));
 							ent.getBuyEvents().add(l -> {
@@ -650,7 +647,7 @@ public class Main extends Mod {
 							});
 						}
 					}
-					if (v.compareTo(Quantity.valueOf(0)) > 0) {
+					if (v.compareTo(new Quantity()) > 0) {
 						v.mult(new Quantity(cursorBoost));
 						cursorUP.add(v);
 						Player.getInstance().getClickMult().mult(new Quantity(cursorUP));
@@ -658,7 +655,7 @@ public class Main extends Mod {
 				}
 			});
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(50)) > -1;
+				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(50)) > -1;
 			}, new Upgrade() {
 
 				@Override
@@ -687,7 +684,7 @@ public class Main extends Mod {
 				}
 			});
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(100)) > -1;
+				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(100)) > -1;
 			}, new Upgrade() {
 
 				@Override
@@ -716,7 +713,7 @@ public class Main extends Mod {
 				}
 			});
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(150)) > -1;
+				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(150)) > -1;
 			}, new Upgrade() {
 
 				@Override
@@ -745,7 +742,7 @@ public class Main extends Mod {
 				}
 			});
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(200)) > -1;
+				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(200)) > -1;
 			}, new Upgrade() {
 
 				@Override
@@ -774,7 +771,7 @@ public class Main extends Mod {
 				}
 			});
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(250)) > -1;
+				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(250)) > -1;
 			}, new Upgrade() {
 
 				@Override
@@ -803,7 +800,7 @@ public class Main extends Mod {
 				}
 			});
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(300)) > -1;
+				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(300)) > -1;
 			}, new Upgrade() {
 
 				@Override
@@ -832,14 +829,12 @@ public class Main extends Mod {
 				}
 			});
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(350)) > -1;
+				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(350)) > -1;
 			}, new Upgrade() {
 
 				@Override
 				public Quantity price() {
-					Quantity q = Quantity.valueOf(10000000000000000l);
-					q.mult(Quantity.valueOf(1000));
-					return q;
+					return Quantity.valueOf("10000000000000000000");
 				}
 
 				@Override
@@ -863,14 +858,12 @@ public class Main extends Mod {
 				}
 			});
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(400)) > -1;
+				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(400)) > -1;
 			}, new Upgrade() {
 
 				@Override
 				public Quantity price() {
-					Quantity q = Quantity.valueOf(10000000000000000l);
-					q.mult(Quantity.valueOf(1000000));
-					return q;
+					return Quantity.valueOf("10000000000000000000000");
 				}
 
 				@Override
@@ -894,14 +887,12 @@ public class Main extends Mod {
 				}
 			});
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(getEntity(cursor)).compareTo(Quantity.valueOf(450)) > -1;
+				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(450)) > -1;
 			}, new Upgrade() {
 
 				@Override
 				public Quantity price() {
-					Quantity q = Quantity.valueOf(10000000000000000l);
-					q.mult(Quantity.valueOf(1000000000));
-					return q;
+					return Quantity.valueOf("10000000000000000000000000");
 				}
 
 				@Override
@@ -924,7 +915,792 @@ public class Main extends Mod {
 					cursorBoost.mult(Quantity.valueOf(20));
 				}
 			});
-//			Player.getInstance().getMoney().add(Quantity.valueOf(1000000000000l));
+
+			ImageIcon grandma0PNG = new ImageIcon(ImageIO.read(getSource("grandmaUP0.png")));
+			ImageIcon grandma1PNG = new ImageIcon(ImageIO.read(getSource("grandmaUP1.png")));
+			ImageIcon grandma2PNG = new ImageIcon(ImageIO.read(getSource("grandmaUP2.png")));
+			ImageIcon grandma3PNG = new ImageIcon(ImageIO.read(getSource("grandmaUP3.png")));
+			ImageIcon grandma4PNG = new ImageIcon(ImageIO.read(getSource("grandmaUP4.png")));
+			ImageIcon grandma5PNG = new ImageIcon(ImageIO.read(getSource("grandmaUP5.png")));
+			ImageIcon grandma6PNG = new ImageIcon(ImageIO.read(getSource("grandmaUP6.png")));
+			ImageIcon grandma7PNG = new ImageIcon(ImageIO.read(getSource("grandmaUP7.png")));
+			ImageIcon grandma8PNG = new ImageIcon(ImageIO.read(getSource("grandmaUP8.png")));
+			ImageIcon grandma9PNG = new ImageIcon(ImageIO.read(getSource("grandmaUP9.png")));
+			ImageIcon grandma10PNG = new ImageIcon(ImageIO.read(getSource("grandmaUP10.png")));
+			ImageIcon grandma11PNG = new ImageIcon(ImageIO.read(getSource("grandmaUP11.png")));
+			ImageIcon grandma12PNG = new ImageIcon(ImageIO.read(getSource("grandmaUP12.png")));
+
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(grandma).compareTo(Quantity.valueOf(1)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(1000);
+				}
+
+				@Override
+				public String name() {
+					return "Forwards from grandma";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return grandma0PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Grandmas are twice as efficient.<br>\"RE:RE:thought you'd get a kick out of this ;))\"";
+				}
+
+				@Override
+				public void action() {
+					grandma.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(grandma).compareTo(Quantity.valueOf(5)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(5000);
+				}
+
+				@Override
+				public String name() {
+					return "Steel-plated rolling pins";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return grandma1PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Grandmas are twice as efficient.<br>\"Just what you kneaded.\"";
+				}
+
+				@Override
+				public void action() {
+					grandma.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(grandma).compareTo(Quantity.valueOf(25)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(50000);
+				}
+
+				@Override
+				public String name() {
+					return "Lubricated dentures";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return grandma2PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Grandmas are twice as efficient.<br>\"squish\"";
+				}
+
+				@Override
+				public void action() {
+					grandma.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(grandma).compareTo(Quantity.valueOf(50)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(5000000);
+				}
+
+				@Override
+				public String name() {
+					return "Prune juice";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return grandma3PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Grandmas are twice as efficient.<br>\"Gets me going.\"";
+				}
+
+				@Override
+				public void action() {
+					grandma.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(grandma).compareTo(Quantity.valueOf(100)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(500000000);
+				}
+
+				@Override
+				public String name() {
+					return "Double-thick glasses";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return grandma4PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Grandmas are twice as efficient.<br>\"Oh... so THAT's what I've been baking.\"";
+				}
+
+				@Override
+				public void action() {
+					grandma.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(grandma).compareTo(Quantity.valueOf(150)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(50000000000l);
+				}
+
+				@Override
+				public String name() {
+					return "Aging agents";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return grandma5PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Grandmas are twice as efficient.<br>\"Counter-intuitively, grandmas have the uncanny ability to become more powerful the older they get.\"";
+				}
+
+				@Override
+				public void action() {
+					grandma.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(grandma).compareTo(Quantity.valueOf(200)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(50000000000000l);
+				}
+
+				@Override
+				public String name() {
+					return "Xtreme walkers";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return grandma6PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Grandmas are twice as efficient.<br>\"Complete with flame decals and a little horn that goes \"toot\".\"";
+				}
+
+				@Override
+				public void action() {
+					grandma.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(grandma).compareTo(Quantity.valueOf(250)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(50000000000000000l);
+				}
+
+				@Override
+				public String name() {
+					return "The Unbridling";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return grandma7PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Grandmas are twice as efficient.<br>\"It might be a classic tale of bad parenting, but let's see where grandma is going with this.\"";
+				}
+
+				@Override
+				public void action() {
+					grandma.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(grandma).compareTo(Quantity.valueOf(300)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf("50000000000000000000");
+				}
+
+				@Override
+				public String name() {
+					return "Reverse dementia";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return grandma8PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Grandmas are twice as efficient.<br>\"Extremely unsettling, and somehow even worse than the regular kind.\"";
+				}
+
+				@Override
+				public void action() {
+					grandma.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(grandma).compareTo(Quantity.valueOf(350)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf("50000000000000000000000");
+				}
+
+				@Override
+				public String name() {
+					return "Timeproof hair dyes";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return grandma9PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Grandmas are twice as efficient.<br>\"Why do they always have those strange wispy pink dos? What do they know about candy floss that we don't?\"";
+				}
+
+				@Override
+				public void action() {
+					grandma.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(grandma).compareTo(Quantity.valueOf(400)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf("500000000000000000000000000");
+				}
+
+				@Override
+				public String name() {
+					return "Good manners";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return grandma10PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Grandmas are twice as efficient.<br>\"Apparently these ladies are much more amiable if you take the time to learn their strange, ancient customs, which seem to involve saying \"please\" and \"thank you\" and staring at the sun with bulging eyes while muttering eldritch curses under your breath.\"";
+				}
+
+				@Override
+				public void action() {
+					grandma.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(grandma).compareTo(Quantity.valueOf(450)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf("5000000000000000000000000000000");
+				}
+
+				@Override
+				public String name() {
+					return "Generation degeneration";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return grandma11PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Grandmas are twice as efficient.<br>\"Genetic testing shows that most of your grandmas are infected with a strange degenerative disease that only seems to further their powers; the more time passes, the older they get. This should concern you.\"";
+				}
+
+				@Override
+				public void action() {
+					grandma.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(grandma).compareTo(Quantity.valueOf(500)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf("50000000000000000000000000000000000");
+				}
+
+				@Override
+				public String name() {
+					return "Visits";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return grandma12PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Grandmas are twice as efficient.<br>\"In an extensive double-blind study (sample size: 12 millions), your researchers have found evidence that grandmas are up to twice as productive if you just come by and say hi once in a while. It's nice to check up on your grans! (Do not under any circumstances ingest any tea or tea-like substances the grandmas may offer you.).\"";
+				}
+
+				@Override
+				public void action() {
+					grandma.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+
+			ImageIcon farm0PNG = new ImageIcon(ImageIO.read(getSource("farmUP0.png")));
+			ImageIcon farm1PNG = new ImageIcon(ImageIO.read(getSource("farmUP1.png")));
+			ImageIcon farm2PNG = new ImageIcon(ImageIO.read(getSource("farmUP2.png")));
+			ImageIcon farm3PNG = new ImageIcon(ImageIO.read(getSource("farmUP3.png")));
+			ImageIcon farm4PNG = new ImageIcon(ImageIO.read(getSource("farmUP4.png")));
+			ImageIcon farm5PNG = new ImageIcon(ImageIO.read(getSource("farmUP5.png")));
+			ImageIcon farm6PNG = new ImageIcon(ImageIO.read(getSource("farmUP6.png")));
+			ImageIcon farm7PNG = new ImageIcon(ImageIO.read(getSource("farmUP7.png")));
+			ImageIcon farm8PNG = new ImageIcon(ImageIO.read(getSource("farmUP8.png")));
+			ImageIcon farm9PNG = new ImageIcon(ImageIO.read(getSource("farmUP9.png")));
+			ImageIcon farm10PNG = new ImageIcon(ImageIO.read(getSource("farmUP10.png")));
+			ImageIcon farm11PNG = new ImageIcon(ImageIO.read(getSource("farmUP11.png")));
+			ImageIcon farm12PNG = new ImageIcon(ImageIO.read(getSource("farmUP12.png")));
+
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(farm).compareTo(Quantity.valueOf(1)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(11000);
+				}
+
+				@Override
+				public String name() {
+					return "Cheap hoes";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return farm0PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Farms are twice as efficient.<br>\"Rake in the dough!\"";
+				}
+
+				@Override
+				public void action() {
+					farm.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(farm).compareTo(Quantity.valueOf(5)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(55000);
+				}
+
+				@Override
+				public String name() {
+					return "Fertilizer";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return farm1PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Farms are twice as efficient.<br>\"It's chocolate, I swear.\"";
+				}
+
+				@Override
+				public void action() {
+					farm.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(farm).compareTo(Quantity.valueOf(25)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(550000);
+				}
+
+				@Override
+				public String name() {
+					return "Cookie trees";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return farm2PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Farms are twice as efficient.<br>\"A relative of the breadfruit.\"";
+				}
+
+				@Override
+				public void action() {
+					farm.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(farm).compareTo(Quantity.valueOf(50)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(55000000);
+				}
+
+				@Override
+				public String name() {
+					return "Genetically-modified cookies";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return farm3PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Farms are twice as efficient.<br>\"All-natural mutations.\"";
+				}
+
+				@Override
+				public void action() {
+					farm.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(farm).compareTo(Quantity.valueOf(100)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(5500000000l);
+				}
+
+				@Override
+				public String name() {
+					return "Gingerbread scarecrows";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return farm4PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Farms are twice as efficient.<br>\"Staring at your crops with mischievous glee.\"";
+				}
+
+				@Override
+				public void action() {
+					farm.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(farm).compareTo(Quantity.valueOf(150)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(550000000000l);
+				}
+
+				@Override
+				public String name() {
+					return "Pulsar sprinklers";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return farm5PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Farms are twice as efficient.<br>\"There's no such thing as over-watering. The moistest is the bestest.\"";
+				}
+
+				@Override
+				public void action() {
+					farm.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(farm).compareTo(Quantity.valueOf(200)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(550000000000000l);
+				}
+
+				@Override
+				public String name() {
+					return "Fudge fungus";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return farm6PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Farms are twice as efficient.<br>\"A sugary parasite whose tendrils help cookie growth.<br>Please do not breathe in the spores. In case of spore ingestion, seek medical help within the next 36 seconds.\"";
+				}
+
+				@Override
+				public void action() {
+					farm.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(farm).compareTo(Quantity.valueOf(250)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf(550000000000000000l);
+				}
+
+				@Override
+				public String name() {
+					return "Wheat triffids";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return farm7PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Farms are twice as efficient.<br>\"Taking care of crops is so much easier when your plants can just walk about and help around the farm.<br>Do not pet. Do not feed. Do not attempt to converse with.\"";
+				}
+
+				@Override
+				public void action() {
+					farm.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(farm).compareTo(Quantity.valueOf(300)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf("550000000000000000000");
+				}
+
+				@Override
+				public String name() {
+					return "Humane pesticides";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return farm8PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Farms are twice as efficient.<br>\"Made by people, for people, from people and ready to unleash some righteous scorching pain on those pesky insects that so deserve it.\"";
+				}
+
+				@Override
+				public void action() {
+					farm.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(farm).compareTo(Quantity.valueOf(350)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf("550000000000000000000000");
+				}
+
+				@Override
+				public String name() {
+					return "Barnstars";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return farm9PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Farms are twice as efficient.<br>\"Ah, yes. These help quite a bit. Somehow.\"";
+				}
+
+				@Override
+				public void action() {
+					farm.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(farm).compareTo(Quantity.valueOf(400)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf("5500000000000000000000000000");
+				}
+
+				@Override
+				public String name() {
+					return "Lindworms";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return farm10PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Farms are twice as efficient.<br>\"You have to import these from far up north, but they really help areate the soil!\"";
+				}
+
+				@Override
+				public void action() {
+					farm.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(farm).compareTo(Quantity.valueOf(450)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf("55000000000000000000000000000000");
+				}
+
+				@Override
+				public String name() {
+					return "Global seed vault";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return farm11PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Farms are twice as efficient.<br>\"An enormous genetic repository that could outlive an apocalypse. Guarantees the survival of your empire, or at the very least its agricultural components, should civilization fall. Which should be any day now.\"";
+				}
+
+				@Override
+				public void action() {
+					farm.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+			ups.addUpgrade(l -> {
+				return Player.getInstance().getEntityQuantity(farm).compareTo(Quantity.valueOf(500)) > -1;
+			}, new Upgrade() {
+
+				@Override
+				public Quantity price() {
+					return Quantity.valueOf("550000000000000000000000000000000000");
+				}
+
+				@Override
+				public String name() {
+					return "Reverse-veganism";
+				}
+
+				@Override
+				public ImageIcon icon() {
+					return farm12PNG;
+				}
+
+				@Override
+				public String desc() {
+					return "Farms are twice as efficient.<br>\"Plants aren't for eating, plants are for exploitative agriculture and astronomical profit margins!\"";
+				}
+
+				@Override
+				public void action() {
+					farm.multiplier.mult(Quantity.valueOf(2));
+				}
+			});
+//			Player.getInstance().getMoney()
+//					.add(Quantity.valueOf("1000000000000000000000000000000000000000000000000000"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

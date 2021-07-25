@@ -10,7 +10,10 @@ import ca.RedYou.Game.Controller.EntityController;
 
 public abstract class Mod {
 
-	public Mod(File gameFolder) {
+	protected File modFolder;
+
+	public Mod(File modFolder) {
+		this.modFolder = modFolder;
 	}
 
 	public abstract String name();
@@ -22,19 +25,16 @@ public abstract class Mod {
 	public abstract void end();
 
 	public File getSource(String name) {
-		return new File("source/" + name);
+		return new File(modFolder.getAbsolutePath() + "/source/" + name);
 	}
 
-	public EntityController.Key setEntity(Entity ent) {
-		return EntityController.getInstance().setEntity(this, ent.name(), ent);
-	}
-
-	public Entity getEntity(EntityController.Key key) {
-		return EntityController.getInstance().getEntity(key);
+	public Entity setEntity(Entity ent) {
+		EntityController.getInstance().setEntity(this, ent.name(), ent);
+		return ent;
 	}
 
 	public static Mod load(File f) throws Exception {
-		URL[] urls = { new URL("jar:file:" + f.getAbsolutePath() + "!/") };
+		URL[] urls = { new URL("jar:file:" + f.getAbsolutePath() + "/mod.jar" + "!/") };
 		URLClassLoader cl = URLClassLoader.newInstance(urls);
 
 		BufferedReader reader = new BufferedReader(new InputStreamReader(cl.getResourceAsStream("Mod.txt")));
@@ -43,7 +43,7 @@ public abstract class Mod {
 
 		Class<?> main = cl.loadClass(line.substring("Main:".length()));
 
-		Object m = main.getConstructor(File.class).newInstance(f.getParentFile().getParentFile());
+		Object m = main.getConstructor(File.class).newInstance(f);
 
 		return (Mod) m;
 	}

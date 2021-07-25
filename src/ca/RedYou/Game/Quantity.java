@@ -67,9 +67,10 @@ public class Quantity implements Comparable<Quantity> {
 		}
 		i.positif = true;
 		Quantity rest = new Quantity();
+		rest.q = new ArrayList<Integer>();
 
 		for (int j = q.size() - 1; j >= 0; j--) {
-			rest.add(valueOf(q.get(j)));
+			rest.q.add(0, q.get(j));
 
 			int a = 0;
 
@@ -82,9 +83,6 @@ public class Quantity implements Comparable<Quantity> {
 				q.set(j, a);
 			else
 				q.remove(j);
-
-			if (j > 0)
-				rest.q.add(0, 0);
 		}
 
 		if (i.q.size() < 5) {
@@ -110,8 +108,8 @@ public class Quantity implements Comparable<Quantity> {
 		Quantity t = new Quantity(this);
 		for (int l = 0; l < i.q.size(); l++) {
 			Quantity mult = new Quantity();
-			int a = i.q.get(l);
-			if (a != 0) {
+			int a = i.q.get(l) - 1;
+			if (a > 0) {
 				for (int k = 0; k < a; k++) {
 					mult.add(t);
 				}
@@ -398,6 +396,6 @@ public class Quantity implements Comparable<Quantity> {
 		while (t.endsWith("0")) {
 			t = t.substring(0, t.length() - 1);
 		}
-		return (positif ? "" : "-") + q.get(q.size() - 1) + "." + t + h;
+		return (positif ? "" : "-") + q.get(q.size() - 1) + (t.length() == 0 ? "" : ".") + t + h;
 	}
 }
