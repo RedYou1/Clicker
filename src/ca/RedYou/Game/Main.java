@@ -2,6 +2,8 @@ package ca.RedYou.Game;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -107,10 +109,34 @@ public class Main {
 			b.addActionListener(k -> {
 				UpgradeController.getInstance().buy(ups[a]);
 			});
-			upgrades.setBouton(
-					"<html>" + ups[i].name() + "<br>" + ups[i].desc() + "<br>" + ups[i].price() + " cookies" + "<html>",
-					0, i, b);
+			String t1 = "<html><center>" + ups[i].name() + "<br>" + ups[i].price() + " cookies" + "<html>";
+			String t2 = "<html><center>" + ups[i].desc() + "<html>";
+			upgrades.setBouton(t1, 0, i, b);
 
+			b.addMouseListener(new MouseListener() {
+
+				@Override
+				public void mouseReleased(MouseEvent e) {
+				}
+
+				@Override
+				public void mousePressed(MouseEvent e) {
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					b.setText(t1);
+				}
+
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					b.setText(t2);
+				}
+
+				@Override
+				public void mouseClicked(MouseEvent e) {
+				}
+			});
 			b.setSize(d);
 			b.setPreferredSize(d);
 			b.setMaximumSize(d);

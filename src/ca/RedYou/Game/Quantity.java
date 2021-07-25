@@ -261,18 +261,27 @@ public class Quantity implements Comparable<Quantity> {
 		Quantity q = new Quantity();
 		q.positif = true;
 		if (s.startsWith("-")) {
-			s = s.replace("-", "");
+			s = s.substring(1, s.length());
 			q.positif = false;
 		}
+
 		q.q = new ArrayList<Integer>();
 
-		int i = s.length() - 1;
-		for (; i >= 3; i -= 3) {
-			q.q.add(Integer.valueOf(s.substring(i - 2, i + 1)));
+		while (s.length() > 0) {
+			if (s.charAt(s.length() - 1) == '.') {
+				if (q.div != 0)
+					throw new ArithmeticException("you cant have multiple \'.\' in a single number");
+				q.div = q.q.size();
+				s = s.substring(0, s.length() - 1);
+			}
+
+			String a = s.substring(s.length() - Math.min(s.length(), 3), s.length());
+
+			q.q.add(Integer.valueOf(a));
+
+			s = s.substring(0, s.length() - a.length());
 		}
-		if (i < 3) {
-			q.q.add(Integer.valueOf(s.substring(0, i + 1)));
-		}
+
 		return q;
 	}
 
@@ -355,8 +364,12 @@ public class Quantity implements Comparable<Quantity> {
 		if (q.size() == 0)
 			return "0";
 
-		if (q.size() == 1)
-			return (positif ? "" : "-") + (q.get(0) / Math.pow(1000, div));
+		if (q.size() == 1) {
+			String s = (positif ? "" : "-") + (q.get(0) / Math.pow(1000, div));
+			if (s.endsWith(".0"))
+				s = s.substring(0, s.length() - 2);
+			return s;
+		}
 
 		String h = "";
 
@@ -396,6 +409,7 @@ public class Quantity implements Comparable<Quantity> {
 		while (t.endsWith("0")) {
 			t = t.substring(0, t.length() - 1);
 		}
-		return (positif ? "" : "-") + q.get(q.size() - 1) + (t.length() == 0 ? "" : ".") + t + h;
+		return (positif ? "" : "-") + q.get(q.size() - 1) + (t.length() == 0 || t.equalsIgnoreCase("0") ? "" : ".") + t
+				+ h;
 	}
 }
