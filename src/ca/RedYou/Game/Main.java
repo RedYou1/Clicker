@@ -63,22 +63,25 @@ public class Main {
 				while (running) {
 					try {
 						Player p = Player.getInstance();
-						Quantity a = new Quantity(Player.getInstance().getMoney());
-						a.sub(last);
-						Main.clickcps.setText(a.toString() + " clickcps");
-						a = new Quantity(Player.getInstance().getMoney());
+						Quantity m = p.getMoney();
 
+						Quantity a = new Quantity(m);
+						a.sub(last);
+						clickcps.setText(a.toString() + " clickcps");
+
+						a = new Quantity();
 						for (Entity ent : EntityController.getInstance().getEntities()) {
 							Quantity i = new Quantity(ent.production(p.getEntityQuantity(ent)));
+							if (p.getEntityQuantity(ent).compareTo(new Quantity()) > 0)
+								System.out.println(ent.name() + " : " + p.getEntityQuantity(ent) + "=" + i);
 							i.mult(new Quantity(ent.multiplier));
-							Player.getInstance().getMoney().add(i);
+							a.add(i);
+							m.add(i);
 						}
-						money.setText(Player.getInstance().getMoney().toString());
-						Quantity b = new Quantity(Player.getInstance().getMoney());
-						b.sub(a);
-						cps.setText(b + " cps");
+						money.setText(m.toString());
+						cps.setText(a + " cps");
 
-						last = new Quantity(Player.getInstance().getMoney());
+						last = new Quantity(m);
 
 						sleep(1000);
 					} catch (Exception e) {

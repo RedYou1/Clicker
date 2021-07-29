@@ -64,7 +64,6 @@ public class Quantity implements Comparable<Quantity> {
 		System.out.println(this + "/" + expo);
 
 		update();
-
 	}
 
 	public void mod(Quantity i) {
