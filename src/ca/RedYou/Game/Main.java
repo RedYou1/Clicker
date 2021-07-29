@@ -62,26 +62,35 @@ public class Main {
 			public void run() {
 				while (running) {
 					try {
-						Player p = Player.getInstance();
-						Quantity m = p.getMoney();
 
-						Quantity a = new Quantity(m);
-						a.sub(last);
-						clickcps.setText(a.toString() + " clickcps");
+						Thread t = new Thread("Action of Entities Calc") {
+							public void run() {
+								Player p = Player.getInstance();
+								Quantity m = p.getMoney();
 
-						a = new Quantity();
-						for (Entity ent : EntityController.getInstance().getEntities()) {
-							Quantity i = new Quantity(ent.production(p.getEntityQuantity(ent)));
-							if (p.getEntityQuantity(ent).compareTo(new Quantity()) > 0)
-								System.out.println(ent.name() + " : " + p.getEntityQuantity(ent) + "=" + i);
-							i.mult(new Quantity(ent.multiplier));
-							a.add(i);
-							m.add(i);
-						}
-						money.setText(m.toString());
-						cps.setText(a + " cps");
+								Quantity a = new Quantity(m);
+								a.sub(last);
+								clickcps.setText(a.toString() + " clickcps");
 
-						last = new Quantity(m);
+								a = new Quantity();
+
+								for (Entity ent : EntityController.getInstance().getEntities()) {
+									Quantity i = new Quantity(ent.production(p.getEntityQuantity(ent)));
+									i.mult(new Quantity(ent.multiplier));
+
+									a.add(i);
+									m.add(i);
+
+									if (ent.name().equalsIgnoreCase("cursor"))
+										System.out.println(ent.name() + " " + i);
+								}
+								money.setText(m.toString());
+								cps.setText(a + " cps");
+
+								last = new Quantity(m);
+							}
+						};
+						t.start();
 
 						sleep(1000);
 					} catch (Exception e) {

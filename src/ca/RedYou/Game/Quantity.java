@@ -249,11 +249,11 @@ public class Quantity implements Comparable<Quantity> {
 			}
 		}
 
-		while (q.size() > 0 && q.get(q.size() - 1) == 0) {
+		while (q.size() > 1 && q.get(q.size() - 1) == 0) {
 			q.remove(q.size() - 1);
 		}
 
-		while (div > 0 && q.size() > 0 && q.get(0) == 0) {
+		while (div > 0 && q.size() > 1 && q.get(0) == 0) {
 			q.remove(0);
 			div--;
 		}
@@ -567,7 +567,10 @@ public class Quantity implements Comparable<Quantity> {
 		while (t.endsWith("0")) {
 			t = t.substring(0, t.length() - 1);
 		}
-		return (positif ? "" : "-") + q.get(q.size() - 1) + (t.length() == 0 || t.equalsIgnoreCase("0") ? "" : ".") + t
-				+ h;
+		if (size == 0)
+			return (positif ? "" : "-") + "0." + q.get(q.size() - 1);
+		else
+			return (positif ? "" : "-") + q.get(q.size() - 1) + (t.length() == 0 || t.equalsIgnoreCase("0") ? "" : ".")
+					+ t + h;
 	}
 }

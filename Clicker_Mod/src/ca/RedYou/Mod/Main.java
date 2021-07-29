@@ -96,8 +96,10 @@ public class Main extends Mod {
 				public Quantity production(Quantity quantity) {
 					Quantity q = new Quantity(quantity);
 					q.div(new Quantity(a));
+
 					if (cursorUP.compareTo(new Quantity()) > 0)
 						q.mult(new Quantity(cursorUP));
+
 					return q;
 				}
 
