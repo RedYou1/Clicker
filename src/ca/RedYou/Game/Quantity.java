@@ -2,6 +2,7 @@ package ca.RedYou.Game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class Quantity implements Comparable<Quantity> {
 
@@ -22,14 +23,195 @@ public class Quantity implements Comparable<Quantity> {
 		this.div = q.div;
 	}
 
+	/**
+	 * in = the rest
+	 * 
+	 * @param o the base
+	 * @return the min exp
+	 */
+	private Quantity minLog(Quantity o) {
+		Quantity a = new Quantity();
+
+		while (compareTo(o) >= 0) {
+			a.add(valueOf(1));
+			div(o);
+		}
+
+		return a;
+	}
+
+	private int checkLog(Quantity base, Quantity n1, Quantity n2, Quantity to) {
+		Quantity b = new Quantity(base);
+
+		Quantity p = new Quantity(n1);
+		p.add(new Quantity(n2));
+
+		b.pow(p);
+
+		return b.compareTo(new Quantity(to));
+	}
+
+	public void log10() {
+
+		Quantity rest = new Quantity(this);
+
+		Quantity y = minLog(valueOf(10));
+		Quantity ten = valueOf(10);
+
+		if (checkLog(ten, y, valueOf(0), rest) == 0) {
+			q = y.q;
+			positif = y.positif;
+			div = y.div;
+			return;
+		}
+
+		Quantity a = valueOf(.5);
+		Quantity max = valueOf(1);
+		Quantity min = new Quantity();
+
+		int diff;
+		int maxini = 4;
+		while ((diff = checkLog(ten, y, a, rest)) != 0 && maxini > 0) {
+			if (diff > 0) {
+				max = new Quantity(a);
+
+				a.sub(new Quantity(min));
+				a.div(valueOf(2));
+				a.add(new Quantity(min));
+			} else {
+				min = new Quantity(a);
+
+				a = new Quantity(max);
+				a.sub(new Quantity(min));
+				a.div(valueOf(2));
+				a.add(new Quantity(min));
+			}
+			maxini--;
+		}
+
+		a.add(y);
+
+		q = a.q;
+		positif = a.positif;
+		div = a.div;
+	}
+
+	public void log(Quantity base) {
+		Quantity b = new Quantity(base);
+		log10();
+		b.log10();
+		div(b);
+	}
+
+	private int testSQRT(Quantity q, Quantity expo) {
+		Quantity t = new Quantity(q);
+		t.pow(new Quantity(expo));
+		return t.compareTo(this);
+	}
+
+	private int testSQRT(Quantity q, Quantity a, Quantity expo) {
+		Quantity t = new Quantity(q);
+		t.add(new Quantity(a));
+		t.pow(new Quantity(expo));
+		return t.compareTo(this);
+	}
+
+	public void sqrt(Quantity expo) {
+		Quantity one = valueOf(1);
+		Quantity y = new Quantity(one);
+		while (testSQRT(y, expo) < 0) {
+			y.add(new Quantity(one));
+		}
+
+		if (testSQRT(y, expo) == 0) {
+			q = y.q;
+			positif = y.positif;
+			div = y.div;
+			return;
+		}
+
+		y.sub(new Quantity(one));
+
+		Quantity a = valueOf(.5);
+		Quantity max = valueOf(1);
+		Quantity min = new Quantity();
+
+		int diff;
+		int maxini = 10;
+		while ((diff = testSQRT(y, a, expo)) != 0 && maxini > 0) {
+			if (diff > 0) {
+				max = new Quantity(a);
+
+				a.sub(new Quantity(min));
+				a.div(valueOf(2));
+				a.add(new Quantity(min));
+			} else {
+				min = new Quantity(a);
+
+				a = new Quantity(max);
+				a.sub(new Quantity(min));
+				a.div(valueOf(2));
+				a.add(new Quantity(min));
+			}
+			maxini--;
+		}
+
+		y.add(a);
+
+		q = y.q;
+		positif = y.positif;
+		div = y.div;
+	}
+
 	// https://afteracademy.com/blog/calculate-power-function
 	// (3. Optimized divide and conquer approach)
 	public void pow(Quantity expo) {
 		Quantity o = new Quantity(expo);
 		o.floor(0);
-		o.update();
 
-		if (o.equals(new Quantity())) {
+		if (expo.div > 0) {
+			Quantity t = new Quantity(expo);
+			t.sub(o);
+
+			Quantity temp = new Quantity(this);
+
+			Quantity u = valueOf(1);
+			for (int i = 0; i < t.div; i++) {
+				u.q.add(0, 0);
+			}
+			t.div = 0;
+
+			for (int i = 10; i >= 2; i--) {
+				final int a = i;
+				Function<Quantity, Boolean> f = l -> {
+					Quantity y = new Quantity(l);
+					y.mod(valueOf(a));
+					return y.equals(valueOf(0));
+				};
+
+				while (f.apply(u) && f.apply(t)) {
+					u.div(valueOf(i));
+					t.div(valueOf(i));
+				}
+			}
+
+			temp.sqrt(u);
+			temp.pow(t);
+
+			pow(o);
+			mult(temp);
+			return;
+		}
+
+		if (equals(new Quantity())) {
+			q = new ArrayList<Integer>();
+			q.add(0);
+			div = 0;
+			positif = true;
+			return;
+		}
+
+		if (equals(valueOf(1)) || o.equals(new Quantity())) {
 			q = new ArrayList<Integer>();
 			q.add(1);
 			div = 0;
@@ -61,7 +243,6 @@ public class Quantity implements Comparable<Quantity> {
 			positif = temp.positif;
 			this.div = temp.div;
 		}
-		System.out.println(this + "/" + expo);
 
 		update();
 	}
@@ -125,14 +306,17 @@ public class Quantity implements Comparable<Quantity> {
 
 			if (a > 0)
 				q.set(j, a);
-			else
+			else if (j == q.size() - 1)
 				q.remove(j);
 		}
 
-		if (i.q.size() < 5) {
+		if (i.q.size() < 5 && rest.compareTo(new Quantity()) > 0) {
 			double d = rest.toDouble();
 			d /= i.toDouble();
-			add(valueOf(d));
+			Quantity qd = valueOf(d);
+			qd.div += div;
+			qd.update();
+			add(qd);
 		}
 	}
 
@@ -450,9 +634,9 @@ public class Quantity implements Comparable<Quantity> {
 		if (!positif && o.positif)
 			return -1;
 
-		if (q.size() - div > o.q.size() - o.div)
+		if (Math.max(div, q.size() - div) > Math.max(div, o.q.size() - o.div))
 			return 1;
-		if (q.size() - div < o.q.size() - o.div)
+		if (Math.max(div, q.size() - div) < Math.max(div, o.q.size() - o.div))
 			return -1;
 
 		for (int i = 1; i <= q.size() && i <= o.q.size(); i++) {
@@ -522,7 +706,7 @@ public class Quantity implements Comparable<Quantity> {
 		if (q.size() == 0)
 			return "0";
 
-		if (q.size() == 1) {
+		if (q.size() == 1 && div <= 1) {
 			String s = (positif ? "" : "-") + (q.get(0) / Math.pow(1000, div));
 			if (s.endsWith(".0"))
 				s = s.substring(0, s.length() - 2);
@@ -532,9 +716,11 @@ public class Quantity implements Comparable<Quantity> {
 		String h = "";
 
 		int size = q.size() - div;
-		boolean tsize = size < 0;
-		if (tsize)
+		boolean tsize = size <= 0;
+		if (tsize) {
 			size *= -1;
+			size += 2;
+		}
 		List<Character> s = new ArrayList<Character>();
 		s.add((char) 96);
 		if (size > 1) {
@@ -567,10 +753,8 @@ public class Quantity implements Comparable<Quantity> {
 		while (t.endsWith("0")) {
 			t = t.substring(0, t.length() - 1);
 		}
-		if (size == 0)
-			return (positif ? "" : "-") + "0." + q.get(q.size() - 1);
-		else
-			return (positif ? "" : "-") + q.get(q.size() - 1) + (t.length() == 0 || t.equalsIgnoreCase("0") ? "" : ".")
-					+ t + h;
+
+		return (positif ? "" : "-") + q.get(q.size() - 1) + (t.length() == 0 || t.equalsIgnoreCase("0") ? "" : ".") + t
+				+ h;
 	}
 }
