@@ -29,12 +29,22 @@ public class Quantity implements Comparable<Quantity> {
 	 * @param o the base
 	 * @return the min exp
 	 */
-	private Quantity minLog(Quantity o) {
+	private Quantity minLog10() {
 		Quantity a = new Quantity();
+		if (div > 0) {
+			a.sub(valueOf(div));
+			a.mult(valueOf(3));
+			div = 0;
+		}
 
-		while (compareTo(o) >= 0) {
+		while (q.size() > 1) {
+			a.add(valueOf(3));
+			q.remove(0);
+		}
+
+		while (compareTo(valueOf(10)) >= 0) {
 			a.add(valueOf(1));
-			div(o);
+			div(valueOf(10));
 		}
 
 		return a;
@@ -46,6 +56,7 @@ public class Quantity implements Comparable<Quantity> {
 		Quantity p = new Quantity(n1);
 		p.add(new Quantity(n2));
 
+		System.out.println(b.fullString() + " pow " + p.fullString());
 		b.pow(p);
 
 		return b.compareTo(new Quantity(to));
@@ -55,7 +66,7 @@ public class Quantity implements Comparable<Quantity> {
 
 		Quantity rest = new Quantity(this);
 
-		Quantity y = minLog(valueOf(10));
+		Quantity y = minLog10();
 		Quantity ten = valueOf(10);
 
 		if (checkLog(ten, y, valueOf(0), rest) == 0) {
@@ -66,27 +77,32 @@ public class Quantity implements Comparable<Quantity> {
 		}
 
 		Quantity a = valueOf(.5);
+		Quantity a2 = valueOf(.5);
 		Quantity max = valueOf(1);
 		Quantity min = new Quantity();
 
 		int diff;
 		int maxini = 4;
-		while ((diff = checkLog(ten, y, a, rest)) != 0 && maxini > 0) {
+		System.out.println("------------------");
+		while (maxini > 0 && (diff = checkLog(ten, y, a, rest)) != 0) {
+			System.out.println(min.fullString() + " <= " + a.fullString() + " <= " + max.fullString());
 			if (diff > 0) {
-				max = new Quantity(a);
+				max = new Quantity(a2);
 
-				a.sub(new Quantity(min));
-				a.div(valueOf(2));
-				a.add(new Quantity(min));
+				a2.sub(new Quantity(min));
+				a2.div(valueOf(2));
+				a2.add(new Quantity(min));
 			} else {
-				min = new Quantity(a);
+				min = new Quantity(a2);
 
-				a = new Quantity(max);
-				a.sub(new Quantity(min));
-				a.div(valueOf(2));
-				a.add(new Quantity(min));
+				a2 = new Quantity(max);
+				a2.sub(new Quantity(min));
+				a2.div(valueOf(2));
+				a2.add(new Quantity(min));
 			}
+			a = new Quantity(a2);
 			maxini--;
+//			a.round(-3);
 		}
 
 		a.add(y);
@@ -210,7 +226,7 @@ public class Quantity implements Comparable<Quantity> {
 					t.div(valueOf(i));
 				}
 			}
-
+			System.out.println(t + "/" + u);
 			temp.sqrt(u);
 			temp.pow(t);
 
@@ -462,37 +478,40 @@ public class Quantity implements Comparable<Quantity> {
 		if (div < (-space) / 3 && space < 0)
 			return;
 
-		floor(space - 1);
-
-		if (space < 0) {
-			int s = (-space) - 1;
-			int a = s / 3;
-			int b = (s - 1) / 3;
-			if (a == b) {
-				double i = q.get(0);
-				i /= Math.pow(10, (2 - s) % 3);
-				i = Math.round(i) * Math.pow(10, (2 - s) % 3);
-				q.set(0, (int) i);
-			} else if (q.get(0) >= 500)
-				q.set(1, q.get(1) + 1);
-
-		} else if (space == 0 && div >= 1 && q.get(div - 1) >= 500)
-			q.set(div, q.get(div) + 1);
-
-		else if (space > 0) {
+		if (space >= 0) {
 			int a = space / 3;
-			int b = (space - 1) / 3;
-			if (a == b) {
-				double i = q.get(a);
-				i /= Math.pow(10, space % 3);
-				i = Math.round(i) * Math.pow(10, space % 3);
-				q.set(a, (int) i);
-			} else if (q.get(b) >= 500)
-				q.set(a, q.get(a) + 1);
-		}
-		update();
+			int b = space % 3;
 
-		floor(space);
+			while (div > 0) {
+				q.remove(0);
+				div--;
+			}
+
+			for (int i = 0; i < a; i++) {
+				q.set(i, 0);
+			}
+
+			if (b > 0)
+				q.set(0, (int) (Math.round(q.get(0) / Math.pow(10, b)) * Math.pow(10, b)));
+		} else {
+			space *= -1;
+			int a = (space + 2) / 3;
+			int b = 2 - ((space - 1) % 3);
+
+			int last = 0;
+			while (div > a) {
+				last = q.remove(0);
+				div--;
+			}
+
+			if (b > 0)
+				q.set(0, (int) (Math.round(q.get(0) / Math.pow(10, b)) * Math.pow(10, b)));
+
+			if (last >= 500) {
+				q.set(0, q.get(0) + 1);
+				update();
+			}
+		}
 	}
 
 	/**
@@ -511,6 +530,7 @@ public class Quantity implements Comparable<Quantity> {
 	 *              </ul>
 	 */
 	public void ceil(int space) {
+		update();
 		if (div < (-space) / 3 && space < 0)
 			return;
 
@@ -721,10 +741,14 @@ public class Quantity implements Comparable<Quantity> {
 				s += ".";
 
 			String t = String.valueOf(q.get(i));
-			if (i != q.size() - 1)
-				while (t.length() < 3) {
+			if (i < div) {
+				while (t.length() < 3)
 					t = "0" + t;
-				}
+
+				if (i == 0)
+					while (t.endsWith("0"))
+						t = t.substring(0, t.length() - 1);
+			}
 			s += t;
 		}
 		return s;
