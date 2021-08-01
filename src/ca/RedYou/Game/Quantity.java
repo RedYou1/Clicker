@@ -166,6 +166,22 @@ public class Quantity implements Comparable<Quantity> {
 	// https://afteracademy.com/blog/calculate-power-function
 	// (3. Optimized divide and conquer approach)
 	public void pow(Quantity expo) {
+		if (equals(new Quantity())) {
+			q = new ArrayList<Integer>();
+			q.add(0);
+			div = 0;
+			positif = true;
+			return;
+		}
+
+		if (equals(valueOf(1)) || expo.equals(new Quantity())) {
+			q = new ArrayList<Integer>();
+			q.add(1);
+			div = 0;
+			positif = true;
+			return;
+		}
+
 		Quantity o = new Quantity(expo);
 		o.floor(0);
 
@@ -200,22 +216,6 @@ public class Quantity implements Comparable<Quantity> {
 
 			pow(o);
 			mult(temp);
-			return;
-		}
-
-		if (equals(new Quantity())) {
-			q = new ArrayList<Integer>();
-			q.add(0);
-			div = 0;
-			positif = true;
-			return;
-		}
-
-		if (equals(valueOf(1)) || o.equals(new Quantity())) {
-			q = new ArrayList<Integer>();
-			q.add(1);
-			div = 0;
-			positif = true;
 			return;
 		}
 
@@ -493,6 +493,55 @@ public class Quantity implements Comparable<Quantity> {
 		update();
 
 		floor(space);
+	}
+
+	/**
+	 * 
+	 * @param space <br>
+	 *              <ul>
+	 *              <li>...</li>
+	 *              <li>3=1000</li>
+	 *              <li>2=100</li>
+	 *              <li>1=10</li>
+	 *              <li>0=1</li>
+	 *              <li>-1=0.1</li>
+	 *              <li>-2=0.01</li>
+	 *              <li>-3=0.001</li>
+	 *              <li>...</li>
+	 *              </ul>
+	 */
+	public void ceil(int space) {
+		if (div < (-space) / 3 && space < 0)
+			return;
+
+		if (space >= 0) {
+			int a = space / 3;
+			int b = space % 3;
+
+			while (div > 0) {
+				q.remove(0);
+				div--;
+			}
+
+			for (int i = 0; i < a; i++) {
+				q.set(i, 0);
+			}
+
+			if (b > 0)
+				q.set(0, (int) (Math.ceil(q.get(0) / Math.pow(10, b)) * Math.pow(10, b)));
+		} else {
+			space *= -1;
+			int a = (space + 2) / 3;
+			int b = 2 - ((space - 1) % 3);
+
+			while (div > a) {
+				q.remove(0);
+				div--;
+			}
+
+			if (b > 0)
+				q.set(0, (int) (Math.ceil(q.get(0) / Math.pow(10, b)) * Math.pow(10, b)));
+		}
 	}
 
 	/**

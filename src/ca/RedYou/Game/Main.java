@@ -214,7 +214,6 @@ public class Main {
 			b.setPreferredSize(d);
 			b.setMaximumSize(d);
 			b.setMinimumSize(d);
-
 		}
 
 		Slider upslider = frame.p.setSlider(3, 0, .25, .8, new Slider());
