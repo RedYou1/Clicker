@@ -4,12 +4,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+/**
+ * max +/- 9.999...e+6442450943
+ * 
+ * <br>
+ * can have decimale too with as mush nines (but cant be a big number with a
+ * precise decimal)
+ * 
+ * <br>
+ * haven't tested all possibilites and what happend with overflows (probably
+ * index out of bonds)
+ * 
+ * <br>
+ * <br>
+ * prototype finished at : 2021/8/2 10PM CA/QC
+ * 
+ * @author Jean-Christophe Demers
+ */
 public class Quantity implements Comparable<Quantity> {
 
 	private List<Integer> q;
 	private int div;
 	public boolean positif;
 
+	/**
+	 * contains 0
+	 */
 	public Quantity() {
 		q = new ArrayList<Integer>();
 		q.add(0);
@@ -17,6 +37,11 @@ public class Quantity implements Comparable<Quantity> {
 		positif = true;
 	}
 
+	/**
+	 * duplicate
+	 * 
+	 * @param q
+	 */
 	public Quantity(Quantity q) {
 		this.q = new ArrayList<>(q.q);
 		this.positif = q.positif;
@@ -62,6 +87,9 @@ public class Quantity implements Comparable<Quantity> {
 	}
 
 	public void log10() {
+
+		if (compareTo(new Quantity()) <= 0)
+			throw new ArithmeticException("log can't be equal or below 0");
 
 		Quantity rest = new Quantity(this);
 
@@ -110,8 +138,15 @@ public class Quantity implements Comparable<Quantity> {
 	}
 
 	public void log(Quantity base) {
-		Quantity b = new Quantity(base);
+
+		if (base.compareTo(new Quantity()) <= 0)
+			throw new ArithmeticException("the base of a log can't be equal or below 0");
+
 		log10();
+		if (base.equals(valueOf(10)))
+			return;
+
+		Quantity b = new Quantity(base);
 		b.log10();
 		div(b);
 	}
@@ -142,6 +177,15 @@ public class Quantity implements Comparable<Quantity> {
 	}
 
 	public void sqrt(Quantity expo) {
+
+		int compto0 = compareTo(new Quantity());
+		if (compto0 == 0)
+			return;
+		if (compto0 < 0)
+			throw new ArithmeticException("sqrt can't be below 0");
+		if (compareTo(valueOf(1)) == 0)
+			return;
+
 		Quantity one = valueOf(1);
 		Quantity y = new Quantity(one);
 		while (testSQRT(y, expo) < 0) {
@@ -196,6 +240,14 @@ public class Quantity implements Comparable<Quantity> {
 			q.add(0);
 			div = 0;
 			positif = true;
+			return;
+		}
+		if (expo.compareTo(new Quantity()) < 0) {
+			Quantity o = new Quantity(expo);
+			o.positif = true;
+			Quantity one = valueOf(1);
+			one.div(o);
+			pow(one);
 			return;
 		}
 
