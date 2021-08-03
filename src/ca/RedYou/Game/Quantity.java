@@ -17,9 +17,10 @@ import java.util.function.Function;
  * 
  * <br>
  * <br>
- * prototype finished at : 2021/8/2 10PM CA/QC
+ * prototype started at : 2021/7/19 2PM <br>
+ * prototype finished at : 2021/8/2 10PM
  * 
- * @author Jean-Christophe Demers
+ * @author Jean-Christophe Demers CA/QC
  */
 public class Quantity implements Comparable<Quantity> {
 
