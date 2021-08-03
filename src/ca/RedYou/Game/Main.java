@@ -80,9 +80,6 @@ public class Main {
 
 									a.add(i);
 									m.add(i);
-
-									if (ent.name().equalsIgnoreCase("cursor"))
-										System.out.println(ent.name() + " " + i);
 								}
 								money.setText(m.toString());
 								cps.setText(a + " cps");

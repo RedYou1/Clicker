@@ -31,10 +31,10 @@ public class Main extends Mod {
 			l.pow(Quantity.valueOf(1.75));
 			a.add(l);
 		}
+
 		Quantity y = Quantity.valueOf(10);
 		y.pow(new Quantity(id));
 		a.mult(y);
-
 		Quantity b = Quantity.valueOf(10);
 		Quantity b1 = new Quantity(a);
 		b1.ceil(0);
@@ -43,12 +43,12 @@ public class Main extends Mod {
 		b1.div(Quantity.valueOf(10));
 		b.pow(b1);
 		b.div(Quantity.valueOf(10));
-
 		a.div(b);
 		a.round(0);
 		a.mult(b);
 		Quantity k = Quantity.valueOf(1.15);
 		k.pow(amount);
+
 		a.mult(k);
 		a.ceil(0);
 
@@ -1143,8 +1143,8 @@ public class Main extends Mod {
 			ImageIcon temple10PNG = new ImageIcon(ImageIO.read(getSource("upgrades/templeUP10.png")));
 			ImageIcon temple11PNG = new ImageIcon(ImageIO.read(getSource("upgrades/templeUP11.png")));
 			ImageIcon temple12PNG = new ImageIcon(ImageIO.read(getSource("upgrades/templeUP12.png")));
-			Player.getInstance().getMoney()
-					.add(Quantity.valueOf("1000000000000000000000000000000000000000000000000000"));
+//			Player.getInstance().getMoney()
+//					.add(Quantity.valueOf("1000000000000000000000000000000000000000000000000000"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

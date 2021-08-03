@@ -56,7 +56,6 @@ public class Quantity implements Comparable<Quantity> {
 		Quantity p = new Quantity(n1);
 		p.add(new Quantity(n2));
 
-		System.out.println(b.fullString() + " pow " + p.fullString());
 		b.pow(p);
 
 		return b.compareTo(new Quantity(to));
@@ -83,9 +82,7 @@ public class Quantity implements Comparable<Quantity> {
 
 		int diff;
 		int maxini = 4;
-		System.out.println("------------------");
 		while (maxini > 0 && (diff = checkLog(ten, y, a, rest)) != 0) {
-			System.out.println(min.fullString() + " <= " + a.fullString() + " <= " + max.fullString());
 			if (diff > 0) {
 				max = new Quantity(a2);
 
@@ -129,7 +126,19 @@ public class Quantity implements Comparable<Quantity> {
 		Quantity t = new Quantity(q);
 		t.add(new Quantity(a));
 		t.pow(new Quantity(expo));
-		return t.compareTo(this);
+		t.sub(new Quantity(this));
+
+		boolean m = t.compareTo(valueOf(1)) <= 0;
+		boolean n = t.compareTo(valueOf(-1)) >= 0;
+
+		if (m && n)
+			return 0;
+		if (!m)
+			return 1;
+		if (!n)
+			return -1;
+
+		throw new ArithmeticException("");
 	}
 
 	public void sqrt(Quantity expo) {
@@ -154,7 +163,7 @@ public class Quantity implements Comparable<Quantity> {
 
 		int diff;
 		int maxini = 10;
-		while ((diff = testSQRT(y, a, expo)) != 0 && maxini > 0) {
+		while (maxini > 0 && (diff = testSQRT(y, a, expo)) != 0) {
 			if (diff > 0) {
 				max = new Quantity(a);
 
@@ -202,6 +211,16 @@ public class Quantity implements Comparable<Quantity> {
 		o.floor(0);
 
 		if (expo.div > 0) {
+			boolean[] w = new boolean[] { false };
+
+			Thread th = new Thread() {
+				public void run() {
+					pow(o);
+					w[0] = true;
+				}
+			};
+			th.start();
+
 			Quantity t = new Quantity(expo);
 			t.sub(o);
 
@@ -213,24 +232,43 @@ public class Quantity implements Comparable<Quantity> {
 			}
 			t.div = 0;
 
-			for (int i = 10; i >= 2; i--) {
-				final int a = i;
-				Function<Quantity, Boolean> f = l -> {
-					Quantity y = new Quantity(l);
-					y.mod(valueOf(a));
-					return y.equals(valueOf(0));
-				};
+			while (true) {
+				for (int i = 10; i >= 2; i--) {
+					final int a = i;
+					Function<Quantity, Boolean> f = l -> {
+						Quantity y = new Quantity(l);
+						y.mod(valueOf(a));
+						return y.equals(valueOf(0));
+					};
 
-				while (f.apply(u) && f.apply(t)) {
-					u.div(valueOf(i));
-					t.div(valueOf(i));
+					while (f.apply(u) && f.apply(t)) {
+						u.div(valueOf(i));
+						t.div(valueOf(i));
+					}
 				}
+
+				t.update();
+				u.update();
+				if (t.q.size() == 1 && u.q.size() == 1)
+					break;
+
+				int a = t.q.get(0) % 2;
+				int b = u.q.get(0) % 2;
+				if (a != 0)
+					t.sub(valueOf(1));
+				if (b != 0)
+					u.sub(valueOf(1));
 			}
-			System.out.println(t + "/" + u);
 			temp.sqrt(u);
 			temp.pow(t);
 
-			pow(o);
+			while (!w[0])
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+
 			mult(temp);
 			return;
 		}
@@ -307,9 +345,13 @@ public class Quantity implements Comparable<Quantity> {
 			positif = !positif;
 		}
 		i.positif = true;
-		Quantity rest = new Quantity();
-		rest.q = new ArrayList<Integer>();
 
+		int dfinal = div - i.div;
+
+		div = 0;
+		i.div = 0;
+
+		Quantity rest = new Quantity();
 		for (int j = q.size() - 1; j >= 0; j--) {
 			rest.q.add(0, q.get(j));
 
@@ -325,7 +367,6 @@ public class Quantity implements Comparable<Quantity> {
 			else if (j == q.size() - 1)
 				q.remove(j);
 		}
-
 		if (i.q.size() < 5 && rest.compareTo(new Quantity()) > 0) {
 			double d = rest.toDouble();
 			d /= i.toDouble();
@@ -334,6 +375,17 @@ public class Quantity implements Comparable<Quantity> {
 			qd.update();
 			add(qd);
 		}
+
+		while (dfinal < 0) {
+			dfinal++;
+			if (div > 0)
+				div--;
+			else
+				q.add(0, 0);
+		}
+		div += dfinal;
+
+		update();
 	}
 
 	public void mult(Quantity i) {
@@ -535,6 +587,13 @@ public class Quantity implements Comparable<Quantity> {
 			return;
 
 		if (space >= 0) {
+			if (div >= q.size()) {
+				q = new ArrayList<Integer>();
+				div = 0;
+				positif = true;
+				return;
+			}
+
 			int a = space / 3;
 			int b = space % 3;
 
