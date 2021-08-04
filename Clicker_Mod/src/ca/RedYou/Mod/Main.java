@@ -35,13 +35,16 @@ public class Main extends Mod {
 		Quantity y = Quantity.valueOf(10);
 		y.pow(new Quantity(id));
 		a.mult(y);
+
 		Quantity b = Quantity.valueOf(10);
 		Quantity b1 = new Quantity(a);
 		b1.ceil(0);
 		b1.log10();
 		b1.ceil(0);
 		b1.div(Quantity.valueOf(10));
+		System.out.println("b" + b + "/" + b1);
 		b.pow(b1);
+		System.out.println("a");
 		b.div(Quantity.valueOf(10));
 		a.div(b);
 		a.round(0);
@@ -59,7 +62,7 @@ public class Main extends Mod {
 		UpgradeController ups = UpgradeController.getInstance();
 		ups.addUpgrade(l -> {
 			return Player.getInstance().getEntityQuantity(ent).compareTo(min) > -1;
-		}, new Upgrade() {
+		}, this, new Upgrade() {
 
 			@Override
 			public Quantity price() {
@@ -583,7 +586,7 @@ public class Main extends Mod {
 
 			ups.addUpgrade(l -> {
 				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(1)) > -1;
-			}, new Upgrade() {
+			}, this, new Upgrade() {
 
 				@Override
 				public Quantity price() {
@@ -613,7 +616,7 @@ public class Main extends Mod {
 			});
 			ups.addUpgrade(l -> {
 				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(1)) > -1;
-			}, new Upgrade() {
+			}, this, new Upgrade() {
 
 				@Override
 				public Quantity price() {
@@ -643,7 +646,7 @@ public class Main extends Mod {
 			});
 			ups.addUpgrade(l -> {
 				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(10)) > -1;
-			}, new Upgrade() {
+			}, this, new Upgrade() {
 
 				@Override
 				public Quantity price() {
@@ -674,7 +677,7 @@ public class Main extends Mod {
 			final Quantity cursorBoost = Quantity.valueOf(1);
 			ups.addUpgrade(l -> {
 				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(25)) > -1;
-			}, new Upgrade() {
+			}, this, new Upgrade() {
 
 				@Override
 				public Quantity price() {
@@ -724,7 +727,7 @@ public class Main extends Mod {
 			});
 			ups.addUpgrade(l -> {
 				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(50)) > -1;
-			}, new Upgrade() {
+			}, this, new Upgrade() {
 
 				@Override
 				public Quantity price() {
@@ -753,7 +756,7 @@ public class Main extends Mod {
 			});
 			ups.addUpgrade(l -> {
 				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(100)) > -1;
-			}, new Upgrade() {
+			}, this, new Upgrade() {
 
 				@Override
 				public Quantity price() {
@@ -782,7 +785,7 @@ public class Main extends Mod {
 			});
 			ups.addUpgrade(l -> {
 				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(150)) > -1;
-			}, new Upgrade() {
+			}, this, new Upgrade() {
 
 				@Override
 				public Quantity price() {
@@ -811,7 +814,7 @@ public class Main extends Mod {
 			});
 			ups.addUpgrade(l -> {
 				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(200)) > -1;
-			}, new Upgrade() {
+			}, this, new Upgrade() {
 
 				@Override
 				public Quantity price() {
@@ -840,7 +843,7 @@ public class Main extends Mod {
 			});
 			ups.addUpgrade(l -> {
 				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(250)) > -1;
-			}, new Upgrade() {
+			}, this, new Upgrade() {
 
 				@Override
 				public Quantity price() {
@@ -869,7 +872,7 @@ public class Main extends Mod {
 			});
 			ups.addUpgrade(l -> {
 				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(300)) > -1;
-			}, new Upgrade() {
+			}, this, new Upgrade() {
 
 				@Override
 				public Quantity price() {
@@ -898,7 +901,7 @@ public class Main extends Mod {
 			});
 			ups.addUpgrade(l -> {
 				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(350)) > -1;
-			}, new Upgrade() {
+			}, this, new Upgrade() {
 
 				@Override
 				public Quantity price() {
@@ -927,7 +930,7 @@ public class Main extends Mod {
 			});
 			ups.addUpgrade(l -> {
 				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(400)) > -1;
-			}, new Upgrade() {
+			}, this, new Upgrade() {
 
 				@Override
 				public Quantity price() {
@@ -956,7 +959,7 @@ public class Main extends Mod {
 			});
 			ups.addUpgrade(l -> {
 				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(450)) > -1;
-			}, new Upgrade() {
+			}, this, new Upgrade() {
 
 				@Override
 				public Quantity price() {
@@ -1165,7 +1168,7 @@ public class Main extends Mod {
 	}
 
 	@Override
-	public void end() {
+	public void stop() {
 	}
 
 }

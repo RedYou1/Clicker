@@ -81,6 +81,24 @@ public class EntityController {
 		return entities.get(key);
 	}
 
+	public Entity getEntity(Mod mod, String name) {
+		for (Entry<Key, Entity> a : entities.entrySet()) {
+			if (a.getKey().getMod().equals(mod) && a.getKey().getName().equals(name)) {
+				return a.getValue();
+			}
+		}
+		return null;
+	}
+
+	public Mod getMod(Entity ent) {
+		for (Entry<Key, Entity> a : entities.entrySet()) {
+			if (a.getValue().equals(ent)) {
+				return a.getKey().mod;
+			}
+		}
+		return null;
+	}
+
 	public List<Entity> getEntities(Mod mod) {
 		List<Entity> ents = new ArrayList<>();
 		for (Entry<Key, Entity> a : entities.entrySet()) {

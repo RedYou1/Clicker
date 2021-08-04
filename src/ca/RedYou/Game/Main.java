@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -32,21 +31,14 @@ public class Main {
 	public static Quantity last = new Quantity();
 
 	public static void main(String[] args) {
-		ModController modCon = ModController.getInstance();
-		File f = new File("Mods");
-		if (f.exists() && f.isDirectory())
-			for (File mod : f.listFiles()) {
-				try {
-					modCon.setMod(Mod.load(mod));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
+		GameStatus.start();
 
 		frame = new Frame();
 
 		quit.setBackground(Color.RED);
 		quit.addActionListener(l -> {
+			GameStatus.stop();
+			running = false;
 			frame.quitter();
 		});
 
@@ -167,9 +159,12 @@ public class Main {
 		refresh.addActionListener(l -> {
 			menu();
 		});
-		frame.p.setBouton("refresh screen", 2, 1, refresh);
 
 		frame.p.setBouton("Cookie", 1, 1, click);
+
+		frame.p.setBouton("refresh screen", 2, 1, refresh);
+
+		frame.p.setBouton("Save/Quit", 3, 1, quit);
 
 		Slider s = frame.p.setSlider(2, 0, .25, .8, new Slider());
 
@@ -201,7 +196,6 @@ public class Main {
 
 			Quantity prod = new Quantity(
 					ents[i].production(new Quantity(Player.getInstance().getEntityQuantity(ents[i]))));
-
 			prod.mult(ents[i].multiplier);
 			Quantity q = Player.getInstance().getEntityQuantity(ents[i]);
 			entites.setBouton("<html>" + q + " " + ents[i].name() + "<br>" + prod + " cps<br>" + ents[i].price(q)
