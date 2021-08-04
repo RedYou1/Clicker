@@ -42,9 +42,7 @@ public class Main extends Mod {
 		b1.log10();
 		b1.ceil(0);
 		b1.div(Quantity.valueOf(10));
-		System.out.println("b" + b + "/" + b1);
 		b.pow(b1);
-		System.out.println("a");
 		b.div(Quantity.valueOf(10));
 		a.div(b);
 		a.round(0);
