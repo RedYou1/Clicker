@@ -154,6 +154,11 @@ public class Main {
 		g.setLabel(0, 0, Player.getInstance().getMoney().toString(), money);
 		g.setLabel(0, 1, clickcps.getText(), clickcps);
 		g.setLabel(0, 2, cps.getText(), cps);
+		Dimension d = new Dimension(200, 150);
+		g.setSize(d);
+		g.setPreferredSize(d);
+		g.setMaximumSize(d);
+		g.setMinimumSize(d);
 
 		JButton refresh = new JButton();
 		refresh.addActionListener(l -> {
@@ -170,7 +175,7 @@ public class Main {
 
 		s.p.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-		Dimension d = new Dimension(350, (int) (frame.p.getSize().getHeight() * .8));
+		d = new Dimension(350, (int) (frame.p.getSize().getHeight() * .8));
 
 		if (d.getHeight() < 1) {
 			menu();

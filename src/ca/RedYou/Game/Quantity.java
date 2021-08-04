@@ -591,6 +591,17 @@ public class Quantity implements Comparable<Quantity> {
 			q.remove(0);
 			div--;
 		}
+		if (q.size() == 0) {
+			q.add(0);
+			div = 0;
+			positif = true;
+			return;
+		}
+		if (q.size() == 1 && q.get(0) == 0) {
+			div = 0;
+			positif = true;
+			return;
+		}
 	}
 
 	/**
@@ -844,15 +855,21 @@ public class Quantity implements Comparable<Quantity> {
 		if (!positif && o.positif)
 			return -1;
 
-		if (Math.max(div, q.size() - div) > Math.max(div, o.q.size() - o.div))
+		int qsize = q.size();
+		int oqsize = o.q.size();
+		int max = Math.max(div, qsize - div);
+		int omax = Math.max(o.div, oqsize - o.div);
+		if (max > omax)
 			return 1;
-		if (Math.max(div, q.size() - div) < Math.max(div, o.q.size() - o.div))
+		if (max < omax)
 			return -1;
 
-		for (int i = 1; i <= q.size() && i <= o.q.size(); i++) {
-			if (q.get(q.size() - i) > o.q.get(o.q.size() - i))
+		for (int i = 1; i <= qsize && i <= oqsize; i++) {
+			int a = q.get(qsize - i);
+			int b = o.q.get(oqsize - i);
+			if (a > b)
 				return 1;
-			if (q.get(q.size() - i) < o.q.get(o.q.size() - i))
+			if (a < b)
 				return -1;
 		}
 
@@ -913,6 +930,7 @@ public class Quantity implements Comparable<Quantity> {
 	}
 
 	public long toLong() {
+		update();
 		long l = 0;
 		for (int i = 0; i < q.size(); i++) {
 			long a = q.get(i);
@@ -923,6 +941,7 @@ public class Quantity implements Comparable<Quantity> {
 	}
 
 	public double toDouble() {
+		update();
 		long l = 0;
 		for (int i = 0; i < q.size(); i++) {
 			long a = q.get(i);
@@ -975,6 +994,9 @@ public class Quantity implements Comparable<Quantity> {
 			if (tsize)
 				h = " -" + h;
 		}
+
+		if (q.size() == 1)
+			return (positif ? "" : "-") + q.get(q.size() - 1) + h;
 
 		String t = String.valueOf(q.get(q.size() - 2));
 		if (t != "0")
