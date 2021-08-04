@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- * max +/- 9.999...e+6442450943
+ * max +/- 9.999...e+6442450943 (int.max * 3)
  * 
  * <br>
  * can have decimale too with as mush nines (but cant be a big number with a
@@ -13,7 +13,7 @@ import java.util.function.Function;
  * 
  * <br>
  * haven't tested all possibilites and what happend with overflows (probably
- * index out of bonds)
+ * index out of bounds)
  * 
  * <br>
  * <br>
@@ -105,7 +105,6 @@ public class Quantity implements Comparable<Quantity> {
 		}
 
 		Quantity a = valueOf(.5);
-		Quantity a2 = valueOf(.5);
 		Quantity max = valueOf(1);
 		Quantity min = new Quantity();
 
@@ -113,22 +112,20 @@ public class Quantity implements Comparable<Quantity> {
 		int maxini = 4;
 		while (maxini > 0 && (diff = checkLog(ten, y, a, rest)) != 0) {
 			if (diff > 0) {
-				max = new Quantity(a2);
+				max = new Quantity(a);
 
-				a2.sub(new Quantity(min));
-				a2.div(valueOf(2));
-				a2.add(new Quantity(min));
+				a.sub(new Quantity(min));
+				a.div(valueOf(2));
+				a.add(new Quantity(min));
 			} else {
-				min = new Quantity(a2);
+				min = new Quantity(a);
 
-				a2 = new Quantity(max);
-				a2.sub(new Quantity(min));
-				a2.div(valueOf(2));
-				a2.add(new Quantity(min));
+				a = new Quantity(max);
+				a.sub(new Quantity(min));
+				a.div(valueOf(2));
+				a.add(new Quantity(min));
 			}
-			a = new Quantity(a2);
 			maxini--;
-//			a.round(-3);
 		}
 
 		a.add(y);
