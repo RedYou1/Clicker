@@ -92,14 +92,23 @@ public class Quantity implements Comparable<Quantity> {
 			div = 0;
 		}
 
-		while (q.size() > 1) {
-			a.add(valueOf(3));
-			q.remove(0);
+		if (q.size() > 1) {
+			Quantity y = valueOf(3);
+			y.mult(valueOf(q.size() - 1));
+			a.add(y);
+			int t = q.get(q.size() - 1);
+			q = new ArrayList<Integer>();
+			q.add(t);
 		}
 
-		while (compareTo(valueOf(10)) >= 0) {
+		if (q.get(0) >= 100) {
+			a.add(valueOf(2));
+			q.set(0, q.get(0) / 100);
+		}
+
+		if (q.get(0) >= 10) {
 			a.add(valueOf(1));
-			div(valueOf(10));
+			q.set(0, q.get(0) / 10);
 		}
 
 		return a;
