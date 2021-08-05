@@ -236,7 +236,7 @@ public class Quantity implements Comparable<Quantity> {
 		Quantity min = new Quantity();
 
 		int diff;
-		int maxini = 10;
+		int maxini = 4;
 		while (maxini > 0 && (diff = testSQRT(y, a, expo)) != 0) {
 			if (diff > 0) {
 				max = new Quantity(a);

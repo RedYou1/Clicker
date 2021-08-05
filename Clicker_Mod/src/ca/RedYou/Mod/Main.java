@@ -56,7 +56,8 @@ public class Main extends Mod {
 		return a;
 	}
 
-	public void addDoubleUp(Entity ent, ImageIcon img, String name, String desc, Quantity cost, Quantity min) {
+	public void addDoubleUp(Entity ent, ImageIcon img, String name, String actiondesc, String desc, Quantity cost,
+			Quantity min) {
 		UpgradeController ups = UpgradeController.getInstance();
 		ups.addUpgrade(l -> {
 			return Player.getInstance().getEntityQuantity(ent).compareTo(min) > -1;
@@ -70,6 +71,11 @@ public class Main extends Mod {
 			@Override
 			public String name() {
 				return name;
+			}
+
+			@Override
+			public String actiondesc() {
+				return actiondesc;
 			}
 
 			@Override
@@ -581,7 +587,7 @@ public class Main extends Mod {
 			ImageIcon mouse12PNG = new ImageIcon(ImageIO.read(getSource("upgrades/mouseUP12.png")));
 
 			UpgradeController ups = UpgradeController.getInstance();
-
+			String mouseAct = "The mouse and cursors are <B>twice</B> as efficient.";
 			ups.addUpgrade(l -> {
 				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(1)) > -1;
 			}, this, new Upgrade() {
@@ -602,8 +608,13 @@ public class Main extends Mod {
 				}
 
 				@Override
+				public String actiondesc() {
+					return mouseAct;
+				}
+
+				@Override
 				public String desc() {
-					return "The mouse and cursors are twice as efficient.<br>\"prod prod\"";
+					return "\"prod prod\"";
 				}
 
 				@Override
@@ -632,8 +643,13 @@ public class Main extends Mod {
 				}
 
 				@Override
+				public String actiondesc() {
+					return mouseAct;
+				}
+
+				@Override
 				public String desc() {
-					return "The mouse and cursors are twice as efficient.<br>\"it... it hurts to click...\"";
+					return "\"it... it hurts to click...\"";
 				}
 
 				@Override
@@ -662,8 +678,13 @@ public class Main extends Mod {
 				}
 
 				@Override
+				public String actiondesc() {
+					return mouseAct;
+				}
+
+				@Override
 				public String desc() {
-					return "The mouse and cursors are twice as efficient.<br>\"Look ma, both hands!\"";
+					return "\"Look ma, both hands!\"";
 				}
 
 				@Override
@@ -693,8 +714,13 @@ public class Main extends Mod {
 				}
 
 				@Override
+				public String actiondesc() {
+					return "The mouse and cursors gain +0.1 cookies for each non-cursor object owned.";
+				}
+
+				@Override
 				public String desc() {
-					return "The mouse and cursors gain +0.1 cookies for each non-cursor object owned.<br>\"clickity\"";
+					return "\"clickity\"";
 				}
 
 				@Override
@@ -743,8 +769,13 @@ public class Main extends Mod {
 				}
 
 				@Override
+				public String actiondesc() {
+					return "Multiplies the gain from Thousand fingers by 5.";
+				}
+
+				@Override
 				public String desc() {
-					return "Multiplies the gain from Thousand fingers by 5.<br>\"clickityclickity\"";
+					return "\"clickityclickity\"";
 				}
 
 				@Override
@@ -772,8 +803,13 @@ public class Main extends Mod {
 				}
 
 				@Override
+				public String actiondesc() {
+					return "Multiplies the gain from Thousand fingers by 10.";
+				}
+
+				@Override
 				public String desc() {
-					return "Multiplies the gain from Thousand fingers by 10.<br>\"clickityclickityclickity\"";
+					return "\"clickityclickityclickity\"";
 				}
 
 				@Override
@@ -801,8 +837,13 @@ public class Main extends Mod {
 				}
 
 				@Override
+				public String actiondesc() {
+					return "Multiplies the gain from Thousand fingers by 20.";
+				}
+
+				@Override
 				public String desc() {
-					return "Multiplies the gain from Thousand fingers by 20.<br>\"clickityclickityclickityclickity\"";
+					return "\"clickityclickityclickityclickity\"";
 				}
 
 				@Override
@@ -830,8 +871,13 @@ public class Main extends Mod {
 				}
 
 				@Override
+				public String actiondesc() {
+					return "Multiplies the gain from Thousand fingers by 20.";
+				}
+
+				@Override
 				public String desc() {
-					return "Multiplies the gain from Thousand fingers by 20.<br>\"clickityclickityclickityclickityclickity\"";
+					return "\"clickityclickityclickityclickityclickity\"";
 				}
 
 				@Override
@@ -859,8 +905,13 @@ public class Main extends Mod {
 				}
 
 				@Override
+				public String actiondesc() {
+					return "Multiplies the gain from Thousand fingers by 20.";
+				}
+
+				@Override
 				public String desc() {
-					return "Multiplies the gain from Thousand fingers by 20.<br>\"man, just go click click click click click, it’s real easy, man.\"";
+					return "\"man, just go click click click click click, it’s real easy, man.\"";
 				}
 
 				@Override
@@ -888,8 +939,13 @@ public class Main extends Mod {
 				}
 
 				@Override
+				public String actiondesc() {
+					return "Multiplies the gain from Thousand fingers by 20.";
+				}
+
+				@Override
 				public String desc() {
-					return "Multiplies the gain from Thousand fingers by 20.<br>\"sometimes things just click\"";
+					return "\"sometimes things just click\"";
 				}
 
 				@Override
@@ -917,8 +973,13 @@ public class Main extends Mod {
 				}
 
 				@Override
+				public String actiondesc() {
+					return "Multiplies the gain from Thousand fingers by 20.";
+				}
+
+				@Override
 				public String desc() {
-					return "Multiplies the gain from Thousand fingers by 20.<br>\"[cursory flavor text]\"";
+					return "\"[cursory flavor text]\"";
 				}
 
 				@Override
@@ -946,8 +1007,13 @@ public class Main extends Mod {
 				}
 
 				@Override
+				public String actiondesc() {
+					return "Multiplies the gain from Thousand fingers by 20.";
+				}
+
+				@Override
 				public String desc() {
-					return "Multiplies the gain from Thousand fingers by 20.<br>\"Turns out you can quite put your finger on it.\"";
+					return "\"Turns out you can quite put your finger on it.\"";
 				}
 
 				@Override
@@ -975,8 +1041,13 @@ public class Main extends Mod {
 				}
 
 				@Override
+				public String actiondesc() {
+					return "Multiplies the gain from Thousand fingers by 20.";
+				}
+
+				@Override
 				public String desc() {
-					return "Multiplies the gain from Thousand fingers by 20.<br>\"Only for the freakiest handshakes.\"";
+					return "\"Only for the freakiest handshakes.\"";
 				}
 
 				@Override
@@ -999,42 +1070,41 @@ public class Main extends Mod {
 			ImageIcon grandma11PNG = new ImageIcon(ImageIO.read(getSource("upgrades/grandmaUP11.png")));
 			ImageIcon grandma12PNG = new ImageIcon(ImageIO.read(getSource("upgrades/grandmaUP12.png")));
 
-			addDoubleUp(grandma, grandma0PNG, "Forwards from grandma",
-					"Grandmas are twice as efficient.<br>\"RE:RE:thought you'd get a kick out of this ;))\"",
-					Quantity.valueOf(1000), Quantity.valueOf(1));
-			addDoubleUp(grandma, grandma1PNG, "Steel-plated rolling pins",
-					"Grandmas are twice as efficient.<br>\"Just what you kneaded.\"", Quantity.valueOf(5000),
-					Quantity.valueOf(5));
-			addDoubleUp(grandma, grandma2PNG, "Lubricated dentures", "Grandmas are twice as efficient.<br>\"squish\"",
-					Quantity.valueOf(50000), Quantity.valueOf(25));
-			addDoubleUp(grandma, grandma3PNG, "Prune juice", "Grandmas are twice as efficient.<br>\"Gets me going.\"",
+			String grandmaAct = "Grandmas are <B>twice</B> as efficient.";
+
+			addDoubleUp(grandma, grandma0PNG, "Forwards from grandma", grandmaAct,
+					"\"RE:RE:thought you'd get a kick out of this ;))\"", Quantity.valueOf(1000), Quantity.valueOf(1));
+			addDoubleUp(grandma, grandma1PNG, "Steel-plated rolling pins", grandmaAct, "\"Just what you kneaded.\"",
+					Quantity.valueOf(5000), Quantity.valueOf(5));
+			addDoubleUp(grandma, grandma2PNG, "Lubricated dentures", grandmaAct, "\"squish\"", Quantity.valueOf(50000),
+					Quantity.valueOf(25));
+			addDoubleUp(grandma, grandma3PNG, "Prune juice", grandmaAct, "\"Gets me going.\"",
 					Quantity.valueOf(5000000), Quantity.valueOf(50));
-			addDoubleUp(grandma, grandma4PNG, "Double-thick glasses",
-					"Grandmas are twice as efficient.<br>\"Oh... so THAT's what I've been baking.\"",
-					Quantity.valueOf(500000000), Quantity.valueOf(100));
-			addDoubleUp(grandma, grandma5PNG, "Aging agents",
-					"Grandmas are twice as efficient.<br>\"Counter-intuitively, grandmas have the uncanny ability to become more powerful the older they get.\"",
+			addDoubleUp(grandma, grandma4PNG, "Double-thick glasses", grandmaAct,
+					"\"Oh... so THAT's what I've been baking.\"", Quantity.valueOf(500000000), Quantity.valueOf(100));
+			addDoubleUp(grandma, grandma5PNG, "Aging agents", grandmaAct,
+					"\"Counter-intuitively, grandmas have the uncanny ability to become more powerful the older they get.\"",
 					Quantity.valueOf(50000000000l), Quantity.valueOf(150));
-			addDoubleUp(grandma, grandma6PNG, "Xtreme walkers",
-					"Grandmas are twice as efficient.<br>\"Complete with flame decals and a little horn that goes \"toot\".\"",
+			addDoubleUp(grandma, grandma6PNG, "Xtreme walkers", grandmaAct,
+					"\"Complete with flame decals and a little horn that goes \"toot\".\"",
 					Quantity.valueOf(50000000000000l), Quantity.valueOf(200));
-			addDoubleUp(grandma, grandma7PNG, "The Unbridling",
-					"Grandmas are twice as efficient.<br>\"It might be a classic tale of bad parenting, but let's see where grandma is going with this.\"",
+			addDoubleUp(grandma, grandma7PNG, "The Unbridling", grandmaAct,
+					"\"It might be a classic tale of bad parenting, but let's see where grandma is going with this.\"",
 					Quantity.valueOf(50000000000000000l), Quantity.valueOf(250));
-			addDoubleUp(grandma, grandma8PNG, "Reverse dementia",
-					"Grandmas are twice as efficient.<br>\"Extremely unsettling, and somehow even worse than the regular kind.\"",
+			addDoubleUp(grandma, grandma8PNG, "Reverse dementia", grandmaAct,
+					"\"Extremely unsettling, and somehow even worse than the regular kind.\"",
 					Quantity.valueOf("50000000000000000000"), Quantity.valueOf(300));
-			addDoubleUp(grandma, grandma9PNG, "Timeproof hair dyes",
-					"Grandmas are twice as efficient.<br>\"Why do they always have those strange wispy pink dos? What do they know about candy floss that we don't?\"",
+			addDoubleUp(grandma, grandma9PNG, "Timeproof hair dyes", grandmaAct,
+					"\"Why do they always have those strange wispy pink dos? What do they know about candy floss that we don't?\"",
 					Quantity.valueOf("50000000000000000000000"), Quantity.valueOf(350));
-			addDoubleUp(grandma, grandma10PNG, "Good manners",
-					"Grandmas are twice as efficient.<br>\"Apparently these ladies are much more amiable if you take the time to learn their strange, ancient customs, which seem to involve saying \"please\" and \"thank you\" and staring at the sun with bulging eyes while muttering eldritch curses under your breath.\"",
+			addDoubleUp(grandma, grandma10PNG, "Good manners", grandmaAct,
+					"\"Apparently these ladies are much more amiable if you take the time to learn their strange, ancient customs, which seem to involve saying \"please\" and \"thank you\" and staring at the sun with bulging eyes while muttering eldritch curses under your breath.\"",
 					Quantity.valueOf("500000000000000000000000000"), Quantity.valueOf(400));
-			addDoubleUp(grandma, grandma11PNG, "Generation degeneration",
-					"Grandmas are twice as efficient.<br>\"Genetic testing shows that most of your grandmas are infected with a strange degenerative disease that only seems to further their powers; the more time passes, the older they get. This should concern you.\"",
+			addDoubleUp(grandma, grandma11PNG, "Generation degeneration", grandmaAct,
+					"\"Genetic testing shows that most of your grandmas are infected with a strange degenerative disease that only seems to further their powers; the more time passes, the older they get. This should concern you.\"",
 					Quantity.valueOf("5000000000000000000000000000000"), Quantity.valueOf(450));
-			addDoubleUp(grandma, grandma12PNG, "Visits",
-					"Grandmas are twice as efficient.<br>\"In an extensive double-blind study (sample size: 12 millions), your researchers have found evidence that grandmas are up to twice as productive if you just come by and say hi once in a while. It's nice to check up on your grans! (Do not under any circumstances ingest any tea or tea-like substances the grandmas may offer you.).\"",
+			addDoubleUp(grandma, grandma12PNG, "Visits", grandmaAct,
+					"\"In an extensive double-blind study (sample size: 12 millions), your researchers have found evidence that grandmas are up to twice as productive if you just come by and say hi once in a while. It's nice to check up on your grans! (Do not under any circumstances ingest any tea or tea-like substances the grandmas may offer you.).\"",
 					Quantity.valueOf("50000000000000000000000000000000000"), Quantity.valueOf(500));
 
 			ImageIcon farm0PNG = new ImageIcon(ImageIO.read(getSource("upgrades/farmUP0.png")));
@@ -1051,42 +1121,41 @@ public class Main extends Mod {
 			ImageIcon farm11PNG = new ImageIcon(ImageIO.read(getSource("upgrades/farmUP11.png")));
 			ImageIcon farm12PNG = new ImageIcon(ImageIO.read(getSource("upgrades/farmUP12.png")));
 
-			addDoubleUp(farm, farm0PNG, "Cheap hoes", "Farms are twice as efficient.<br>\"Rake in the dough!\"",
-					Quantity.valueOf(11000), Quantity.valueOf(1));
-			addDoubleUp(farm, farm1PNG, "Fertilizer", "Farms are twice as efficient.<br>\"It's chocolate, I swear.\"",
-					Quantity.valueOf(55000), Quantity.valueOf(5));
-			addDoubleUp(farm, farm2PNG, "Cookie trees",
-					"Farms are twice as efficient.<br>\"A relative of the breadfruit.\"", Quantity.valueOf(550000),
-					Quantity.valueOf(25));
-			addDoubleUp(farm, farm3PNG, "Genetically-modified cookies",
-					"Farms are twice as efficient.<br>\"All-natural mutations.\"", Quantity.valueOf(55000000),
-					Quantity.valueOf(50));
-			addDoubleUp(farm, farm4PNG, "Gingerbread scarecrows",
-					"Farms are twice as efficient.<br>\"Staring at your crops with mischievous glee.\"",
-					Quantity.valueOf(5500000000l), Quantity.valueOf(100));
-			addDoubleUp(farm, farm5PNG, "Pulsar sprinklers",
-					"Farms are twice as efficient.<br>\"There's no such thing as over-watering. The moistest is the bestest.\"",
+			String farmAct = "Farms are <B>twice</B> as efficient.";
+
+			addDoubleUp(farm, farm0PNG, "Cheap hoes", farmAct, "\"Rake in the dough!\"", Quantity.valueOf(11000),
+					Quantity.valueOf(1));
+			addDoubleUp(farm, farm1PNG, "Fertilizer", farmAct, "\"It's chocolate, I swear.\"", Quantity.valueOf(55000),
+					Quantity.valueOf(5));
+			addDoubleUp(farm, farm2PNG, "Cookie trees", farmAct, "\"A relative of the breadfruit.\"",
+					Quantity.valueOf(550000), Quantity.valueOf(25));
+			addDoubleUp(farm, farm3PNG, "Genetically-modified cookies", farmAct, "\"All-natural mutations.\"",
+					Quantity.valueOf(55000000), Quantity.valueOf(50));
+			addDoubleUp(farm, farm4PNG, "Gingerbread scarecrows", farmAct,
+					"\"Staring at your crops with mischievous glee.\"", Quantity.valueOf(5500000000l),
+					Quantity.valueOf(100));
+			addDoubleUp(farm, farm5PNG, "Pulsar sprinklers", farmAct,
+					"\"There's no such thing as over-watering. The moistest is the bestest.\"",
 					Quantity.valueOf(550000000000l), Quantity.valueOf(150));
-			addDoubleUp(farm, farm6PNG, "Fudge fungus",
-					"Farms are twice as efficient.<br>\"A sugary parasite whose tendrils help cookie growth.<br>Please do not breathe in the spores. In case of spore ingestion, seek medical help within the next 36 seconds.\"",
+			addDoubleUp(farm, farm6PNG, "Fudge fungus", farmAct,
+					"\"A sugary parasite whose tendrils help cookie growth.<br>Please do not breathe in the spores. In case of spore ingestion, seek medical help within the next 36 seconds.\"",
 					Quantity.valueOf(550000000000000l), Quantity.valueOf(200));
-			addDoubleUp(farm, farm7PNG, "Wheat triffids",
-					"Farms are twice as efficient.<br>\"Taking care of crops is so much easier when your plants can just walk about and help around the farm.<br>Do not pet. Do not feed. Do not attempt to converse with.\"",
+			addDoubleUp(farm, farm7PNG, "Wheat triffids", farmAct,
+					"\"Taking care of crops is so much easier when your plants can just walk about and help around the farm.<br>Do not pet. Do not feed. Do not attempt to converse with.\"",
 					Quantity.valueOf(550000000000000000l), Quantity.valueOf(250));
-			addDoubleUp(farm, farm8PNG, "Humane pesticides",
-					"Farms are twice as efficient.<br>\"Made by people, for people, from people and ready to unleash some righteous scorching pain on those pesky insects that so deserve it.\"",
+			addDoubleUp(farm, farm8PNG, "Humane pesticides", farmAct,
+					"\"Made by people, for people, from people and ready to unleash some righteous scorching pain on those pesky insects that so deserve it.\"",
 					Quantity.valueOf("550000000000000000000"), Quantity.valueOf(300));
-			addDoubleUp(farm, farm9PNG, "Barnstars",
-					"Farms are twice as efficient.<br>\"Ah, yes. These help quite a bit. Somehow.\"",
+			addDoubleUp(farm, farm9PNG, "Barnstars", farmAct, "\"Ah, yes. These help quite a bit. Somehow.\"",
 					Quantity.valueOf("550000000000000000000000"), Quantity.valueOf(350));
-			addDoubleUp(farm, farm10PNG, "Lindworms",
-					"Farms are twice as efficient.<br>\"You have to import these from far up north, but they really help areate the soil!\"",
+			addDoubleUp(farm, farm10PNG, "Lindworms", farmAct,
+					"\"You have to import these from far up north, but they really help areate the soil!\"",
 					Quantity.valueOf("5500000000000000000000000000"), Quantity.valueOf(400));
-			addDoubleUp(farm, farm11PNG, "Global seed vault",
-					"Farms are twice as efficient.<br>\"An enormous genetic repository that could outlive an apocalypse. Guarantees the survival of your empire, or at the very least its agricultural components, should civilization fall. Which should be any day now.\"",
+			addDoubleUp(farm, farm11PNG, "Global seed vault", farmAct,
+					"\"An enormous genetic repository that could outlive an apocalypse. Guarantees the survival of your empire, or at the very least its agricultural components, should civilization fall. Which should be any day now.\"",
 					Quantity.valueOf("55000000000000000000000000000000"), Quantity.valueOf(450));
-			addDoubleUp(farm, farm12PNG, "Reverse-veganism",
-					"Farms are twice as efficient.<br>\"Plants aren't for eating, plants are for exploitative agriculture and astronomical profit margins!\"",
+			addDoubleUp(farm, farm12PNG, "Reverse-veganism", farmAct,
+					"\"Plants aren't for eating, plants are for exploitative agriculture and astronomical profit margins!\"",
 					Quantity.valueOf("550000000000000000000000000000000000"), Quantity.valueOf(500));
 
 			ImageIcon mine0PNG = new ImageIcon(ImageIO.read(getSource("upgrades/mineUP0.png")));
@@ -1103,6 +1172,44 @@ public class Main extends Mod {
 			ImageIcon mine11PNG = new ImageIcon(ImageIO.read(getSource("upgrades/mineUP11.png")));
 			ImageIcon mine12PNG = new ImageIcon(ImageIO.read(getSource("upgrades/mineUP12.png")));
 
+			String mineAct = "Mines are <B>twice</B> as efficient.";
+			addDoubleUp(mine, mine0PNG, "Sugar gas", mineAct,
+					"\"A pink, volatile gas, found in the depths of some chocolate caves.\"", Quantity.valueOf(120000),
+					Quantity.valueOf(1));
+			addDoubleUp(mine, mine1PNG, "Megadrill", mineAct, "\"You're in deep.\"", Quantity.valueOf(600000),
+					Quantity.valueOf(5));
+			addDoubleUp(mine, mine2PNG, "Ultradrill", mineAct, "\"Finally caved in?\"", Quantity.valueOf(6000000),
+					Quantity.valueOf(25));
+			addDoubleUp(mine, mine3PNG, "Ultimadrill", mineAct, "\"Pierce the heavens, etc.\"",
+					Quantity.valueOf(600000000), Quantity.valueOf(50));
+			addDoubleUp(mine, mine4PNG, "H-bomb mining", mineAct,
+					"\"Questionable efficiency, but spectacular nonetheless.\"", Quantity.valueOf(60000000000l),
+					Quantity.valueOf(100));
+			addDoubleUp(mine, mine5PNG, "Coreforge", mineAct,
+					"\"You've finally dug a tunnel down to the Earth's core. It's pretty warm down here.\"",
+					Quantity.valueOf(6000000000000l), Quantity.valueOf(150));
+			addDoubleUp(mine, mine6PNG, "Planetsplitters", mineAct,
+					"\"These new state-of-the-art excavators have been tested on Merula, Globort and Flwanza VI, among other distant planets which have been curiously quiet lately.\"",
+					Quantity.valueOf(6000000000000000l), Quantity.valueOf(200));
+			addDoubleUp(mine, mine7PNG, "Canola oil wells", mineAct,
+					"\"A previously untapped resource, canola oil permeates the underground olifers which grant it its particular taste and lucrative properties.\"",
+					Quantity.valueOf(6000000000000000000l), Quantity.valueOf(250));
+			addDoubleUp(mine, mine8PNG, "Mole people", mineAct,
+					"\"Engineered from real human beings within your very labs, these sturdy little folks have a knack for finding the tastiest underground minerals in conditions that more expensive machinery probably wouldn't survive.\"",
+					Quantity.valueOf("6000000000000000000000"), Quantity.valueOf(300));
+			addDoubleUp(mine, mine9PNG, "Mine canaries", mineAct,
+					"\"These aren't used for anything freaky! The miners just enjoy having a pet or two down there.\"",
+					Quantity.valueOf("6000000000000000000000000"), Quantity.valueOf(350));
+			addDoubleUp(mine, mine10PNG, "Bore again", mineAct,
+					"\"After extracting so much sediment for so long, you've formed some veritable mountains of your own from the accumulated piles of rock and dirt. Time to dig through those and see if you find anything fun!\"",
+					Quantity.valueOf("60000000000000000000000000000"), Quantity.valueOf(400));
+			addDoubleUp(mine, mine11PNG, "Air mining", mineAct,
+					"\"You've dug your drills through just about every solid surface you could find. But did you know recent advances have revealed untold riches hiding within non-solid surfaces too?\"",
+					Quantity.valueOf("600000000000000000000000000000000"), Quantity.valueOf(450));
+			addDoubleUp(mine, mine12PNG, "Caramel alloys", mineAct,
+					"\"Your geologists have isolated a family of once-overlooked sugary ores that, when combined, may be turned into even more cookie ingredients. Your millions of miles of previously useless tunnels probably house insane amounts of the stuff!\"",
+					Quantity.valueOf("6000000000000000000000000000000000000"), Quantity.valueOf(500));
+
 			ImageIcon factory0PNG = new ImageIcon(ImageIO.read(getSource("upgrades/factoryUP0.png")));
 			ImageIcon factory1PNG = new ImageIcon(ImageIO.read(getSource("upgrades/factoryUP1.png")));
 			ImageIcon factory2PNG = new ImageIcon(ImageIO.read(getSource("upgrades/factoryUP2.png")));
@@ -1117,6 +1224,42 @@ public class Main extends Mod {
 			ImageIcon factory11PNG = new ImageIcon(ImageIO.read(getSource("upgrades/factoryUP11.png")));
 			ImageIcon factory12PNG = new ImageIcon(ImageIO.read(getSource("upgrades/factoryUP12.png")));
 
+			String factoryAct = "Factories are <B>twice</B> as efficient.";
+			addDoubleUp(factory, factory0PNG, "Sturdier conveyor belts", factoryAct, "\"You're going places.\"",
+					Quantity.valueOf("1300000"), Quantity.valueOf(1));
+			addDoubleUp(factory, factory1PNG, "Child labor", factoryAct, "\"Cheaper, healthier workforce.\"",
+					Quantity.valueOf("6500000"), Quantity.valueOf(5));
+			addDoubleUp(factory, factory2PNG, "Sweatshop", factoryAct, "\"Slackers will be terminated.\"",
+					Quantity.valueOf("65000000"), Quantity.valueOf(25));
+			addDoubleUp(factory, factory3PNG, "Radium reactors", factoryAct, "\"Gives your cookies a healthy glow.\"",
+					Quantity.valueOf("6500000000"), Quantity.valueOf(50));
+			addDoubleUp(factory, factory4PNG, "Recombobulators", factoryAct,
+					"\"A major part of cookie recombobulation.\"", Quantity.valueOf("650000000000"),
+					Quantity.valueOf(100));
+			addDoubleUp(factory, factory5PNG, "Deep-bake process", factoryAct,
+					"\"A patented process increasing cookie yield two-fold for the same amount of ingredients. Don't ask how, don't take pictures, and be sure to wear your protective suit.\"",
+					Quantity.valueOf("65000000000000"), Quantity.valueOf(150));
+			addDoubleUp(factory, factory6PNG, "Cyborg workforce", factoryAct,
+					"\"Semi-synthetic organisms don't slack off, don't unionize, and have 20% shorter lunch breaks, making them ideal labor fodder.\"",
+					Quantity.valueOf("65000000000000000"), Quantity.valueOf(200));
+			addDoubleUp(factory, factory7PNG, "78-hour days", factoryAct, "\"Why didn't we think of this earlier?\"",
+					Quantity.valueOf("65000000000000000000"), Quantity.valueOf(250));
+			addDoubleUp(factory, factory8PNG, "Machine learning", factoryAct,
+					"\"You figured you might get better productivity if you actually told your workers to learn how to work the machines. Sometimes, it's the little things...\"",
+					Quantity.valueOf("65000000000000000000000"), Quantity.valueOf(300));
+			addDoubleUp(factory, factory9PNG, "Brownie point system", factoryAct,
+					"\"Oh, these are lovely! You can now reward your factory employees for good behavior, such as working overtime or snitching on coworkers. 58 brownie points gets you a little picture of a brownie, and 178 of those pictures gets you an actual brownie piece for you to do with as you please! Infantilizing? Maybe. Oodles of fun? You betcha!\"",
+					Quantity.valueOf("65000000000000000000000000"), Quantity.valueOf(350));
+			addDoubleUp(factory, factory10PNG, "\"Volunteer\" interns", factoryAct,
+					"\"If you're bad at something, always do it for free.\"",
+					Quantity.valueOf("650000000000000000000000000000"), Quantity.valueOf(400));
+			addDoubleUp(factory, factory11PNG, "Behavioral reframing", factoryAct,
+					"\"Through careful social engineering you've convinced your workers that \"union\" is a slur that only the most vile and repugnant filth among us would ever dare utter! Sometimes progress isn't in the big machines, it's in the little lies!\"",
+					Quantity.valueOf("6500000000000000000000000000000000"), Quantity.valueOf(450));
+			addDoubleUp(factory, factory12PNG, "The infinity engine", factoryAct,
+					"\"In this house, I guess we don't care much for the laws of thermodynamics.\"",
+					Quantity.valueOf("6000000000000000000000000000000000000"), Quantity.valueOf(500));
+
 			ImageIcon bank0PNG = new ImageIcon(ImageIO.read(getSource("upgrades/bankUP0.png")));
 			ImageIcon bank1PNG = new ImageIcon(ImageIO.read(getSource("upgrades/bankUP1.png")));
 			ImageIcon bank2PNG = new ImageIcon(ImageIO.read(getSource("upgrades/bankUP2.png")));
@@ -1130,6 +1273,9 @@ public class Main extends Mod {
 			ImageIcon bank10PNG = new ImageIcon(ImageIO.read(getSource("upgrades/bankUP10.png")));
 			ImageIcon bank11PNG = new ImageIcon(ImageIO.read(getSource("upgrades/bankUP11.png")));
 			ImageIcon bank12PNG = new ImageIcon(ImageIO.read(getSource("upgrades/bankUP12.png")));
+
+//			String factoryAct = "Factories are <B>twice</B> as efficient.";
+//			addDoubleUp(factory, factory0PNG, "", factoryAct, "\"\"", Quantity.valueOf("1300000"), Quantity.valueOf(1));
 
 			ImageIcon temple0PNG = new ImageIcon(ImageIO.read(getSource("upgrades/templeUP0.png")));
 			ImageIcon temple1PNG = new ImageIcon(ImageIO.read(getSource("upgrades/templeUP1.png")));

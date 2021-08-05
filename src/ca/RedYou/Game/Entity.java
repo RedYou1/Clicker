@@ -40,7 +40,8 @@ public abstract class Entity {
 			Quantity prod = new Quantity(production(new Quantity(q)));
 
 			prod.mult(multiplier);
-			button.setText("<html>" + q + " " + name() + "<br>" + prod + " cps<br>" + price(q) + " cookies" + "<html>");
+			button.setText("<html><B>" + q + " " + name() + "</B><br>" + prod + " cps<br><I>" + price(q)
+					+ " cookies</I><html>");
 
 			for (Function<Entity, Void> a : buyEvents) {
 				a.apply(this);

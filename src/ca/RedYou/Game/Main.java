@@ -110,8 +110,9 @@ public class Main {
 			b.addActionListener(k -> {
 				UpgradeController.getInstance().buy(ups[a]);
 			});
-			String t1 = "<html><center>" + ups[i].name() + "<br>" + ups[i].price() + " cookies" + "<html>";
-			String t2 = "<html><center>" + ups[i].desc() + "<html>";
+			String t1 = "<html><center><B>" + ups[i].name() + "</B><br>" + ups[i].actiondesc() + "<br><I>"
+					+ ups[i].price() + " cookies</I><html>";
+			String t2 = "<html><center>" + ups[i].desc() + "<br><I>" + ups[i].price() + " cookies</I><html>";
 			upgrades.setBouton(t1, 0, i, b);
 
 			b.addMouseListener(new MouseListener() {
@@ -154,7 +155,7 @@ public class Main {
 		g.setLabel(0, 0, Player.getInstance().getMoney().toString(), money);
 		g.setLabel(0, 1, clickcps.getText(), clickcps);
 		g.setLabel(0, 2, cps.getText(), cps);
-		Dimension d = new Dimension(200, 150);
+		Dimension d = new Dimension(250, 150);
 		g.setSize(d);
 		g.setPreferredSize(d);
 		g.setMaximumSize(d);
@@ -203,8 +204,8 @@ public class Main {
 					ents[i].production(new Quantity(Player.getInstance().getEntityQuantity(ents[i]))));
 			prod.mult(ents[i].multiplier);
 			Quantity q = Player.getInstance().getEntityQuantity(ents[i]);
-			entites.setBouton("<html>" + q + " " + ents[i].name() + "<br>" + prod + " cps<br>" + ents[i].price(q)
-					+ " cookies" + "<html>", 0, i, b);
+			entites.setBouton("<html><B>" + q + " " + ents[i].name() + "</B><br>" + prod + " cps<br><I>"
+					+ ents[i].price(q) + " cookies</I><html>", 0, i, b);
 
 			b.setSize(d);
 			b.setPreferredSize(d);

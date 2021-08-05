@@ -8,6 +8,8 @@ public interface Upgrade {
 
 	public String name();
 
+	public String actiondesc();
+
 	public String desc();
 
 	public Quantity price();
