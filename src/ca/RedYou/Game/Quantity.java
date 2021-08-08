@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -27,16 +29,36 @@ import java.util.function.Function;
  */
 public class Quantity implements Comparable<Quantity> {
 
-	private List<Integer> q;
+	private List<Short> q;
 	private int div;
 	public boolean positif;
+
+	public static Quantity MAX_VALUE() {
+		Quantity q = new Quantity();
+		q.q = Arrays.asList(new Short[(int) Math.min(Integer.MAX_VALUE, Runtime.getRuntime().freeMemory() / 4)]);
+		Collections.fill(q.q, (short) 999);
+		return q;
+	}
+
+	public static Quantity MIN_VALUE() {
+		Quantity q = MAX_VALUE();
+		q.positif = false;
+		return q;
+	}
+
+	public static Quantity MAX_PRECISION() {
+		Quantity q = new Quantity();
+		q.q.set(0, (short) 1);
+		q.div = Integer.MAX_VALUE;
+		return q;
+	}
 
 	/**
 	 * contains 0
 	 */
 	public Quantity() {
-		q = new ArrayList<Integer>();
-		q.add(0);
+		q = new ArrayList<Short>();
+		q.add((short) 0);
 		div = 0;
 		positif = true;
 	}
@@ -70,19 +92,19 @@ public class Quantity implements Comparable<Quantity> {
 			Quantity y = valueOf(3);
 			y.mult(valueOf(q.size() - 1));
 			a.add(y);
-			int t = q.get(q.size() - 1);
-			q = new ArrayList<Integer>();
+			short t = q.get(q.size() - 1);
+			q = new ArrayList<Short>();
 			q.add(t);
 		}
 
 		if (q.get(0) >= 100) {
 			a.add(valueOf(2));
-			q.set(0, q.get(0) / 100);
+			q.set(0, (short) (q.get(0) / 100));
 		}
 
 		if (q.get(0) >= 10) {
 			a.add(valueOf(1));
-			q.set(0, q.get(0) / 10);
+			q.set(0, (short) (q.get(0) / 10));
 		}
 
 		return a;
@@ -249,8 +271,8 @@ public class Quantity implements Comparable<Quantity> {
 	// (3. Optimized divide and conquer approach)
 	public void pow(Quantity expo) {
 		if (equals(new Quantity())) {
-			q = new ArrayList<Integer>();
-			q.add(0);
+			q = new ArrayList<Short>();
+			q.add((short) 0);
 			div = 0;
 			positif = true;
 			return;
@@ -265,8 +287,8 @@ public class Quantity implements Comparable<Quantity> {
 		}
 
 		if (equals(valueOf(1)) || expo.equals(new Quantity())) {
-			q = new ArrayList<Integer>();
-			q.add(1);
+			q = new ArrayList<Short>();
+			q.add((short) 1);
 			div = 0;
 			positif = true;
 			return;
@@ -293,7 +315,7 @@ public class Quantity implements Comparable<Quantity> {
 
 			Quantity u = valueOf(1);
 			for (int i = 0; i < t.div; i++) {
-				u.q.add(0, 0);
+				u.q.add(0, (short) 0);
 			}
 			t.div = 0;
 
@@ -379,7 +401,7 @@ public class Quantity implements Comparable<Quantity> {
 		for (int j = q.size() - 1; j >= 0; j--) {
 			rest.add(valueOf(q.get(j)));
 
-			int a = 0;
+			short a = 0;
 
 			while (rest.compareTo(i) > -1) {
 				a++;
@@ -394,7 +416,7 @@ public class Quantity implements Comparable<Quantity> {
 				q.remove(j);
 
 			if (j > 0)
-				rest.q.add(0, 0);
+				rest.q.add(0, (short) 0);
 		}
 
 		q = rest.q;
@@ -420,7 +442,7 @@ public class Quantity implements Comparable<Quantity> {
 		for (int j = q.size() - 1; j >= 0; j--) {
 			rest.q.add(0, q.get(j));
 
-			int a = 0;
+			short a = 0;
 
 			while (rest.compareTo(i) > -1) {
 				a++;
@@ -446,7 +468,7 @@ public class Quantity implements Comparable<Quantity> {
 			if (div > 0)
 				div--;
 			else
-				q.add(0, 0);
+				q.add(0, (short) 0);
 		}
 		div += dfinal;
 
@@ -457,7 +479,7 @@ public class Quantity implements Comparable<Quantity> {
 		int ticomp = i.compareTo(new Quantity());
 		if (ticomp == 0) {
 			q = new ArrayList<>();
-			q.add(0);
+			q.add((short) 0);
 			positif = true;
 			div = 0;
 			return;
@@ -479,7 +501,7 @@ public class Quantity implements Comparable<Quantity> {
 					mult.add(t);
 				}
 				for (int j = 0; j < l; j++) {
-					mult.q.add(0, 0);
+					mult.q.add(0, (short) 0);
 				}
 				rep.add(mult);
 			}
@@ -499,12 +521,12 @@ public class Quantity implements Comparable<Quantity> {
 	public void add(Quantity o) {
 		o = new Quantity(o);
 		while (div < o.div) {
-			q.add(0, 0);
+			q.add(0, (short) 0);
 			div++;
 		}
 
 		while (div > o.div) {
-			o.q.add(0, 0);
+			o.q.add(0, (short) 0);
 			o.div++;
 		}
 
@@ -513,7 +535,7 @@ public class Quantity implements Comparable<Quantity> {
 				if (i >= q.size())
 					q.add(o.q.get(i));
 				else
-					q.set(i, q.get(i) + o.q.get(i));
+					q.set(i, (short) (q.get(i) + o.q.get(i)));
 			}
 		else
 			for (int i = 0; i < o.q.size(); i++) {
@@ -521,14 +543,14 @@ public class Quantity implements Comparable<Quantity> {
 					positif = o.positif;
 					q.add(o.q.get(i));
 				} else {
-					q.set(i, q.get(i) - o.q.get(i));
+					q.set(i, (short) (q.get(i) - o.q.get(i)));
 					if (q.get(i) < 0) {
 						if (i + 1 == q.size()) {
 							positif = o.positif;
-							q.set(i, q.get(i) * -1);
+							q.set(i, (short) (q.get(i) * -1));
 						} else {
-							q.set(i, q.get(i) + 1000);
-							q.set(i + 1, q.get(i + 1) - 1);
+							q.set(i, (short) (q.get(i) + 1000));
+							q.set(i + 1, (short) (q.get(i + 1) - 1));
 						}
 					}
 				}
@@ -538,7 +560,7 @@ public class Quantity implements Comparable<Quantity> {
 
 	private void update() {
 		if (q.size() == 0) {
-			q.add(0);
+			q.add((short) 0);
 			div = 0;
 			positif = true;
 			return;
@@ -546,23 +568,23 @@ public class Quantity implements Comparable<Quantity> {
 		for (int i = 0; i < q.size(); i++) {
 			if (q.get(i) < 0) {
 				if (q.size() <= i + 1) {
-					q.set(i, -1 * q.get(i));
+					q.set(i, (short) (-1 * q.get(i)));
 					positif = !positif;
 					break;
 				}
 
-				int qt = ((-1 * q.get(i)) / 1000) + 1;
-				q.set(i, q.get(i) + (qt * 1000));
-				q.set(i + 1, q.get(i + 1) - qt);
+				short qt = (short) (((-1 * q.get(i)) / 1000) + 1);
+				q.set(i, (short) (q.get(i) + (qt * 1000)));
+				q.set(i + 1, (short) (q.get(i + 1) - qt));
 			}
 
 			if (q.get(i) >= 1000) {
-				int qt = q.get(i) / 1000;
-				q.set(i, q.get(i) - (qt * 1000));
+				short qt = (short) (q.get(i) / 1000);
+				q.set(i, (short) (q.get(i) - (qt * 1000)));
 				if (q.size() == i + 1)
 					q.add(qt);
 				else
-					q.set(i + 1, q.get(i + 1) + qt);
+					q.set(i + 1, (short) (q.get(i + 1) + qt));
 			}
 		}
 
@@ -575,7 +597,7 @@ public class Quantity implements Comparable<Quantity> {
 			div--;
 		}
 		if (q.size() == 0) {
-			q.add(0);
+			q.add((short) 0);
 			div = 0;
 			positif = true;
 			return;
@@ -616,11 +638,11 @@ public class Quantity implements Comparable<Quantity> {
 			}
 
 			for (int i = 0; i < a; i++) {
-				q.set(i, 0);
+				q.set(i, (short) 0);
 			}
 
 			if (b > 0)
-				q.set(0, (int) (Math.round(q.get(0) / Math.pow(10, b)) * Math.pow(10, b)));
+				q.set(0, (short) (Math.round(q.get(0) / Math.pow(10, b)) * Math.pow(10, b)));
 		} else {
 			space *= -1;
 			int a = (space + 2) / 3;
@@ -633,10 +655,10 @@ public class Quantity implements Comparable<Quantity> {
 			}
 
 			if (b > 0)
-				q.set(0, (int) (Math.round(q.get(0) / Math.pow(10, b)) * Math.pow(10, b)));
+				q.set(0, (short) (Math.round(q.get(0) / Math.pow(10, b)) * Math.pow(10, b)));
 
 			if (last >= 500) {
-				q.set(0, q.get(0) + 1);
+				q.set(0, (short) (q.get(0) + 1));
 				update();
 			}
 		}
@@ -664,7 +686,7 @@ public class Quantity implements Comparable<Quantity> {
 
 		if (space >= 0) {
 			if (div >= q.size()) {
-				q = new ArrayList<Integer>();
+				q = new ArrayList<Short>();
 				div = 0;
 				positif = true;
 				return;
@@ -679,11 +701,11 @@ public class Quantity implements Comparable<Quantity> {
 			}
 
 			for (int i = 0; i < a; i++) {
-				q.set(i, 0);
+				q.set(i, (short) 0);
 			}
 
 			if (b > 0)
-				q.set(0, (int) (Math.ceil(q.get(0) / Math.pow(10, b)) * Math.pow(10, b)));
+				q.set(0, (short) (Math.ceil(q.get(0) / Math.pow(10, b)) * Math.pow(10, b)));
 		} else {
 			space *= -1;
 			int a = (space + 2) / 3;
@@ -695,7 +717,7 @@ public class Quantity implements Comparable<Quantity> {
 			}
 
 			if (b > 0)
-				q.set(0, (int) (Math.ceil(q.get(0) / Math.pow(10, b)) * Math.pow(10, b)));
+				q.set(0, (short) (Math.ceil(q.get(0) / Math.pow(10, b)) * Math.pow(10, b)));
 		}
 	}
 
@@ -728,11 +750,11 @@ public class Quantity implements Comparable<Quantity> {
 			}
 
 			for (int i = 0; i < a; i++) {
-				q.set(i, 0);
+				q.set(i, (short) 0);
 			}
 
 			if (b > 0)
-				q.set(0, (int) (Math.floor(q.get(0) / Math.pow(10, b)) * Math.pow(10, b)));
+				q.set(0, (short) (Math.floor(q.get(0) / Math.pow(10, b)) * Math.pow(10, b)));
 		} else {
 			space *= -1;
 			int a = (space + 2) / 3;
@@ -744,7 +766,7 @@ public class Quantity implements Comparable<Quantity> {
 			}
 
 			if (b > 0)
-				q.set(0, (int) (Math.floor(q.get(0) / Math.pow(10, b)) * Math.pow(10, b)));
+				q.set(0, (short) (Math.floor(q.get(0) / Math.pow(10, b)) * Math.pow(10, b)));
 		}
 	}
 
@@ -764,7 +786,7 @@ public class Quantity implements Comparable<Quantity> {
 
 		q.q = new ArrayList<>();
 		while (i > 0) {
-			q.q.add((int) (i % 1000));
+			q.q.add((short) (i % 1000));
 			i /= 1000;
 		}
 		return q;
@@ -793,7 +815,7 @@ public class Quantity implements Comparable<Quantity> {
 
 		q.q = new ArrayList<>();
 		while (a > 0) {
-			q.q.add((int) (a % 1000));
+			q.q.add((short) (a % 1000));
 			a /= 1000;
 		}
 		return q;
@@ -807,7 +829,7 @@ public class Quantity implements Comparable<Quantity> {
 			q.positif = false;
 		}
 
-		q.q = new ArrayList<Integer>();
+		q.q = new ArrayList<Short>();
 
 		while (s.length() > 0) {
 			if (s.charAt(s.length() - 1) == '.') {
@@ -819,7 +841,7 @@ public class Quantity implements Comparable<Quantity> {
 
 			String a = s.substring(s.length() - Math.min(s.length(), 3), s.length());
 
-			q.q.add(Integer.valueOf(a));
+			q.q.add(Short.valueOf(a));
 
 			s = s.substring(0, s.length() - a.length());
 		}
@@ -884,7 +906,7 @@ public class Quantity implements Comparable<Quantity> {
 		else
 			q.positif = true;
 
-		q.q = new ArrayList<Integer>();
+		q.q = new ArrayList<Short>();
 		q.div = 0;
 
 		char start;
@@ -901,7 +923,7 @@ public class Quantity implements Comparable<Quantity> {
 			s += String.valueOf((char) br.read());
 			s += String.valueOf((char) br.read());
 
-			q.q.add(0, Integer.valueOf(s));
+			q.q.add(0, Short.valueOf(s));
 		}
 
 		if (q.div > 0)
@@ -1000,25 +1022,11 @@ public class Quantity implements Comparable<Quantity> {
 			size *= -1;
 			size += 2;
 		}
-		List<Character> s = new ArrayList<Character>();
-		s.add((char) 96);
-		if (size > 1) {
-			while (size > 1) {
-				int i = 0;
-				while (true) {
-					s.set(i, (char) (s.get(i) + 1));
-					if (s.get(i) > 122) {
-						s.set(i, (char) 97);
-						s.add((char) 97);
-						i++;
-					} else {
-						break;
-					}
-				}
-				size--;
-			}
-			for (int i = 0; i < s.size(); i++) {
-				h = s.get(i) + h;
+		size--;
+		if (size > 0) {
+			while (size > 0) {
+				h = ((char) (96 + (size % 26))) + h;
+				size /= 26;
 			}
 			if (tsize)
 				h = " -" + h;
