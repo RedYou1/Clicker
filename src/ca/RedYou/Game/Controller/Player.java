@@ -26,20 +26,23 @@ public class Player {
 				FileReader fr = new FileReader(save);
 				BufferedReader br = new BufferedReader(fr);
 
-				Quantity money = new Quantity(br.readLine());
-				Quantity clickMult = new Quantity(br.readLine());
+				Quantity money = Quantity.load(br);
+				br.readLine();
+				Quantity clickMult = Quantity.load(br);
+				br.readLine();
+
 				String line;
 				EntityController ents = EntityController.getInstance();
 				ModController mods = ModController.getInstance();
 				while ((line = br.readLine()) != null && line.length() > 0) {
-					String[] l = line.split("\\|");
-					String[] m = l[0].split("\\:");
+					String[] m = line.split("\\:");
 
 					Mod mod = mods.getMod(m[0]);
 
 					Entity ent = ents.getEntity(mod, m[1]);
 
-					entities.put(ent, new Quantity(l[1]));
+					entities.put(ent, Quantity.load(br));
+					br.readLine();
 				}
 
 				br.close();
@@ -64,14 +67,16 @@ public class Player {
 			FileWriter fw = new FileWriter(save);
 			BufferedWriter bw = new BufferedWriter(fw);
 
-			bw.write(money.extract());
+			money.save(bw);
 			bw.newLine();
-			bw.write(clickMult.extract());
+			clickMult.save(bw);
 			bw.newLine();
 
 			EntityController ents = EntityController.getInstance();
 			for (Entry<Entity, Quantity> a : entities.entrySet()) {
-				bw.write(ents.getMod(a.getKey()).name() + ":" + a.getKey().name() + "|" + a.getValue().extract());
+				bw.write(ents.getMod(a.getKey()).name() + ":" + a.getKey().name());
+				bw.newLine();
+				a.getValue().save(bw);
 				bw.newLine();
 			}
 

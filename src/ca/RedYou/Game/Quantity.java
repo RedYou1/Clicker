@@ -1,5 +1,8 @@
 package ca.RedYou.Game;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -47,35 +50,6 @@ public class Quantity implements Comparable<Quantity> {
 		this.q = new ArrayList<>(q.q);
 		this.positif = q.positif;
 		this.div = q.div;
-	}
-
-	public Quantity(String s) {
-		positif = true;
-		if (s.startsWith("-")) {
-			s = s.substring(1, s.length());
-			positif = false;
-		}
-
-		if (s.replace(".", "").length() % 3 != 0)
-			throw new ArithmeticException("is that number from Quantity.extract()?");
-
-		q = new ArrayList<Integer>();
-		div = 0;
-
-		while (s.length() > 0) {
-			if (s.charAt(s.length() - 1) == '.') {
-				if (div != 0)
-					throw new ArithmeticException("you cant have multiple \'.\' in a single number");
-				div = s.length() / 3;
-				s = s.substring(0, s.length() - 1);
-			}
-
-			q.add(Integer.valueOf(s.substring(s.length() - 3, s.length())));
-
-			s = s.substring(0, s.length() - 3);
-		}
-
-		update();
 	}
 
 	/**
@@ -898,21 +872,67 @@ public class Quantity implements Comparable<Quantity> {
 		return false;
 	}
 
-	public String extract() {
+	public static Quantity load(BufferedReader br) throws IOException {
+
+		if (br.read() != 'Q' || br.read() != 't' || br.read() != '[')
+			throw new IOException("This isn\'t a Quantity save.");
+
+		Quantity q = new Quantity();
+
+		if (br.read() == '-')
+			q.positif = false;
+		else
+			q.positif = true;
+
+		q.q = new ArrayList<Integer>();
+		q.div = 0;
+
+		char start;
+
+		while ((start = (char) br.read()) != ']') {
+			if (start == '.') {
+				if (q.div != 0)
+					throw new ArithmeticException("you cant have multiple \'.\' in a single number");
+				q.div = q.q.size();
+				start = (char) br.read();
+			}
+
+			String s = String.valueOf(start);
+			s += String.valueOf((char) br.read());
+			s += String.valueOf((char) br.read());
+
+			q.q.add(0, Integer.valueOf(s));
+		}
+
+		if (q.div > 0)
+			q.div = q.q.size() - q.div;
+
+		q.update();
+		return q;
+	}
+
+	public void save(BufferedWriter bw) throws IOException {
 		update();
-		String s = "";
-		if (!positif)
-			s += "-";
+
+		bw.write("Qt[");
+
+		bw.write(positif ? '+' : '-');
+
+		if (div == q.size())
+			bw.write("000");
+
 		for (int i = q.size() - 1; i >= 0; i--) {
 			if (i + 1 == div)
-				s += ".";
+				bw.write('.');
 
 			String t = String.valueOf(q.get(i));
 			while (t.length() < 3)
 				t = "0" + t;
-			s += t;
+
+			bw.write(t);
 		}
-		return s;
+
+		bw.write(']');
 	}
 
 	public String fullString() {
