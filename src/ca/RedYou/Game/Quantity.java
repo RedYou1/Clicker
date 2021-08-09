@@ -33,15 +33,29 @@ public class Quantity implements Comparable<Quantity> {
 	private int div;
 	public boolean positif;
 
-	public static Quantity MAX_VALUE() {
+	/**
+	 * 
+	 * @param size the amount of 999<br>
+	 *             Runtime.getRuntime().freeMemory() to get a reasonable big size.
+	 * @return
+	 */
+	public static Quantity MAX_VALUE(int size) {
+		if (size <= 0)
+			throw new ArithmeticException("you can't create a number with a negative or zero amount of digits.");
 		Quantity q = new Quantity();
-		q.q = Arrays.asList(new Short[(int) Math.min(Integer.MAX_VALUE, Runtime.getRuntime().freeMemory() / 4)]);
+		q.q = Arrays.asList(new Short[size]);
 		Collections.fill(q.q, (short) 999);
 		return q;
 	}
 
-	public static Quantity MIN_VALUE() {
-		Quantity q = MAX_VALUE();
+	/**
+	 * 
+	 * @param size the amount of 999<br>
+	 *             Runtime.getRuntime().freeMemory() to get a reasonable big size.
+	 * @return
+	 */
+	public static Quantity MIN_VALUE(int size) {
+		Quantity q = MAX_VALUE(size);
 		q.positif = false;
 		return q;
 	}
@@ -1025,7 +1039,12 @@ public class Quantity implements Comparable<Quantity> {
 		size--;
 		if (size > 0) {
 			while (size > 0) {
-				h = ((char) (96 + (size % 26))) + h;
+				int k = 96 + (size % 26);
+				if (k == 96) {
+					k = 'z';
+					size--;
+				}
+				h = (char) (k) + h;
 				size /= 26;
 			}
 			if (tsize)
