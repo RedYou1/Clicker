@@ -7,11 +7,12 @@ import java.util.function.Function;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+import ca.RedDevKit.BigNum;
 import ca.RedYou.Game.Controller.Player;
 
 public abstract class Entity {
 
-	public Quantity multiplier = Quantity.valueOf(1);
+	public BigNum multiplier = BigNum.valueOf(1);
 
 	public List<Function<Entity, Void>> buyEvents = new ArrayList<>();
 
@@ -19,25 +20,25 @@ public abstract class Entity {
 
 	public abstract ImageIcon icon();
 
-	public abstract Quantity production(Quantity quantity);
+	public abstract BigNum production(BigNum quantity);
 
-	public abstract Quantity price(Quantity quantity);
+	public abstract BigNum price(BigNum quantity);
 
 	public List<Function<Entity, Void>> getBuyEvents() {
 		return buyEvents;
 	}
 
 	public void buy(JButton button) {
-		Quantity q = Player.getInstance().getEntityQuantity(this);
+		BigNum q = Player.getInstance().getEntityBigNum(this);
 		if (Player.getInstance().getMoney().compareTo(price(q)) > -1) {
-			Player.getInstance().getMoney().sub(new Quantity(price(q)));
-			Main.last.sub(new Quantity(price(q)));
+			Player.getInstance().getMoney().sub(new BigNum(price(q)));
+			Main.last.sub(new BigNum(price(q)));
 
-			q.add(Quantity.valueOf(1));
+			q.add(BigNum.valueOf(1));
 
 			Main.money.setText(Player.getInstance().getMoney().toString());
 
-			Quantity prod = new Quantity(production(new Quantity(q)));
+			BigNum prod = new BigNum(production(new BigNum(q)));
 
 			prod.mult(multiplier);
 			button.setText("<html><B>" + q + " " + name() + "</B><br>" + prod + " cps<br><I>" + price(q)

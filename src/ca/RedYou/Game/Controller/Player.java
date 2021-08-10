@@ -9,26 +9,27 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import ca.RedDevKit.BigNum;
 import ca.RedYou.Game.*;
 
 public class Player {
 	private final File save = new File("save\\Player.sav");
 
-	private Map<Entity, Quantity> entities = new HashMap<>();
-	private Quantity money = new Quantity();
-	private Quantity clickMult = Quantity.valueOf(1);
+	private Map<Entity, BigNum> entities = new HashMap<>();
+	private BigNum money = new BigNum();
+	private BigNum clickMult = BigNum.valueOf(1);
 
 	public void start() {
 		if (save.exists()) {
 			try {
-				Map<Entity, Quantity> entities = new HashMap<Entity, Quantity>();
+				Map<Entity, BigNum> entities = new HashMap<Entity, BigNum>();
 
 				FileReader fr = new FileReader(save);
 				BufferedReader br = new BufferedReader(fr);
 
-				Quantity money = Quantity.load(br);
+				BigNum money = BigNum.load(br);
 				br.readLine();
-				Quantity clickMult = Quantity.load(br);
+				BigNum clickMult = BigNum.load(br);
 				br.readLine();
 
 				String line;
@@ -41,7 +42,7 @@ public class Player {
 
 					Entity ent = ents.getEntity(mod, m[1]);
 
-					entities.put(ent, Quantity.load(br));
+					entities.put(ent, BigNum.load(br));
 					br.readLine();
 				}
 
@@ -73,7 +74,7 @@ public class Player {
 			bw.newLine();
 
 			EntityController ents = EntityController.getInstance();
-			for (Entry<Entity, Quantity> a : entities.entrySet()) {
+			for (Entry<Entity, BigNum> a : entities.entrySet()) {
 				bw.write(ents.getMod(a.getKey()).name() + ":" + a.getKey().name());
 				bw.newLine();
 				a.getValue().save(bw);
@@ -96,17 +97,17 @@ public class Player {
 		return instance;
 	}
 
-	public Quantity getEntityQuantity(Entity ent) {
+	public BigNum getEntityBigNum(Entity ent) {
 		if (!entities.containsKey(ent))
-			entities.put(ent, new Quantity());
+			entities.put(ent, new BigNum());
 		return entities.get(ent);
 	}
 
-	public Quantity getMoney() {
+	public BigNum getMoney() {
 		return money;
 	}
 
-	public Quantity getClickMult() {
+	public BigNum getClickMult() {
 		return clickMult;
 	}
 }

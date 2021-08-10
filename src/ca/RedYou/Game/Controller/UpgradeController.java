@@ -9,6 +9,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.function.Function;
 
+import ca.RedDevKit.BigNum;
 import ca.RedYou.Game.*;
 
 public class UpgradeController {
@@ -90,8 +91,8 @@ public class UpgradeController {
 	public void buy(Upgrade up) {
 		if (upgrades.containsKey(up) && upgrades.get(up).apply(null)) {
 			if (Player.getInstance().getMoney().compareTo(up.price()) > -1) {
-				Player.getInstance().getMoney().sub(new Quantity(up.price()));
-				Main.last.sub(new Quantity(up.price()));
+				Player.getInstance().getMoney().sub(new BigNum(up.price()));
+				Main.last.sub(new BigNum(up.price()));
 
 				up.action();
 

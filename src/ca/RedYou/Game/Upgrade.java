@@ -2,6 +2,8 @@ package ca.RedYou.Game;
 
 import javax.swing.ImageIcon;
 
+import ca.RedDevKit.BigNum;
+
 public interface Upgrade {
 
 	public ImageIcon icon();
@@ -12,7 +14,7 @@ public interface Upgrade {
 
 	public String desc();
 
-	public Quantity price();
+	public BigNum price();
 
 	public void action();
 }

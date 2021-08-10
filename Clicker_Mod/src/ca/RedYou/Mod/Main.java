@@ -6,9 +6,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+import ca.RedDevKit.BigNum;
 import ca.RedYou.Game.Entity;
 import ca.RedYou.Game.Mod;
-import ca.RedYou.Game.Quantity;
 import ca.RedYou.Game.Upgrade;
 import ca.RedYou.Game.Controller.EntityController;
 import ca.RedYou.Game.Controller.Player;
@@ -16,38 +16,38 @@ import ca.RedYou.Game.Controller.UpgradeController;
 
 public class Main extends Mod {
 
-	public Quantity getPrice(int idint, Quantity amount) {
-		Quantity id = Quantity.valueOf(idint);
+	public BigNum getPrice(int idint, BigNum amount) {
+		BigNum id = BigNum.valueOf(idint);
 
-		Quantity a = new Quantity(id);
-		a.add(Quantity.valueOf(9));
+		BigNum a = new BigNum(id);
+		a.add(BigNum.valueOf(9));
 
-		if (id.equals(new Quantity()))
-			a.add(Quantity.valueOf(6));
+		if (id.equals(new BigNum()))
+			a.add(BigNum.valueOf(6));
 
-		if (id.compareTo(Quantity.valueOf(5)) >= 0) {
-			Quantity l = new Quantity(id);
-			l.sub(Quantity.valueOf(5));
-			l.pow(Quantity.valueOf(1.75));
+		if (id.compareTo(BigNum.valueOf(5)) >= 0) {
+			BigNum l = new BigNum(id);
+			l.sub(BigNum.valueOf(5));
+			l.pow(BigNum.valueOf(1.75));
 			a.add(l);
 		}
 
-		Quantity y = Quantity.valueOf(10);
-		y.pow(new Quantity(id));
+		BigNum y = BigNum.valueOf(10);
+		y.pow(new BigNum(id));
 		a.mult(y);
 
-		Quantity b = Quantity.valueOf(10);
-		Quantity b1 = new Quantity(a);
+		BigNum b = BigNum.valueOf(10);
+		BigNum b1 = new BigNum(a);
 		b1.ceil(0);
 		b1.log10();
 		b1.ceil(0);
-		b1.div(Quantity.valueOf(10));
+		b1.div(BigNum.valueOf(10));
 		b.pow(b1);
-		b.div(Quantity.valueOf(10));
+		b.div(BigNum.valueOf(10));
 		a.div(b);
 		a.round(0);
 		a.mult(b);
-		Quantity k = Quantity.valueOf(1.15);
+		BigNum k = BigNum.valueOf(1.15);
 		k.pow(amount);
 
 		a.mult(k);
@@ -56,16 +56,16 @@ public class Main extends Mod {
 		return a;
 	}
 
-	public void addDoubleUp(Entity ent, ImageIcon img, String name, String actiondesc, String desc, Quantity cost,
-			Quantity min) {
+	public void addDoubleUp(Entity ent, ImageIcon img, String name, String actiondesc, String desc, BigNum cost,
+			BigNum min) {
 		UpgradeController ups = UpgradeController.getInstance();
 		ups.addUpgrade(l -> {
-			return Player.getInstance().getEntityQuantity(ent).compareTo(min) > -1;
+			return Player.getInstance().getEntityBigNum(ent).compareTo(min) > -1;
 		}, this, new Upgrade() {
 
 			@Override
-			public Quantity price() {
-				return new Quantity(cost);
+			public BigNum price() {
+				return new BigNum(cost);
 			}
 
 			@Override
@@ -90,7 +90,7 @@ public class Main extends Mod {
 
 			@Override
 			public void action() {
-				ent.multiplier.mult(Quantity.valueOf(2));
+				ent.multiplier.mult(BigNum.valueOf(2));
 			}
 		});
 	}
@@ -117,10 +117,10 @@ public class Main extends Mod {
 			ImageIcon wizardPNG = new ImageIcon(ImageIO.read(getSource("wizard.png")));
 			ImageIcon idleversePNG = new ImageIcon(ImageIO.read(getSource("idleverse.png")));
 
-			final Quantity cursorUP = new Quantity();
+			final BigNum cursorUP = new BigNum();
 
 			Entity cursor = setEntity(new Entity() {
-				Quantity a = Quantity.valueOf(10);
+				BigNum a = BigNum.valueOf(10);
 
 				@Override
 				public String name() {
@@ -133,19 +133,19 @@ public class Main extends Mod {
 				}
 
 				@Override
-				public Quantity production(Quantity quantity) {
-					Quantity q = new Quantity(quantity);
-					q.div(new Quantity(a));
+				public BigNum production(BigNum BigNum) {
+					BigNum q = new BigNum(BigNum);
+					q.div(new BigNum(a));
 
-					if (cursorUP.compareTo(new Quantity()) > 0)
-						q.mult(new Quantity(cursorUP));
+					if (cursorUP.compareTo(new BigNum()) > 0)
+						q.mult(new BigNum(cursorUP));
 
 					return q;
 				}
 
 				@Override
-				public Quantity price(Quantity quantity) {
-					return getPrice(0, quantity);
+				public BigNum price(BigNum BigNum) {
+					return getPrice(0, BigNum);
 				}
 			});
 			Entity grandma = setEntity(new Entity() {
@@ -161,17 +161,17 @@ public class Main extends Mod {
 				}
 
 				@Override
-				public Quantity production(Quantity quantity) {
-					return quantity;
+				public BigNum production(BigNum BigNum) {
+					return BigNum;
 				}
 
 				@Override
-				public Quantity price(Quantity quantity) {
-					return getPrice(1, quantity);
+				public BigNum price(BigNum BigNum) {
+					return getPrice(1, BigNum);
 				}
 			});
 			Entity farm = setEntity(new Entity() {
-				Quantity a = Quantity.valueOf(8);
+				BigNum a = BigNum.valueOf(8);
 
 				@Override
 				public String name() {
@@ -184,19 +184,19 @@ public class Main extends Mod {
 				}
 
 				@Override
-				public Quantity production(Quantity quantity) {
-					Quantity q = new Quantity(quantity);
-					q.mult(new Quantity(a));
+				public BigNum production(BigNum BigNum) {
+					BigNum q = new BigNum(BigNum);
+					q.mult(new BigNum(a));
 					return q;
 				}
 
 				@Override
-				public Quantity price(Quantity quantity) {
-					return getPrice(2, quantity);
+				public BigNum price(BigNum BigNum) {
+					return getPrice(2, BigNum);
 				}
 			});
 			Entity mine = setEntity(new Entity() {
-				Quantity a = Quantity.valueOf(47);
+				BigNum a = BigNum.valueOf(47);
 
 				@Override
 				public String name() {
@@ -209,19 +209,19 @@ public class Main extends Mod {
 				}
 
 				@Override
-				public Quantity production(Quantity quantity) {
-					Quantity q = new Quantity(quantity);
-					q.mult(new Quantity(a));
+				public BigNum production(BigNum BigNum) {
+					BigNum q = new BigNum(BigNum);
+					q.mult(new BigNum(a));
 					return q;
 				}
 
 				@Override
-				public Quantity price(Quantity quantity) {
-					return getPrice(3, quantity);
+				public BigNum price(BigNum BigNum) {
+					return getPrice(3, BigNum);
 				}
 			});
 			Entity factory = setEntity(new Entity() {
-				Quantity a = Quantity.valueOf(260);
+				BigNum a = BigNum.valueOf(260);
 
 				@Override
 				public String name() {
@@ -234,19 +234,19 @@ public class Main extends Mod {
 				}
 
 				@Override
-				public Quantity production(Quantity quantity) {
-					Quantity q = new Quantity(quantity);
-					q.mult(new Quantity(a));
+				public BigNum production(BigNum BigNum) {
+					BigNum q = new BigNum(BigNum);
+					q.mult(new BigNum(a));
 					return q;
 				}
 
 				@Override
-				public Quantity price(Quantity quantity) {
-					return getPrice(4, quantity);
+				public BigNum price(BigNum BigNum) {
+					return getPrice(4, BigNum);
 				}
 			});
 			Entity bank = setEntity(new Entity() {
-				Quantity a = Quantity.valueOf(1400);
+				BigNum a = BigNum.valueOf(1400);
 
 				@Override
 				public String name() {
@@ -259,19 +259,19 @@ public class Main extends Mod {
 				}
 
 				@Override
-				public Quantity production(Quantity quantity) {
-					Quantity q = new Quantity(quantity);
-					q.mult(new Quantity(a));
+				public BigNum production(BigNum BigNum) {
+					BigNum q = new BigNum(BigNum);
+					q.mult(new BigNum(a));
 					return q;
 				}
 
 				@Override
-				public Quantity price(Quantity quantity) {
-					return getPrice(5, quantity);
+				public BigNum price(BigNum BigNum) {
+					return getPrice(5, BigNum);
 				}
 			});
 			Entity temple = setEntity(new Entity() {
-				Quantity a = Quantity.valueOf(7800);
+				BigNum a = BigNum.valueOf(7800);
 
 				@Override
 				public String name() {
@@ -284,19 +284,19 @@ public class Main extends Mod {
 				}
 
 				@Override
-				public Quantity production(Quantity quantity) {
-					Quantity q = new Quantity(quantity);
-					q.mult(new Quantity(a));
+				public BigNum production(BigNum BigNum) {
+					BigNum q = new BigNum(BigNum);
+					q.mult(new BigNum(a));
 					return q;
 				}
 
 				@Override
-				public Quantity price(Quantity quantity) {
-					return getPrice(6, quantity);
+				public BigNum price(BigNum BigNum) {
+					return getPrice(6, BigNum);
 				}
 			});
 			Entity wizard = setEntity(new Entity() {
-				Quantity a = Quantity.valueOf(44000);
+				BigNum a = BigNum.valueOf(44000);
 
 				@Override
 				public String name() {
@@ -309,19 +309,19 @@ public class Main extends Mod {
 				}
 
 				@Override
-				public Quantity production(Quantity quantity) {
-					Quantity q = new Quantity(quantity);
-					q.mult(new Quantity(a));
+				public BigNum production(BigNum BigNum) {
+					BigNum q = new BigNum(BigNum);
+					q.mult(new BigNum(a));
 					return q;
 				}
 
 				@Override
-				public Quantity price(Quantity quantity) {
-					return getPrice(7, quantity);
+				public BigNum price(BigNum BigNum) {
+					return getPrice(7, BigNum);
 				}
 			});
 			Entity shipement = setEntity(new Entity() {
-				Quantity a = Quantity.valueOf(260000);
+				BigNum a = BigNum.valueOf(260000);
 
 				@Override
 				public String name() {
@@ -334,19 +334,19 @@ public class Main extends Mod {
 				}
 
 				@Override
-				public Quantity production(Quantity quantity) {
-					Quantity q = new Quantity(quantity);
-					q.mult(new Quantity(a));
+				public BigNum production(BigNum BigNum) {
+					BigNum q = new BigNum(BigNum);
+					q.mult(new BigNum(a));
 					return q;
 				}
 
 				@Override
-				public Quantity price(Quantity quantity) {
-					return getPrice(8, quantity);
+				public BigNum price(BigNum BigNum) {
+					return getPrice(8, BigNum);
 				}
 			});
 			Entity alchemy = setEntity(new Entity() {
-				Quantity a = Quantity.valueOf(1600000);
+				BigNum a = BigNum.valueOf(1600000);
 
 				@Override
 				public String name() {
@@ -359,19 +359,19 @@ public class Main extends Mod {
 				}
 
 				@Override
-				public Quantity production(Quantity quantity) {
-					Quantity q = new Quantity(quantity);
-					q.mult(new Quantity(a));
+				public BigNum production(BigNum BigNum) {
+					BigNum q = new BigNum(BigNum);
+					q.mult(new BigNum(a));
 					return q;
 				}
 
 				@Override
-				public Quantity price(Quantity quantity) {
-					return getPrice(9, quantity);
+				public BigNum price(BigNum BigNum) {
+					return getPrice(9, BigNum);
 				}
 			});
 			Entity portal = setEntity(new Entity() {
-				Quantity a = Quantity.valueOf(10000000);
+				BigNum a = BigNum.valueOf(10000000);
 
 				@Override
 				public String name() {
@@ -384,19 +384,19 @@ public class Main extends Mod {
 				}
 
 				@Override
-				public Quantity production(Quantity quantity) {
-					Quantity q = new Quantity(quantity);
-					q.mult(new Quantity(a));
+				public BigNum production(BigNum BigNum) {
+					BigNum q = new BigNum(BigNum);
+					q.mult(new BigNum(a));
 					return q;
 				}
 
 				@Override
-				public Quantity price(Quantity quantity) {
-					return getPrice(10, quantity);
+				public BigNum price(BigNum BigNum) {
+					return getPrice(10, BigNum);
 				}
 			});
 			Entity time = setEntity(new Entity() {
-				Quantity a = Quantity.valueOf(65000000);
+				BigNum a = BigNum.valueOf(65000000);
 
 				@Override
 				public String name() {
@@ -409,19 +409,19 @@ public class Main extends Mod {
 				}
 
 				@Override
-				public Quantity production(Quantity quantity) {
-					Quantity q = new Quantity(quantity);
-					q.mult(new Quantity(a));
+				public BigNum production(BigNum BigNum) {
+					BigNum q = new BigNum(BigNum);
+					q.mult(new BigNum(a));
 					return q;
 				}
 
 				@Override
-				public Quantity price(Quantity quantity) {
-					return getPrice(11, quantity);
+				public BigNum price(BigNum BigNum) {
+					return getPrice(11, BigNum);
 				}
 			});
 			Entity antimatter = setEntity(new Entity() {
-				Quantity a = Quantity.valueOf(430000000);
+				BigNum a = BigNum.valueOf(430000000);
 
 				@Override
 				public String name() {
@@ -434,19 +434,19 @@ public class Main extends Mod {
 				}
 
 				@Override
-				public Quantity production(Quantity quantity) {
-					Quantity q = new Quantity(quantity);
-					q.mult(new Quantity(a));
+				public BigNum production(BigNum BigNum) {
+					BigNum q = new BigNum(BigNum);
+					q.mult(new BigNum(a));
 					return q;
 				}
 
 				@Override
-				public Quantity price(Quantity quantity) {
-					return getPrice(12, quantity);
+				public BigNum price(BigNum BigNum) {
+					return getPrice(12, BigNum);
 				}
 			});
 			Entity prism = setEntity(new Entity() {
-				Quantity a = Quantity.valueOf(2900000000l);
+				BigNum a = BigNum.valueOf(2900000000l);
 
 				@Override
 				public String name() {
@@ -459,19 +459,19 @@ public class Main extends Mod {
 				}
 
 				@Override
-				public Quantity production(Quantity quantity) {
-					Quantity q = new Quantity(quantity);
-					q.mult(new Quantity(a));
+				public BigNum production(BigNum BigNum) {
+					BigNum q = new BigNum(BigNum);
+					q.mult(new BigNum(a));
 					return q;
 				}
 
 				@Override
-				public Quantity price(Quantity quantity) {
-					return getPrice(13, quantity);
+				public BigNum price(BigNum BigNum) {
+					return getPrice(13, BigNum);
 				}
 			});
 			Entity chancemaker = setEntity(new Entity() {
-				Quantity a = Quantity.valueOf(21000000000l);
+				BigNum a = BigNum.valueOf(21000000000l);
 
 				@Override
 				public String name() {
@@ -484,19 +484,19 @@ public class Main extends Mod {
 				}
 
 				@Override
-				public Quantity production(Quantity quantity) {
-					Quantity q = new Quantity(quantity);
-					q.mult(new Quantity(a));
+				public BigNum production(BigNum BigNum) {
+					BigNum q = new BigNum(BigNum);
+					q.mult(new BigNum(a));
 					return q;
 				}
 
 				@Override
-				public Quantity price(Quantity quantity) {
-					return getPrice(14, quantity);
+				public BigNum price(BigNum BigNum) {
+					return getPrice(14, BigNum);
 				}
 			});
 			Entity fractal = setEntity(new Entity() {
-				Quantity a = Quantity.valueOf(150000000000l);
+				BigNum a = BigNum.valueOf(150000000000l);
 
 				@Override
 				public String name() {
@@ -509,19 +509,19 @@ public class Main extends Mod {
 				}
 
 				@Override
-				public Quantity production(Quantity quantity) {
-					Quantity q = new Quantity(quantity);
-					q.mult(new Quantity(a));
+				public BigNum production(BigNum BigNum) {
+					BigNum q = new BigNum(BigNum);
+					q.mult(new BigNum(a));
 					return q;
 				}
 
 				@Override
-				public Quantity price(Quantity quantity) {
-					return getPrice(15, quantity);
+				public BigNum price(BigNum BigNum) {
+					return getPrice(15, BigNum);
 				}
 			});
 			Entity javascript = setEntity(new Entity() {
-				Quantity a = Quantity.valueOf(1100000000000l);
+				BigNum a = BigNum.valueOf(1100000000000l);
 
 				@Override
 				public String name() {
@@ -534,20 +534,20 @@ public class Main extends Mod {
 				}
 
 				@Override
-				public Quantity production(Quantity quantity) {
-					Quantity q = new Quantity(quantity);
-					q.mult(new Quantity(a));
+				public BigNum production(BigNum BigNum) {
+					BigNum q = new BigNum(BigNum);
+					q.mult(new BigNum(a));
 					return q;
 				}
 
 				@Override
-				public Quantity price(Quantity quantity) {
-					return getPrice(16, quantity);
+				public BigNum price(BigNum BigNum) {
+					return getPrice(16, BigNum);
 				}
 			});
 			Entity idleverse = setEntity(new Entity() {
 
-				Quantity a = Quantity.valueOf(8300000000000l);
+				BigNum a = BigNum.valueOf(8300000000000l);
 
 				@Override
 				public String name() {
@@ -560,15 +560,15 @@ public class Main extends Mod {
 				}
 
 				@Override
-				public Quantity production(Quantity quantity) {
-					Quantity q = new Quantity(quantity);
-					q.mult(new Quantity(a));
+				public BigNum production(BigNum BigNum) {
+					BigNum q = new BigNum(BigNum);
+					q.mult(new BigNum(a));
 					return q;
 				}
 
 				@Override
-				public Quantity price(Quantity quantity) {
-					return getPrice(17, quantity);
+				public BigNum price(BigNum BigNum) {
+					return getPrice(17, BigNum);
 				}
 			});
 
@@ -589,12 +589,12 @@ public class Main extends Mod {
 			UpgradeController ups = UpgradeController.getInstance();
 			String mouseAct = "The mouse and cursors are <B>twice</B> as efficient.";
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(1)) > -1;
+				return Player.getInstance().getEntityBigNum(cursor).compareTo(BigNum.valueOf(1)) > -1;
 			}, this, new Upgrade() {
 
 				@Override
-				public Quantity price() {
-					return Quantity.valueOf(100);
+				public BigNum price() {
+					return BigNum.valueOf(100);
 				}
 
 				@Override
@@ -619,17 +619,17 @@ public class Main extends Mod {
 
 				@Override
 				public void action() {
-					Player.getInstance().getClickMult().mult(Quantity.valueOf(2));
-					cursor.multiplier.mult(Quantity.valueOf(2));
+					Player.getInstance().getClickMult().mult(BigNum.valueOf(2));
+					cursor.multiplier.mult(BigNum.valueOf(2));
 				}
 			});
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(1)) > -1;
+				return Player.getInstance().getEntityBigNum(cursor).compareTo(BigNum.valueOf(1)) > -1;
 			}, this, new Upgrade() {
 
 				@Override
-				public Quantity price() {
-					return Quantity.valueOf(500);
+				public BigNum price() {
+					return BigNum.valueOf(500);
 				}
 
 				@Override
@@ -654,17 +654,17 @@ public class Main extends Mod {
 
 				@Override
 				public void action() {
-					Player.getInstance().getClickMult().mult(Quantity.valueOf(2));
-					cursor.multiplier.mult(Quantity.valueOf(2));
+					Player.getInstance().getClickMult().mult(BigNum.valueOf(2));
+					cursor.multiplier.mult(BigNum.valueOf(2));
 				}
 			});
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(10)) > -1;
+				return Player.getInstance().getEntityBigNum(cursor).compareTo(BigNum.valueOf(10)) > -1;
 			}, this, new Upgrade() {
 
 				@Override
-				public Quantity price() {
-					return Quantity.valueOf(10000);
+				public BigNum price() {
+					return BigNum.valueOf(10000);
 				}
 
 				@Override
@@ -689,18 +689,18 @@ public class Main extends Mod {
 
 				@Override
 				public void action() {
-					Player.getInstance().getClickMult().mult(Quantity.valueOf(2));
-					cursor.multiplier.mult(Quantity.valueOf(2));
+					Player.getInstance().getClickMult().mult(BigNum.valueOf(2));
+					cursor.multiplier.mult(BigNum.valueOf(2));
 				}
 			});
-			final Quantity cursorBoost = Quantity.valueOf(1);
+			final BigNum cursorBoost = BigNum.valueOf(1);
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(25)) > -1;
+				return Player.getInstance().getEntityBigNum(cursor).compareTo(BigNum.valueOf(25)) > -1;
 			}, this, new Upgrade() {
 
 				@Override
-				public Quantity price() {
-					return Quantity.valueOf(100000);
+				public BigNum price() {
+					return BigNum.valueOf(100000);
 				}
 
 				@Override
@@ -727,35 +727,35 @@ public class Main extends Mod {
 				public void action() {
 					Entity cursorEnt = cursor;
 
-					Quantity v = new Quantity();
+					BigNum v = new BigNum();
 
 					for (Entity ent : EntityController.getInstance().getEntities()) {
 						if (!ent.equals(cursorEnt)) {
-							v.add(new Quantity(Player.getInstance().getEntityQuantity(ent)));
+							v.add(new BigNum(Player.getInstance().getEntityBigNum(ent)));
 							ent.getBuyEvents().add(l -> {
-								Quantity q = Player.getInstance().getClickMult();
-								q.div(new Quantity(cursorUP));
-								cursorUP.add(new Quantity(cursorBoost));
-								q.mult(new Quantity(cursorUP));
+								BigNum q = Player.getInstance().getClickMult();
+								q.div(new BigNum(cursorUP));
+								cursorUP.add(new BigNum(cursorBoost));
+								q.mult(new BigNum(cursorUP));
 								ca.RedYou.Game.Main.menu();
 								return null;
 							});
 						}
 					}
-					if (v.compareTo(new Quantity()) > 0) {
-						v.mult(new Quantity(cursorBoost));
+					if (v.compareTo(new BigNum()) > 0) {
+						v.mult(new BigNum(cursorBoost));
 						cursorUP.add(v);
-						Player.getInstance().getClickMult().mult(new Quantity(cursorUP));
+						Player.getInstance().getClickMult().mult(new BigNum(cursorUP));
 					}
 				}
 			});
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(50)) > -1;
+				return Player.getInstance().getEntityBigNum(cursor).compareTo(BigNum.valueOf(50)) > -1;
 			}, this, new Upgrade() {
 
 				@Override
-				public Quantity price() {
-					return Quantity.valueOf(10000000);
+				public BigNum price() {
+					return BigNum.valueOf(10000000);
 				}
 
 				@Override
@@ -780,16 +780,16 @@ public class Main extends Mod {
 
 				@Override
 				public void action() {
-					cursorBoost.mult(Quantity.valueOf(5));
+					cursorBoost.mult(BigNum.valueOf(5));
 				}
 			});
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(100)) > -1;
+				return Player.getInstance().getEntityBigNum(cursor).compareTo(BigNum.valueOf(100)) > -1;
 			}, this, new Upgrade() {
 
 				@Override
-				public Quantity price() {
-					return Quantity.valueOf(100000000);
+				public BigNum price() {
+					return BigNum.valueOf(100000000);
 				}
 
 				@Override
@@ -814,16 +814,16 @@ public class Main extends Mod {
 
 				@Override
 				public void action() {
-					cursorBoost.mult(Quantity.valueOf(10));
+					cursorBoost.mult(BigNum.valueOf(10));
 				}
 			});
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(150)) > -1;
+				return Player.getInstance().getEntityBigNum(cursor).compareTo(BigNum.valueOf(150)) > -1;
 			}, this, new Upgrade() {
 
 				@Override
-				public Quantity price() {
-					return Quantity.valueOf(1000000000);
+				public BigNum price() {
+					return BigNum.valueOf(1000000000);
 				}
 
 				@Override
@@ -848,16 +848,16 @@ public class Main extends Mod {
 
 				@Override
 				public void action() {
-					cursorBoost.mult(Quantity.valueOf(20));
+					cursorBoost.mult(BigNum.valueOf(20));
 				}
 			});
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(200)) > -1;
+				return Player.getInstance().getEntityBigNum(cursor).compareTo(BigNum.valueOf(200)) > -1;
 			}, this, new Upgrade() {
 
 				@Override
-				public Quantity price() {
-					return Quantity.valueOf(10000000000l);
+				public BigNum price() {
+					return BigNum.valueOf(10000000000l);
 				}
 
 				@Override
@@ -882,16 +882,16 @@ public class Main extends Mod {
 
 				@Override
 				public void action() {
-					cursorBoost.mult(Quantity.valueOf(20));
+					cursorBoost.mult(BigNum.valueOf(20));
 				}
 			});
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(250)) > -1;
+				return Player.getInstance().getEntityBigNum(cursor).compareTo(BigNum.valueOf(250)) > -1;
 			}, this, new Upgrade() {
 
 				@Override
-				public Quantity price() {
-					return Quantity.valueOf(10000000000000l);
+				public BigNum price() {
+					return BigNum.valueOf(10000000000000l);
 				}
 
 				@Override
@@ -916,16 +916,16 @@ public class Main extends Mod {
 
 				@Override
 				public void action() {
-					cursorBoost.mult(Quantity.valueOf(20));
+					cursorBoost.mult(BigNum.valueOf(20));
 				}
 			});
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(300)) > -1;
+				return Player.getInstance().getEntityBigNum(cursor).compareTo(BigNum.valueOf(300)) > -1;
 			}, this, new Upgrade() {
 
 				@Override
-				public Quantity price() {
-					return Quantity.valueOf(10000000000000000l);
+				public BigNum price() {
+					return BigNum.valueOf(10000000000000000l);
 				}
 
 				@Override
@@ -950,16 +950,16 @@ public class Main extends Mod {
 
 				@Override
 				public void action() {
-					cursorBoost.mult(Quantity.valueOf(20));
+					cursorBoost.mult(BigNum.valueOf(20));
 				}
 			});
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(350)) > -1;
+				return Player.getInstance().getEntityBigNum(cursor).compareTo(BigNum.valueOf(350)) > -1;
 			}, this, new Upgrade() {
 
 				@Override
-				public Quantity price() {
-					return Quantity.valueOf("10000000000000000000");
+				public BigNum price() {
+					return BigNum.valueOf("10000000000000000000");
 				}
 
 				@Override
@@ -984,16 +984,16 @@ public class Main extends Mod {
 
 				@Override
 				public void action() {
-					cursorBoost.mult(Quantity.valueOf(20));
+					cursorBoost.mult(BigNum.valueOf(20));
 				}
 			});
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(400)) > -1;
+				return Player.getInstance().getEntityBigNum(cursor).compareTo(BigNum.valueOf(400)) > -1;
 			}, this, new Upgrade() {
 
 				@Override
-				public Quantity price() {
-					return Quantity.valueOf("10000000000000000000000");
+				public BigNum price() {
+					return BigNum.valueOf("10000000000000000000000");
 				}
 
 				@Override
@@ -1018,16 +1018,16 @@ public class Main extends Mod {
 
 				@Override
 				public void action() {
-					cursorBoost.mult(Quantity.valueOf(20));
+					cursorBoost.mult(BigNum.valueOf(20));
 				}
 			});
 			ups.addUpgrade(l -> {
-				return Player.getInstance().getEntityQuantity(cursor).compareTo(Quantity.valueOf(450)) > -1;
+				return Player.getInstance().getEntityBigNum(cursor).compareTo(BigNum.valueOf(450)) > -1;
 			}, this, new Upgrade() {
 
 				@Override
-				public Quantity price() {
-					return Quantity.valueOf("10000000000000000000000000");
+				public BigNum price() {
+					return BigNum.valueOf("10000000000000000000000000");
 				}
 
 				@Override
@@ -1052,7 +1052,7 @@ public class Main extends Mod {
 
 				@Override
 				public void action() {
-					cursorBoost.mult(Quantity.valueOf(20));
+					cursorBoost.mult(BigNum.valueOf(20));
 				}
 			});
 
@@ -1073,39 +1073,39 @@ public class Main extends Mod {
 			String grandmaAct = "Grandmas are <B>twice</B> as efficient.";
 
 			addDoubleUp(grandma, grandma0PNG, "Forwards from grandma", grandmaAct,
-					"\"RE:RE:thought you'd get a kick out of this ;))\"", Quantity.valueOf(1000), Quantity.valueOf(1));
+					"\"RE:RE:thought you'd get a kick out of this ;))\"", BigNum.valueOf(1000), BigNum.valueOf(1));
 			addDoubleUp(grandma, grandma1PNG, "Steel-plated rolling pins", grandmaAct, "\"Just what you kneaded.\"",
-					Quantity.valueOf(5000), Quantity.valueOf(5));
-			addDoubleUp(grandma, grandma2PNG, "Lubricated dentures", grandmaAct, "\"squish\"", Quantity.valueOf(50000),
-					Quantity.valueOf(25));
-			addDoubleUp(grandma, grandma3PNG, "Prune juice", grandmaAct, "\"Gets me going.\"",
-					Quantity.valueOf(5000000), Quantity.valueOf(50));
+					BigNum.valueOf(5000), BigNum.valueOf(5));
+			addDoubleUp(grandma, grandma2PNG, "Lubricated dentures", grandmaAct, "\"squish\"", BigNum.valueOf(50000),
+					BigNum.valueOf(25));
+			addDoubleUp(grandma, grandma3PNG, "Prune juice", grandmaAct, "\"Gets me going.\"", BigNum.valueOf(5000000),
+					BigNum.valueOf(50));
 			addDoubleUp(grandma, grandma4PNG, "Double-thick glasses", grandmaAct,
-					"\"Oh... so THAT's what I've been baking.\"", Quantity.valueOf(500000000), Quantity.valueOf(100));
+					"\"Oh... so THAT's what I've been baking.\"", BigNum.valueOf(500000000), BigNum.valueOf(100));
 			addDoubleUp(grandma, grandma5PNG, "Aging agents", grandmaAct,
 					"\"Counter-intuitively, grandmas have the uncanny ability to become more powerful the older they get.\"",
-					Quantity.valueOf(50000000000l), Quantity.valueOf(150));
+					BigNum.valueOf(50000000000l), BigNum.valueOf(150));
 			addDoubleUp(grandma, grandma6PNG, "Xtreme walkers", grandmaAct,
 					"\"Complete with flame decals and a little horn that goes \"toot\".\"",
-					Quantity.valueOf(50000000000000l), Quantity.valueOf(200));
+					BigNum.valueOf(50000000000000l), BigNum.valueOf(200));
 			addDoubleUp(grandma, grandma7PNG, "The Unbridling", grandmaAct,
 					"\"It might be a classic tale of bad parenting, but let's see where grandma is going with this.\"",
-					Quantity.valueOf(50000000000000000l), Quantity.valueOf(250));
+					BigNum.valueOf(50000000000000000l), BigNum.valueOf(250));
 			addDoubleUp(grandma, grandma8PNG, "Reverse dementia", grandmaAct,
 					"\"Extremely unsettling, and somehow even worse than the regular kind.\"",
-					Quantity.valueOf("50000000000000000000"), Quantity.valueOf(300));
+					BigNum.valueOf("50000000000000000000"), BigNum.valueOf(300));
 			addDoubleUp(grandma, grandma9PNG, "Timeproof hair dyes", grandmaAct,
 					"\"Why do they always have those strange wispy pink dos? What do they know about candy floss that we don't?\"",
-					Quantity.valueOf("50000000000000000000000"), Quantity.valueOf(350));
+					BigNum.valueOf("50000000000000000000000"), BigNum.valueOf(350));
 			addDoubleUp(grandma, grandma10PNG, "Good manners", grandmaAct,
 					"\"Apparently these ladies are much more amiable if you take the time to learn their strange, ancient customs, which seem to involve saying \"please\" and \"thank you\" and staring at the sun with bulging eyes while muttering eldritch curses under your breath.\"",
-					Quantity.valueOf("500000000000000000000000000"), Quantity.valueOf(400));
+					BigNum.valueOf("500000000000000000000000000"), BigNum.valueOf(400));
 			addDoubleUp(grandma, grandma11PNG, "Generation degeneration", grandmaAct,
 					"\"Genetic testing shows that most of your grandmas are infected with a strange degenerative disease that only seems to further their powers; the more time passes, the older they get. This should concern you.\"",
-					Quantity.valueOf("5000000000000000000000000000000"), Quantity.valueOf(450));
+					BigNum.valueOf("5000000000000000000000000000000"), BigNum.valueOf(450));
 			addDoubleUp(grandma, grandma12PNG, "Visits", grandmaAct,
 					"\"In an extensive double-blind study (sample size: 12 millions), your researchers have found evidence that grandmas are up to twice as productive if you just come by and say hi once in a while. It's nice to check up on your grans! (Do not under any circumstances ingest any tea or tea-like substances the grandmas may offer you.).\"",
-					Quantity.valueOf("50000000000000000000000000000000000"), Quantity.valueOf(500));
+					BigNum.valueOf("50000000000000000000000000000000000"), BigNum.valueOf(500));
 
 			ImageIcon farm0PNG = new ImageIcon(ImageIO.read(getSource("upgrades/farmUP0.png")));
 			ImageIcon farm1PNG = new ImageIcon(ImageIO.read(getSource("upgrades/farmUP1.png")));
@@ -1123,40 +1123,40 @@ public class Main extends Mod {
 
 			String farmAct = "Farms are <B>twice</B> as efficient.";
 
-			addDoubleUp(farm, farm0PNG, "Cheap hoes", farmAct, "\"Rake in the dough!\"", Quantity.valueOf(11000),
-					Quantity.valueOf(1));
-			addDoubleUp(farm, farm1PNG, "Fertilizer", farmAct, "\"It's chocolate, I swear.\"", Quantity.valueOf(55000),
-					Quantity.valueOf(5));
+			addDoubleUp(farm, farm0PNG, "Cheap hoes", farmAct, "\"Rake in the dough!\"", BigNum.valueOf(11000),
+					BigNum.valueOf(1));
+			addDoubleUp(farm, farm1PNG, "Fertilizer", farmAct, "\"It's chocolate, I swear.\"", BigNum.valueOf(55000),
+					BigNum.valueOf(5));
 			addDoubleUp(farm, farm2PNG, "Cookie trees", farmAct, "\"A relative of the breadfruit.\"",
-					Quantity.valueOf(550000), Quantity.valueOf(25));
+					BigNum.valueOf(550000), BigNum.valueOf(25));
 			addDoubleUp(farm, farm3PNG, "Genetically-modified cookies", farmAct, "\"All-natural mutations.\"",
-					Quantity.valueOf(55000000), Quantity.valueOf(50));
+					BigNum.valueOf(55000000), BigNum.valueOf(50));
 			addDoubleUp(farm, farm4PNG, "Gingerbread scarecrows", farmAct,
-					"\"Staring at your crops with mischievous glee.\"", Quantity.valueOf(5500000000l),
-					Quantity.valueOf(100));
+					"\"Staring at your crops with mischievous glee.\"", BigNum.valueOf(5500000000l),
+					BigNum.valueOf(100));
 			addDoubleUp(farm, farm5PNG, "Pulsar sprinklers", farmAct,
 					"\"There's no such thing as over-watering. The moistest is the bestest.\"",
-					Quantity.valueOf(550000000000l), Quantity.valueOf(150));
+					BigNum.valueOf(550000000000l), BigNum.valueOf(150));
 			addDoubleUp(farm, farm6PNG, "Fudge fungus", farmAct,
 					"\"A sugary parasite whose tendrils help cookie growth.<br>Please do not breathe in the spores. In case of spore ingestion, seek medical help within the next 36 seconds.\"",
-					Quantity.valueOf(550000000000000l), Quantity.valueOf(200));
+					BigNum.valueOf(550000000000000l), BigNum.valueOf(200));
 			addDoubleUp(farm, farm7PNG, "Wheat triffids", farmAct,
 					"\"Taking care of crops is so much easier when your plants can just walk about and help around the farm.<br>Do not pet. Do not feed. Do not attempt to converse with.\"",
-					Quantity.valueOf(550000000000000000l), Quantity.valueOf(250));
+					BigNum.valueOf(550000000000000000l), BigNum.valueOf(250));
 			addDoubleUp(farm, farm8PNG, "Humane pesticides", farmAct,
 					"\"Made by people, for people, from people and ready to unleash some righteous scorching pain on those pesky insects that so deserve it.\"",
-					Quantity.valueOf("550000000000000000000"), Quantity.valueOf(300));
+					BigNum.valueOf("550000000000000000000"), BigNum.valueOf(300));
 			addDoubleUp(farm, farm9PNG, "Barnstars", farmAct, "\"Ah, yes. These help quite a bit. Somehow.\"",
-					Quantity.valueOf("550000000000000000000000"), Quantity.valueOf(350));
+					BigNum.valueOf("550000000000000000000000"), BigNum.valueOf(350));
 			addDoubleUp(farm, farm10PNG, "Lindworms", farmAct,
 					"\"You have to import these from far up north, but they really help areate the soil!\"",
-					Quantity.valueOf("5500000000000000000000000000"), Quantity.valueOf(400));
+					BigNum.valueOf("5500000000000000000000000000"), BigNum.valueOf(400));
 			addDoubleUp(farm, farm11PNG, "Global seed vault", farmAct,
 					"\"An enormous genetic repository that could outlive an apocalypse. Guarantees the survival of your empire, or at the very least its agricultural components, should civilization fall. Which should be any day now.\"",
-					Quantity.valueOf("55000000000000000000000000000000"), Quantity.valueOf(450));
+					BigNum.valueOf("55000000000000000000000000000000"), BigNum.valueOf(450));
 			addDoubleUp(farm, farm12PNG, "Reverse-veganism", farmAct,
 					"\"Plants aren't for eating, plants are for exploitative agriculture and astronomical profit margins!\"",
-					Quantity.valueOf("550000000000000000000000000000000000"), Quantity.valueOf(500));
+					BigNum.valueOf("550000000000000000000000000000000000"), BigNum.valueOf(500));
 
 			ImageIcon mine0PNG = new ImageIcon(ImageIO.read(getSource("upgrades/mineUP0.png")));
 			ImageIcon mine1PNG = new ImageIcon(ImageIO.read(getSource("upgrades/mineUP1.png")));
@@ -1174,41 +1174,41 @@ public class Main extends Mod {
 
 			String mineAct = "Mines are <B>twice</B> as efficient.";
 			addDoubleUp(mine, mine0PNG, "Sugar gas", mineAct,
-					"\"A pink, volatile gas, found in the depths of some chocolate caves.\"", Quantity.valueOf(120000),
-					Quantity.valueOf(1));
-			addDoubleUp(mine, mine1PNG, "Megadrill", mineAct, "\"You're in deep.\"", Quantity.valueOf(600000),
-					Quantity.valueOf(5));
-			addDoubleUp(mine, mine2PNG, "Ultradrill", mineAct, "\"Finally caved in?\"", Quantity.valueOf(6000000),
-					Quantity.valueOf(25));
+					"\"A pink, volatile gas, found in the depths of some chocolate caves.\"", BigNum.valueOf(120000),
+					BigNum.valueOf(1));
+			addDoubleUp(mine, mine1PNG, "Megadrill", mineAct, "\"You're in deep.\"", BigNum.valueOf(600000),
+					BigNum.valueOf(5));
+			addDoubleUp(mine, mine2PNG, "Ultradrill", mineAct, "\"Finally caved in?\"", BigNum.valueOf(6000000),
+					BigNum.valueOf(25));
 			addDoubleUp(mine, mine3PNG, "Ultimadrill", mineAct, "\"Pierce the heavens, etc.\"",
-					Quantity.valueOf(600000000), Quantity.valueOf(50));
+					BigNum.valueOf(600000000), BigNum.valueOf(50));
 			addDoubleUp(mine, mine4PNG, "H-bomb mining", mineAct,
-					"\"Questionable efficiency, but spectacular nonetheless.\"", Quantity.valueOf(60000000000l),
-					Quantity.valueOf(100));
+					"\"Questionable efficiency, but spectacular nonetheless.\"", BigNum.valueOf(60000000000l),
+					BigNum.valueOf(100));
 			addDoubleUp(mine, mine5PNG, "Coreforge", mineAct,
 					"\"You've finally dug a tunnel down to the Earth's core. It's pretty warm down here.\"",
-					Quantity.valueOf(6000000000000l), Quantity.valueOf(150));
+					BigNum.valueOf(6000000000000l), BigNum.valueOf(150));
 			addDoubleUp(mine, mine6PNG, "Planetsplitters", mineAct,
 					"\"These new state-of-the-art excavators have been tested on Merula, Globort and Flwanza VI, among other distant planets which have been curiously quiet lately.\"",
-					Quantity.valueOf(6000000000000000l), Quantity.valueOf(200));
+					BigNum.valueOf(6000000000000000l), BigNum.valueOf(200));
 			addDoubleUp(mine, mine7PNG, "Canola oil wells", mineAct,
 					"\"A previously untapped resource, canola oil permeates the underground olifers which grant it its particular taste and lucrative properties.\"",
-					Quantity.valueOf(6000000000000000000l), Quantity.valueOf(250));
+					BigNum.valueOf(6000000000000000000l), BigNum.valueOf(250));
 			addDoubleUp(mine, mine8PNG, "Mole people", mineAct,
 					"\"Engineered from real human beings within your very labs, these sturdy little folks have a knack for finding the tastiest underground minerals in conditions that more expensive machinery probably wouldn't survive.\"",
-					Quantity.valueOf("6000000000000000000000"), Quantity.valueOf(300));
+					BigNum.valueOf("6000000000000000000000"), BigNum.valueOf(300));
 			addDoubleUp(mine, mine9PNG, "Mine canaries", mineAct,
 					"\"These aren't used for anything freaky! The miners just enjoy having a pet or two down there.\"",
-					Quantity.valueOf("6000000000000000000000000"), Quantity.valueOf(350));
+					BigNum.valueOf("6000000000000000000000000"), BigNum.valueOf(350));
 			addDoubleUp(mine, mine10PNG, "Bore again", mineAct,
 					"\"After extracting so much sediment for so long, you've formed some veritable mountains of your own from the accumulated piles of rock and dirt. Time to dig through those and see if you find anything fun!\"",
-					Quantity.valueOf("60000000000000000000000000000"), Quantity.valueOf(400));
+					BigNum.valueOf("60000000000000000000000000000"), BigNum.valueOf(400));
 			addDoubleUp(mine, mine11PNG, "Air mining", mineAct,
 					"\"You've dug your drills through just about every solid surface you could find. But did you know recent advances have revealed untold riches hiding within non-solid surfaces too?\"",
-					Quantity.valueOf("600000000000000000000000000000000"), Quantity.valueOf(450));
+					BigNum.valueOf("600000000000000000000000000000000"), BigNum.valueOf(450));
 			addDoubleUp(mine, mine12PNG, "Caramel alloys", mineAct,
 					"\"Your geologists have isolated a family of once-overlooked sugary ores that, when combined, may be turned into even more cookie ingredients. Your millions of miles of previously useless tunnels probably house insane amounts of the stuff!\"",
-					Quantity.valueOf("6000000000000000000000000000000000000"), Quantity.valueOf(500));
+					BigNum.valueOf("6000000000000000000000000000000000000"), BigNum.valueOf(500));
 
 			ImageIcon factory0PNG = new ImageIcon(ImageIO.read(getSource("upgrades/factoryUP0.png")));
 			ImageIcon factory1PNG = new ImageIcon(ImageIO.read(getSource("upgrades/factoryUP1.png")));
@@ -1226,39 +1226,38 @@ public class Main extends Mod {
 
 			String factoryAct = "Factories are <B>twice</B> as efficient.";
 			addDoubleUp(factory, factory0PNG, "Sturdier conveyor belts", factoryAct, "\"You're going places.\"",
-					Quantity.valueOf("1300000"), Quantity.valueOf(1));
+					BigNum.valueOf("1300000"), BigNum.valueOf(1));
 			addDoubleUp(factory, factory1PNG, "Child labor", factoryAct, "\"Cheaper, healthier workforce.\"",
-					Quantity.valueOf("6500000"), Quantity.valueOf(5));
+					BigNum.valueOf("6500000"), BigNum.valueOf(5));
 			addDoubleUp(factory, factory2PNG, "Sweatshop", factoryAct, "\"Slackers will be terminated.\"",
-					Quantity.valueOf("65000000"), Quantity.valueOf(25));
+					BigNum.valueOf("65000000"), BigNum.valueOf(25));
 			addDoubleUp(factory, factory3PNG, "Radium reactors", factoryAct, "\"Gives your cookies a healthy glow.\"",
-					Quantity.valueOf("6500000000"), Quantity.valueOf(50));
+					BigNum.valueOf("6500000000"), BigNum.valueOf(50));
 			addDoubleUp(factory, factory4PNG, "Recombobulators", factoryAct,
-					"\"A major part of cookie recombobulation.\"", Quantity.valueOf("650000000000"),
-					Quantity.valueOf(100));
+					"\"A major part of cookie recombobulation.\"", BigNum.valueOf("650000000000"), BigNum.valueOf(100));
 			addDoubleUp(factory, factory5PNG, "Deep-bake process", factoryAct,
 					"\"A patented process increasing cookie yield two-fold for the same amount of ingredients. Don't ask how, don't take pictures, and be sure to wear your protective suit.\"",
-					Quantity.valueOf("65000000000000"), Quantity.valueOf(150));
+					BigNum.valueOf("65000000000000"), BigNum.valueOf(150));
 			addDoubleUp(factory, factory6PNG, "Cyborg workforce", factoryAct,
 					"\"Semi-synthetic organisms don't slack off, don't unionize, and have 20% shorter lunch breaks, making them ideal labor fodder.\"",
-					Quantity.valueOf("65000000000000000"), Quantity.valueOf(200));
+					BigNum.valueOf("65000000000000000"), BigNum.valueOf(200));
 			addDoubleUp(factory, factory7PNG, "78-hour days", factoryAct, "\"Why didn't we think of this earlier?\"",
-					Quantity.valueOf("65000000000000000000"), Quantity.valueOf(250));
+					BigNum.valueOf("65000000000000000000"), BigNum.valueOf(250));
 			addDoubleUp(factory, factory8PNG, "Machine learning", factoryAct,
 					"\"You figured you might get better productivity if you actually told your workers to learn how to work the machines. Sometimes, it's the little things...\"",
-					Quantity.valueOf("65000000000000000000000"), Quantity.valueOf(300));
+					BigNum.valueOf("65000000000000000000000"), BigNum.valueOf(300));
 			addDoubleUp(factory, factory9PNG, "Brownie point system", factoryAct,
 					"\"Oh, these are lovely! You can now reward your factory employees for good behavior, such as working overtime or snitching on coworkers. 58 brownie points gets you a little picture of a brownie, and 178 of those pictures gets you an actual brownie piece for you to do with as you please! Infantilizing? Maybe. Oodles of fun? You betcha!\"",
-					Quantity.valueOf("65000000000000000000000000"), Quantity.valueOf(350));
+					BigNum.valueOf("65000000000000000000000000"), BigNum.valueOf(350));
 			addDoubleUp(factory, factory10PNG, "\"Volunteer\" interns", factoryAct,
 					"\"If you're bad at something, always do it for free.\"",
-					Quantity.valueOf("650000000000000000000000000000"), Quantity.valueOf(400));
+					BigNum.valueOf("650000000000000000000000000000"), BigNum.valueOf(400));
 			addDoubleUp(factory, factory11PNG, "Behavioral reframing", factoryAct,
 					"\"Through careful social engineering you've convinced your workers that \"union\" is a slur that only the most vile and repugnant filth among us would ever dare utter! Sometimes progress isn't in the big machines, it's in the little lies!\"",
-					Quantity.valueOf("6500000000000000000000000000000000"), Quantity.valueOf(450));
+					BigNum.valueOf("6500000000000000000000000000000000"), BigNum.valueOf(450));
 			addDoubleUp(factory, factory12PNG, "The infinity engine", factoryAct,
 					"\"In this house, I guess we don't care much for the laws of thermodynamics.\"",
-					Quantity.valueOf("6000000000000000000000000000000000000"), Quantity.valueOf(500));
+					BigNum.valueOf("6000000000000000000000000000000000000"), BigNum.valueOf(500));
 
 			ImageIcon bank0PNG = new ImageIcon(ImageIO.read(getSource("upgrades/bankUP0.png")));
 			ImageIcon bank1PNG = new ImageIcon(ImageIO.read(getSource("upgrades/bankUP1.png")));
@@ -1275,7 +1274,7 @@ public class Main extends Mod {
 			ImageIcon bank12PNG = new ImageIcon(ImageIO.read(getSource("upgrades/bankUP12.png")));
 
 //			String factoryAct = "Factories are <B>twice</B> as efficient.";
-//			addDoubleUp(factory, factory0PNG, "", factoryAct, "\"\"", Quantity.valueOf("1300000"), Quantity.valueOf(1));
+//			addDoubleUp(factory, factory0PNG, "", factoryAct, "\"\"", BigNum.valueOf("1300000"), BigNum.valueOf(1));
 
 			ImageIcon temple0PNG = new ImageIcon(ImageIO.read(getSource("upgrades/templeUP0.png")));
 			ImageIcon temple1PNG = new ImageIcon(ImageIO.read(getSource("upgrades/templeUP1.png")));
@@ -1291,7 +1290,7 @@ public class Main extends Mod {
 			ImageIcon temple11PNG = new ImageIcon(ImageIO.read(getSource("upgrades/templeUP11.png")));
 			ImageIcon temple12PNG = new ImageIcon(ImageIO.read(getSource("upgrades/templeUP12.png")));
 //			Player.getInstance().getMoney()
-//					.add(Quantity.valueOf("1000000000000000000000000000000000000000000000000000"));
+//					.add(BigNum.valueOf("1000000000000000000000000000000000000000000000000000"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

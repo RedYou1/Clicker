@@ -9,6 +9,7 @@ import java.util.Comparator;
 
 import javax.swing.*;
 
+import ca.RedDevKit.BigNum;
 import ca.RedDevKit.Pages.AbstractFrame;
 import ca.RedDevKit.Pages.Frame;
 import ca.RedDevKit.Pages.Slider;
@@ -28,7 +29,7 @@ public class Main {
 
 	public static boolean running = true;
 
-	public static Quantity last = new Quantity();
+	public static BigNum last = new BigNum();
 
 	public static void main(String[] args) {
 		GameStatus.start();
@@ -58,17 +59,17 @@ public class Main {
 						Thread t = new Thread("Action of Entities Calc") {
 							public void run() {
 								Player p = Player.getInstance();
-								Quantity m = p.getMoney();
+								BigNum m = p.getMoney();
 
-								Quantity a = new Quantity(m);
+								BigNum a = new BigNum(m);
 								a.sub(last);
 								clickcps.setText(a.toString() + " clickcps");
 
-								a = new Quantity();
+								a = new BigNum();
 
 								for (Entity ent : EntityController.getInstance().getEntities()) {
-									Quantity i = new Quantity(ent.production(p.getEntityQuantity(ent)));
-									i.mult(new Quantity(ent.multiplier));
+									BigNum i = new BigNum(ent.production(p.getEntityBigNum(ent)));
+									i.mult(new BigNum(ent.multiplier));
 
 									a.add(i);
 									m.add(i);
@@ -76,7 +77,7 @@ public class Main {
 								money.setText(m.toString());
 								cps.setText(a + " cps");
 
-								last = new Quantity(m);
+								last = new BigNum(m);
 							}
 						};
 						t.start();
@@ -200,10 +201,9 @@ public class Main {
 				ents[a].buy(b);
 			});
 
-			Quantity prod = new Quantity(
-					ents[i].production(new Quantity(Player.getInstance().getEntityQuantity(ents[i]))));
+			BigNum prod = new BigNum(ents[i].production(new BigNum(Player.getInstance().getEntityBigNum(ents[i]))));
 			prod.mult(ents[i].multiplier);
-			Quantity q = Player.getInstance().getEntityQuantity(ents[i]);
+			BigNum q = Player.getInstance().getEntityBigNum(ents[i]);
 			entites.setBouton("<html><B>" + q + " " + ents[i].name() + "</B><br>" + prod + " cps<br><I>"
 					+ ents[i].price(q) + " cookies</I><html>", 0, i, b);
 
